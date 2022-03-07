@@ -33,8 +33,8 @@ class _MenuState extends State<Menu> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: FlashCard(question:"やっほー" ,answer: "こんにちは"),
+      body: const Center(
+        child: FlashCard(question:"問題", answer: "答え"),
       ),
     );
   }
@@ -50,14 +50,42 @@ class FlashCard extends StatefulWidget {
 }
 
 class _FlashCardState extends State<FlashCard> {
+  bool isSurface = true;
+  void toggleSurface() {
+    setState(() {
+	  isSurface = !isSurface;
+    });
+  }
+  void faceUp() {
+    setState(() {
+      isSurface = true;
+    });
+  }
+  void faceDown() {
+    setState(() {
+      isSurface = false;
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return Card(
-          child: SizedBox(
-            width: 330,
-            height: 150,
-            child: Center(child: Text(widget.question)),
-          ),
+    return GestureDetector(
+	  onPanEnd: (DragEndDetails? _) {
+	    faceUp();
+	  },
+	  onPanStart: (DragStartDetails? _) {
+	    faceDown();
+	  },
+      child:Card(
+      	child: SizedBox(
+      	  width: 330,
+      	  height: 150,
+      	  child: Center(child: Text(
+      		isSurface ?
+      		  widget.question :
+      		  widget.answer
+      	  )),
+      	),
+     )
 	);
   }
 }
