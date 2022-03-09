@@ -52,7 +52,18 @@ class FlashCards extends StatefulWidget {
 class _FlashCardsState extends State<FlashCards> {
   @override
   Widget build(BuildContext context) {
-    return const TopCard(question: "問題", answer: "答え");
+    return Stack(
+      alignment: Alignment.center,
+      children: const [
+        Align(
+          alignment: Alignment(0, -0.01),
+          child: SecondCard(question: "問題2"),
+        ),
+        Align(
+          child: TopCard(answer: "答え", question: "問題"),
+        ),
+      ],
+    );
   }
 }
 
@@ -62,12 +73,11 @@ class SecondCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: SizedBox(
-        width: tOPwIDTH - 10,
-        height: tOPhEIGHT,
-        child: Center(child: Text(question)),
-      ),
-    );
+        elevation: 3,
+        child: SizedBox(
+            width: tOPwIDTH - 10,
+            height: tOPhEIGHT,
+            child: Center(child: Text(question))));
   }
 }
 
@@ -110,12 +120,12 @@ class _TopCardState extends State<TopCard> {
           faceDown();
         },
         child: Card(
+          elevation: 4,
           child: SizedBox(
-            width: tOPwIDTH,
-            height: tOPhEIGHT,
-            child: Center(
-                child: Text(isSurface ? widget.question : widget.answer)),
-          ),
+              width: tOPwIDTH,
+              height: tOPhEIGHT,
+              child: Center(
+                  child: Text(isSurface ? widget.question : widget.answer))),
         ));
   }
 }
