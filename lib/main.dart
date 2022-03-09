@@ -33,9 +33,7 @@ class _PlayingCardsPageState extends State<PlayingCardsPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: const Center(
-        child: FlashCards(),
-      ),
+      body: const FlashCards(),
     );
   }
 }
@@ -56,6 +54,18 @@ class _FlashCardsState extends State<FlashCards> {
       alignment: Alignment.center,
       children: const [
         Align(
+          alignment: Alignment(0, -0.04),
+          child: OtherCard(width: tOPwIDTH - 25),
+        ),
+        Align(
+          alignment: Alignment(0, -0.03),
+          child: OtherCard(width: tOPwIDTH - 20),
+        ),
+        Align(
+          alignment: Alignment(0, -0.02),
+          child: OtherCard(width: tOPwIDTH - 15),
+        ),
+        Align(
           alignment: Alignment(0, -0.01),
           child: SecondCard(question: "問題2"),
         ),
@@ -64,6 +74,20 @@ class _FlashCardsState extends State<FlashCards> {
         ),
       ],
     );
+  }
+}
+
+class OtherCard extends StatelessWidget {
+  final double width;
+  const OtherCard({Key? key, required this.width}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        elevation: 3,
+        child: SizedBox(
+          width: width,
+		  height: tOPhEIGHT,
+        ));
   }
 }
 
