@@ -40,6 +40,8 @@ class _FlashCardsState extends State<FlashCards> {
   }
 }
 
+const double tOPwIDTH = 330;
+const double tOPhEIGHT = 150;
 
 class TopCard extends StatefulWidget {
   final String question;
@@ -73,23 +75,19 @@ class _TopCardState extends State<TopCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-	  onPanEnd: (DragEndDetails? _) {
-	    faceUp();
-	  },
-	  onPanStart: (DragStartDetails? _) {
-	    faceDown();
-	  },
-      child:Card(
-      	child: SizedBox(
-      	  width: 330,
-      	  height: 150,
-      	  child: Center(child: Text(
-      		isSurface ?
-      		  widget.question :
-      		  widget.answer
-      	  )),
-      	),
-     )
-	);
+        onPanEnd: (DragEndDetails? _) {
+          faceUp();
+        },
+        onPanStart: (DragStartDetails? _) {
+          faceDown();
+        },
+        child: Card(
+          child: SizedBox(
+            width: tOPwIDTH,
+            height: tOPhEIGHT,
+            child: Center(
+                child: Text(isSurface ? widget.question : widget.answer)),
+          ),
+        ));
   }
 }
