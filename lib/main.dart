@@ -14,19 +14,19 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: const Menu(title: 'ホーム'),
+      home: const FlashCards(title: 'ホーム'),
     );
   }
 }
 
-class Menu extends StatefulWidget {
-  const Menu({Key? key, required this.title}) : super(key: key);
+class FlashCards extends StatefulWidget {
+  const FlashCards({Key? key, required this.title}) : super(key: key);
   final String title;
   @override
-  State<Menu> createState() => _MenuState();
+  State<FlashCards> createState() => _FlashCardsState();
 }
 
-class _MenuState extends State<Menu> {
+class _FlashCardsState extends State<FlashCards> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,38 +34,42 @@ class _MenuState extends State<Menu> {
         title: Text(widget.title),
       ),
       body: const Center(
-        child: FlashCard(question:"問題", answer: "答え"),
+        child: TopCard(question: "問題", answer: "答え"),
       ),
     );
   }
 }
 
-class FlashCard extends StatefulWidget {
 
+class TopCard extends StatefulWidget {
   final String question;
   final String answer;
-  const FlashCard({this.question = "", this.answer = ""});
+  const TopCard({Key? key, required this.question, required this.answer})
+      : super(key: key);
   @override
-  State<FlashCard> createState() => _FlashCardState();
+  State<TopCard> createState() => _TopCardState();
 }
 
-class _FlashCardState extends State<FlashCard> {
+class _TopCardState extends State<TopCard> {
   bool isSurface = true;
   void toggleSurface() {
     setState(() {
-	  isSurface = !isSurface;
+      isSurface = !isSurface;
     });
   }
+
   void faceUp() {
     setState(() {
       isSurface = true;
     });
   }
+
   void faceDown() {
     setState(() {
       isSurface = false;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
