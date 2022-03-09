@@ -43,6 +43,21 @@ class _FlashCardsState extends State<FlashCards> {
 const double tOPwIDTH = 330;
 const double tOPhEIGHT = 150;
 
+class SecondCard extends StatelessWidget {
+  final String question;
+  const SecondCard({Key? key, required this.question}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: SizedBox(
+        width: tOPwIDTH - 10,
+        height: tOPhEIGHT,
+        child: Center(child: Text(question)),
+      ),
+    );
+  }
+}
+
 class TopCard extends StatefulWidget {
   final String question;
   final String answer;
