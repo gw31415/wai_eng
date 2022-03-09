@@ -14,19 +14,19 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: const FlashCards(title: 'ホーム'),
+      home: const PlayingCardsPage(title: 'ホーム'),
     );
   }
 }
 
-class FlashCards extends StatefulWidget {
-  const FlashCards({Key? key, required this.title}) : super(key: key);
+class PlayingCardsPage extends StatefulWidget {
+  const PlayingCardsPage({Key? key, required this.title}) : super(key: key);
   final String title;
   @override
-  State<FlashCards> createState() => _FlashCardsState();
+  State<PlayingCardsPage> createState() => _PlayingCardsPageState();
 }
 
-class _FlashCardsState extends State<FlashCards> {
+class _PlayingCardsPageState extends State<PlayingCardsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +34,7 @@ class _FlashCardsState extends State<FlashCards> {
         title: Text(widget.title),
       ),
       body: const Center(
-        child: TopCard(question: "問題", answer: "答え"),
+        child: FlashCards(),
       ),
     );
   }
@@ -42,6 +42,19 @@ class _FlashCardsState extends State<FlashCards> {
 
 const double tOPwIDTH = 330;
 const double tOPhEIGHT = 150;
+
+class FlashCards extends StatefulWidget {
+  const FlashCards({Key? key}) : super(key: key);
+  @override
+  State<FlashCards> createState() => _FlashCardsState();
+}
+
+class _FlashCardsState extends State<FlashCards> {
+  @override
+  Widget build(BuildContext context) {
+    return const TopCard(question: "問題", answer: "答え");
+  }
+}
 
 class SecondCard extends StatelessWidget {
   final String question;
