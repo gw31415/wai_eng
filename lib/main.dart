@@ -87,7 +87,7 @@ class OtherCard extends StatelessWidget {
         elevation: 3,
         child: SizedBox(
           width: width,
-		  height: tOPhEIGHT,
+          height: tOPhEIGHT,
         ));
   }
 }
