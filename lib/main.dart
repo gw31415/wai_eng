@@ -70,6 +70,7 @@ class _FlashCardsState extends State<FlashCards> {
           child: SecondCard(question: "問題2"),
         ),
         Align(
+          alignment: Alignment.center,
           child: TopCard(answer: "答え", question: "問題"),
         ),
       ],
