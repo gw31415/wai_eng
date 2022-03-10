@@ -117,11 +117,6 @@ class TopCard extends StatefulWidget {
 
 class _TopCardState extends State<TopCard> {
   bool isSurface = true;
-  void toggleSurface() {
-    setState(() {
-      isSurface = !isSurface;
-    });
-  }
 
   void faceUp() {
     setState(() {
