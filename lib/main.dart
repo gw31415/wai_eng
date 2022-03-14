@@ -93,6 +93,11 @@ class _PlayingCardsPageState extends State<PlayingCardsPage> {
               SwipeDirection.right,
               SwipeDirection.left,
             },
+            swipeNextOnSwipeCanceled: const SwipeNextArgs(
+              swipeDirection: SwipeDirection.down,
+              shouldCallCompletionCallback: true,
+              ignoreOnWillMoveNext: false,
+            ),
             overlayBuilder: (_, properties) {
               final card = widget.flashcards.get(properties.index);
               if (card == null) {
