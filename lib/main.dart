@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'flutter_swipable_stack/swipable_stack.dart';
+import 'package:swipable_stack/swipable_stack.dart';
 
 void main() {
   runApp(const MainApp());
@@ -80,19 +80,6 @@ class _PlayingCardsPageState extends State<PlayingCardsPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool _isopened = false;
-    void _open() {
-      setState(() {
-        _isopened = true;
-      });
-    }
-
-    void _close() {
-      setState(() {
-        _isopened = false;
-      });
-    }
-
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.flashcards.title),
@@ -100,15 +87,18 @@ class _PlayingCardsPageState extends State<PlayingCardsPage> {
         body: SafeArea(
             child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 8),
-          child: GestureDetector(
-		  behavior: HitTestBehavior.opaque,
-		  onPanDown: (_) {
-		    _open();
-		  },
-		  child: SwipableStack(
+          child: SwipableStack(
+            itemCount: widget.flashcards.length(),
             detectableSwipeDirections: const {
               SwipeDirection.right,
               SwipeDirection.left,
+            },
+            overlayBuilder: (_, properties) {
+              final card = widget.flashcards.get(properties.index);
+              if (card == null) {
+                return Container();
+              }
+              return Card(child: Center(child: Text(card.answer)));
             },
             stackClipBehaviour: Clip.none,
             builder: (context, properties) {
@@ -116,9 +106,7 @@ class _PlayingCardsPageState extends State<PlayingCardsPage> {
               if (card == null) {
                 return Container();
               }
-              return Card(
-                  child: Center(
-                      child: Text(_isopened ? card.answer : card.question)));
+              return Card(child: Center(child: Text(card.question)));
             },
             onSwipeCompleted: (i, direction) {
               switch (direction) {
@@ -128,6 +116,6 @@ class _PlayingCardsPageState extends State<PlayingCardsPage> {
               }
             },
           ),
-        ))));
+        )));
   }
 }
