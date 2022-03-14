@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swipable_stack/swipable_stack.dart';
+import 'swipable_stack/swipable_stack.dart';
 
 void main() {
   runApp(const MainApp());
