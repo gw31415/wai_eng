@@ -23,6 +23,7 @@ class SwipableStack extends StatefulWidget {
     this.onSwipeCompleted,
     this.onWillMoveNext,
     this.onSwipeCanceled,
+    this.swipeNextOnSwipeCanceled,
     this.overlayBuilder,
     this.horizontalSwipeThreshold = _defaultHorizontalSwipeThreshold,
     this.verticalSwipeThreshold = _defaultVerticalSwipeThreshold,
@@ -62,6 +63,9 @@ class SwipableStack extends StatefulWidget {
 
   /// Callback called when the Swipe action is canceled.
   final void Function()? onSwipeCanceled;
+
+  /// If not Null, the swipe action according to this args is automatically performed when the swipe action by the user is canceled.
+  final SwipeNextArgs? swipeNextOnSwipeCanceled;
 
   /// Builder for displaying an overlay on the most foreground card.
   final SwipableStackOverlayBuilder? overlayBuilder;
@@ -572,6 +576,17 @@ class _SwipableStackState extends State<SwipableStack>
       onCancelSwipe();
     }
 
+    final swipeArgs = widget.swipeNextOnSwipeCanceled;
+    if (null != swipeArgs) {
+      _next(
+        swipeDirection: swipeArgs.swipeDirection,
+        shouldCallCompletionCallback: swipeArgs.shouldCallCompletionCallback,
+        ignoreOnWillMoveNext: swipeArgs.ignoreOnWillMoveNext,
+        duration: swipeArgs.duration,
+      );
+      return;
+    }
+
     final cancelAnimation =
         _swipeCancelAnimationController.tweenCurvedAnimation(
       startPosition: currentSession.start,
@@ -853,4 +868,16 @@ class _SwipablePositioned extends StatelessWidget {
       ),
     );
   }
+}
+
+class SwipeNextArgs {
+  final SwipeDirection swipeDirection;
+  final bool shouldCallCompletionCallback;
+  final bool ignoreOnWillMoveNext;
+  final Duration? duration;
+  const SwipeNextArgs(
+      {required this.swipeDirection,
+      required this.shouldCallCompletionCallback,
+      required this.ignoreOnWillMoveNext,
+      this.duration});
 }
