@@ -22,6 +22,7 @@ class SwipableStack extends StatefulWidget {
     SwipableStackController? controller,
     this.onSwipeCompleted,
     this.onWillMoveNext,
+    this.onSwipeCanceled,
     this.overlayBuilder,
     this.horizontalSwipeThreshold = _defaultHorizontalSwipeThreshold,
     this.verticalSwipeThreshold = _defaultVerticalSwipeThreshold,
@@ -58,6 +59,9 @@ class SwipableStack extends StatefulWidget {
   ///
   /// If this Callback returns false, the action will be canceled.
   final OnWillMoveNext? onWillMoveNext;
+
+  /// Callback called when the Swipe action is canceled.
+  final void Function()? onSwipeCanceled;
 
   /// Builder for displaying an overlay on the most foreground card.
   final SwipableStackOverlayBuilder? overlayBuilder;
@@ -562,6 +566,12 @@ class _SwipableStackState extends State<SwipableStack>
     if (currentSession == null) {
       return;
     }
+
+    final onCancelSwipe = widget.onSwipeCanceled;
+    if (null != onCancelSwipe) {
+      onCancelSwipe();
+    }
+
     final cancelAnimation =
         _swipeCancelAnimationController.tweenCurvedAnimation(
       startPosition: currentSession.start,
