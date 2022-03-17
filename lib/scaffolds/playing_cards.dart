@@ -63,6 +63,7 @@ class _PlayingCardsScaffoldState extends State<PlayingCardsScaffold> {
           child: SwipableStack(
             itemCount: widget.flashcards.length(),
             swipeAnchor: SwipeAnchor.top,
+            swipeAssistDuration: const Duration(milliseconds: 100),
             detectableSwipeDirections: const {
               SwipeDirection.right,
               SwipeDirection.left,
