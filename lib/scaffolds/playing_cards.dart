@@ -62,6 +62,7 @@ class _PlayingCardsScaffoldState extends State<PlayingCardsScaffold> {
           padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 8),
           child: SwipableStack(
             itemCount: widget.flashcards.length(),
+            swipeAnchor: SwipeAnchor.top,
             detectableSwipeDirections: const {
               SwipeDirection.right,
               SwipeDirection.left,
