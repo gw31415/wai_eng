@@ -32,6 +32,10 @@ class FlashCardsMenuScaffold extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(context) {
-    return Scaffold(body: _FlashCardsListView(flashcards: flashcards));
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Menu'),
+        ),
+        body: _FlashCardsListView(flashcards: flashcards));
   }
 }
