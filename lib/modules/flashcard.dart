@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
+
 class FlashCard {
-  final String question;
-  final String answer;
+  final Widget question;
+  final Widget answer;
   const FlashCard({required this.question, required this.answer});
 }
 

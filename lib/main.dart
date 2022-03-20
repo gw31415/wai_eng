@@ -20,9 +20,9 @@ class MainApp extends StatelessWidget {
 }
 
 const _flashCardsDebug = FlashCards(title: "デバッグ", body: [
-  FlashCard(question: "問題1", answer: "答え1"),
-  FlashCard(question: "問題2", answer: "答え2"),
-  FlashCard(question: "問題3", answer: "答え3"),
-  FlashCard(question: "問題4", answer: "答え4"),
-  FlashCard(question: "問題5", answer: "答え5"),
+  FlashCard(question: Text("問題1"), answer: Text("答え1")),
+  FlashCard(question: Text("問題2"), answer: Text("答え2")),
+  FlashCard(question: Text("問題3"), answer: Text("答え3")),
+  FlashCard(question: Text("問題4"), answer: Text("答え4")),
+  FlashCard(question: Text("問題5"), answer: Text("答え5")),
 ]);

@@ -59,7 +59,7 @@ class _PlayingCardsScaffoldState extends State<PlayingCardsScaffold> {
               if (card == null) {
                 return Container();
               }
-              return Card(child: Center(child: Text(card.answer)));
+              return Card(child: Center(child: card.answer));
             },
             stackClipBehaviour: Clip.none,
             builder: (context, properties) {
@@ -67,7 +67,7 @@ class _PlayingCardsScaffoldState extends State<PlayingCardsScaffold> {
               if (card == null) {
                 return Container();
               }
-              return Card(child: Center(child: Text(card.question)));
+              return Card(child: Center(child: card.question));
             },
             onSwipeCompleted: (i, direction) {
               switch (direction) {
