@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../modules/flashcard.dart';
+import './playing_cards.dart';
 
 class _FlashCardsListView extends StatelessWidget {
   final List<FlashCards> flashcards;
@@ -10,8 +11,16 @@ class _FlashCardsListView extends StatelessWidget {
     return ListView.builder(
         itemCount: flashcards.length,
         itemBuilder: (context, index) {
+          final cards = flashcards[index];
           return ListTile(
-            title: Text(flashcards[index].title),
+            title: Text(cards.title),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return PlayingCardsScaffold(
+                  flashcards: cards,
+                );
+              }));
+            },
           );
         });
   }
