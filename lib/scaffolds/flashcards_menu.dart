@@ -33,9 +33,19 @@ class FlashCardsMenuScaffold extends StatelessWidget {
   @override
   Widget build(context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Menu'),
-        ),
-        body: _FlashCardsListView(flashcards: flashcards));
+      appBar: AppBar(
+        title: const Text('Menu'),
+      ),
+      body: _FlashCardsListView(flashcards: flashcards),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
+        child: Container(height: 50.0),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
   }
 }
