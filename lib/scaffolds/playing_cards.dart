@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import '../modules/swipable_stack/swipable_stack.dart';
 import '../modules/flashcard.dart';
 
-export '../modules/flashcard.dart';
-
 class PlayingCardsScaffold extends StatefulWidget {
   const PlayingCardsScaffold({Key? key, required this.flashcards})
       : super(key: key);

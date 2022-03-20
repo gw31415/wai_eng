@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'scaffolds/playing_cards.dart';
+import 'scaffolds/flashcards_menu.dart';
+import 'modules/flashcard.dart';
 
 void main() {
   runApp(const MainApp());
@@ -14,7 +15,7 @@ class MainApp extends StatelessWidget {
       title: '和医大 英単語',
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: const PlayingCardsScaffold(flashcards: _flashCardsDebug),
+      home: const FlashCardsMenuScaffold(flashcards: [_flashCardsDebug]),
     );
   }
 }
