@@ -20,10 +20,8 @@ class MainApp extends StatelessWidget {
   }
 }
 
-const _flashCardsDebug = FlashCards(title: "デバッグ", body: [
-  FlashCard(question: Text("問題1"), answer: Text("答え1")),
-  FlashCard(question: Text("問題2"), answer: Text("答え2")),
-  FlashCard(question: Text("問題3"), answer: Text("答え3")),
-  FlashCard(question: Text("問題4"), answer: Text("答え4")),
-  FlashCard(question: Text("問題5"), answer: Text("答え5")),
+const _flashCardsDebug = FlashCards(title: "使い方", body: [
+  FlashCard(question: Text("触れてください。"), answer: Text("Good job!\nこちらが裏面です。\n手を離すと次のカードに進みます。")),
+  FlashCard(question: Text("こちらは表面です。"), answer: Text("覚えたカードは左右にスワイプしましょう。")),
+  FlashCard(question: Text("覚えていないカードは再び出題されるようになっています。"), answer: Text("それでは頑張ってください！")),
 ]);
