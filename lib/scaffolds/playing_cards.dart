@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'swipable_stack/swipable_stack.dart';
+import '../modules/swipable_stack/swipable_stack.dart';
 
 class FlashCard {
   final String question;
