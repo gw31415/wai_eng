@@ -62,6 +62,7 @@ class _PlayingCardsScaffoldState extends State<PlayingCardsScaffold> {
                   swipeDirection: SwipeDirection.down,
                   shouldCallCompletionCallback: true,
                   ignoreOnWillMoveNext: false,
+                  duration: Duration(milliseconds: 100),
                 ),
                 overlayBuilder: (_, properties) {
                   final card = widget.flashcards.get(properties.index);
