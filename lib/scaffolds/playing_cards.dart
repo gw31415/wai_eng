@@ -78,16 +78,15 @@ class _PlayingCardsScaffoldState extends State<PlayingCardsScaffold> {
                 },
               )),
           Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                height: 100,
-                child: Center(
-                    child: IconButton(
-                  icon: const Icon(Icons.refresh),
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: IconButton(
+                  icon: const Icon(Icons.undo),
                   onPressed: _controller.canRewind ? _controller.rewind : null,
-				  tooltip: "Undo",
+                  tooltip: "Undo",
                 )),
-              ))
+          )
         ])));
   }
 }
