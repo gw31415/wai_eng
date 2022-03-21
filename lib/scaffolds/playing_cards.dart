@@ -38,6 +38,15 @@ class _PlayingCardsScaffoldState extends State<PlayingCardsScaffold> {
         ),
         body: SafeArea(
             child: Stack(children: [
+          Center(
+              child: IconButton(
+            iconSize: 50,
+            tooltip: "Play again",
+            icon: const Icon(Icons.replay),
+            onPressed: () {
+              _controller.currentIndex = 0;
+            },
+          )),
           Padding(
               padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 8),
               child: SwipableStack(
