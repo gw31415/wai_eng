@@ -4,6 +4,9 @@ class FlashCard {
   final Widget question;
   final Widget answer;
   const FlashCard({required this.question, required this.answer});
+  FlashCard.fromString({required String question, required String answer}) :
+    question = Padding(padding: const EdgeInsets.all(8), child: Text(question)),
+    answer = Padding(padding: const EdgeInsets.all(8), child: Text(answer));
 }
 
 class FlashCards {
