@@ -16,7 +16,7 @@ class _FlashCardsListView extends StatelessWidget {
             title: Text(cards.title),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return PlayingCardsScaffold(
+                return CardsPlayerScaffold(
                   flashcards: cards,
                 );
               }));
