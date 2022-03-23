@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../modules/flashcard.dart';
-import './playing_cards.dart';
+import './cards_player.dart';
 
 class _FlashCardsListView extends StatelessWidget {
   final List<FlashCards> flashcards;
