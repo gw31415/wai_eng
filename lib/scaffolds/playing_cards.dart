@@ -64,6 +64,10 @@ class _PlayingCardsScaffoldState extends State<PlayingCardsScaffold> {
                   ignoreOnWillMoveNext: false,
                   duration: Duration(milliseconds: 100),
                 ),
+                onWillMoveNext: (_, __) {
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  return true;
+                },
                 overlayBuilder: (_, properties) {
                   final card = widget.flashcards.get(properties.index);
                   if (card == null) {
@@ -82,15 +86,53 @@ class _PlayingCardsScaffoldState extends State<PlayingCardsScaffold> {
                 onSwipeCompleted: (i, direction) {
                   switch (direction) {
                     case SwipeDirection.down:
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          duration: const Duration(milliseconds: 500),
+                          backgroundColor: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          content: const SizedBox(
+                            height: 48,
+                            child: Center(
+                              child: Text(
+                                'SKIPPED',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          )));
                       break;
                     default:
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          duration: const Duration(milliseconds: 500),
+                          backgroundColor: Colors.green,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          content: const SizedBox(
+                            height: 48,
+                            child: Center(
+                              child: Text(
+                                'OK',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          )));
                   }
                 },
               )),
           Align(
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.topCenter,
             child: Padding(
-                padding: const EdgeInsets.only(bottom: 8),
+                padding: const EdgeInsets.only(top: 8),
                 child: IconButton(
                   icon: const Icon(Icons.undo),
                   onPressed: _controller.canRewind ? _controller.rewind : null,
