@@ -86,46 +86,10 @@ class _PlayingCardsScaffoldState extends State<PlayingCardsScaffold> {
                 onSwipeCompleted: (i, direction) {
                   switch (direction) {
                     case SwipeDirection.down:
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          duration: const Duration(milliseconds: 500),
-                          backgroundColor: Colors.grey,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          content: const SizedBox(
-                            height: 48,
-                            child: Center(
-                              child: Text(
-                                'SKIPPED',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          )));
+                      _showSnackBar(context, "SKIPPED", Colors.grey);
                       break;
                     default:
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          duration: const Duration(milliseconds: 500),
-                          backgroundColor: Colors.green,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          content: const SizedBox(
-                            height: 48,
-                            child: Center(
-                              child: Text(
-                                'OK',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          )));
+                      _showSnackBar(context, "OK", Colors.green);
                   }
                 },
               )),
@@ -142,3 +106,25 @@ class _PlayingCardsScaffoldState extends State<PlayingCardsScaffold> {
         ])));
   }
 }
+
+ScaffoldFeatureController<SnackBar, SnackBarClosedReason> _showSnackBar(
+        BuildContext context, String msg, Color color) =>
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: const Duration(milliseconds: 500),
+        backgroundColor: color,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        content: SizedBox(
+          height: 48,
+          child: Center(
+            child: Text(
+              msg,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        )));
