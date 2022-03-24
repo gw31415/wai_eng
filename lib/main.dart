@@ -20,10 +20,10 @@ class MainApp extends StatelessWidget {
   }
 }
 
-final _flashCardsDebug = FlashCards(title: "使い方", body: [
+final _flashCardsDebug = QueueBook(title: "使い方", body: [
   FlashCard.fromString(
       question: "触れてください。", answer: "Good job!\nこちらが裏面です。\n手を離すと次のカードに進みます。"),
   FlashCard.fromString(question: "こちらは表面です。", answer: "覚えたカードは左右にスワイプしましょう。"),
   FlashCard.fromString(
-      question: "覚えていないカードは再び出題されるようになっています。", answer: "それでは頑張ってください！"),
+      question: "覚えていないカードは再び出題されるようになっています。\n（チュートリアルは戻りません）", answer: "それでは頑張ってください！"),
 ]);

@@ -3,7 +3,7 @@ import '../modules/flashcard.dart';
 import './cards_player.dart';
 
 class _FlashCardsListView extends StatelessWidget {
-  final List<FlashCards> flashcards;
+  final List<FlashCardBook> flashcards;
   const _FlashCardsListView({Key? key, required this.flashcards})
       : super(key: key);
   @override
@@ -17,7 +17,7 @@ class _FlashCardsListView extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return CardsPlayerScaffold(
-                  flashcards: cards,
+                  book: cards,
                 );
               }));
             },
@@ -27,7 +27,7 @@ class _FlashCardsListView extends StatelessWidget {
 }
 
 class FlashCardsMenuScaffold extends StatelessWidget {
-  final List<FlashCards> flashcards;
+  final List<FlashCardBook> flashcards;
   const FlashCardsMenuScaffold({Key? key, required this.flashcards})
       : super(key: key);
   @override

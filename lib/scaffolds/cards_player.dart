@@ -3,9 +3,8 @@ import '../modules/swipable_stack/swipable_stack.dart';
 import '../modules/flashcard.dart';
 
 class CardsPlayerScaffold extends StatefulWidget {
-  const CardsPlayerScaffold({Key? key, required this.flashcards})
-      : super(key: key);
-  final FlashCards flashcards;
+  const CardsPlayerScaffold({Key? key, required this.book}) : super(key: key);
+  final FlashCardBook book;
   @override
   State<CardsPlayerScaffold> createState() => _CardsPlayerScaffoldState();
 }
@@ -34,7 +33,7 @@ class _CardsPlayerScaffoldState extends State<CardsPlayerScaffold> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.flashcards.title),
+          title: Text(widget.book.title),
         ),
         body: SafeArea(
             child: Stack(children: [
@@ -51,7 +50,6 @@ class _CardsPlayerScaffoldState extends State<CardsPlayerScaffold> {
               padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 8),
               child: SwipableStack(
                 controller: _controller,
-                itemCount: widget.flashcards.length(),
                 swipeAnchor: SwipeAnchor.top,
                 swipeAssistDuration: const Duration(milliseconds: 100),
                 detectableSwipeDirections: const {
@@ -69,7 +67,7 @@ class _CardsPlayerScaffoldState extends State<CardsPlayerScaffold> {
                   return true;
                 },
                 overlayBuilder: (_, properties) {
-                  final card = widget.flashcards.get(properties.index);
+                  final card = widget.book.get(properties.index);
                   if (card == null) {
                     return Container();
                   }
@@ -77,18 +75,20 @@ class _CardsPlayerScaffoldState extends State<CardsPlayerScaffold> {
                 },
                 stackClipBehaviour: Clip.none,
                 builder: (context, properties) {
-                  final card = widget.flashcards.get(properties.index);
+                  final card = widget.book.get(properties.index);
                   if (card == null) {
                     return Container();
                   }
                   return Card(child: Center(child: card.question));
                 },
-                onSwipeCompleted: (i, direction) {
+                onSwipeCompleted: (index, direction) {
                   switch (direction) {
                     case SwipeDirection.down:
+                      widget.book.onNext(index, FlashCardResult.skipped);
                       _showSnackBar(context, "SKIPPED", Colors.grey);
                       break;
                     default:
+                      widget.book.onNext(index, FlashCardResult.ok);
                       _showSnackBar(context, "OK", Colors.green);
                   }
                 },
@@ -99,7 +99,10 @@ class _CardsPlayerScaffoldState extends State<CardsPlayerScaffold> {
                 padding: const EdgeInsets.only(top: 8),
                 child: IconButton(
                   icon: const Icon(Icons.undo),
-                  onPressed: _controller.canRewind ? _controller.rewind : null,
+                  onPressed: _controller.canRewind ? () {
+				    widget.book.onUndo();
+				    _controller.rewind();
+				  }: null,
                   tooltip: "Undo",
                 )),
           )
