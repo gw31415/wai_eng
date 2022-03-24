@@ -19,6 +19,7 @@ abstract class FlashCardBook {
   const FlashCardBook();
   String get title;
   FlashCard? get(int index);
+  void init() {}
   void onNext(int index, FlashCardResult direction) {}
   void onUndo() {}
 }

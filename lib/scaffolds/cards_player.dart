@@ -18,6 +18,7 @@ class _CardsPlayerScaffoldState extends State<CardsPlayerScaffold> {
   @override
   void initState() {
     super.initState();
+	widget.book.init();
     _controller = SwipableStackController()..addListener(_listenController);
   }
 
