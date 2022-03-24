@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../modules/flashcard.dart';
-import './cards_player.dart';
+import './book_player.dart';
 
 class _FlashCardsListView extends StatelessWidget {
   final List<FlashCardBook> flashcards;
@@ -16,7 +16,7 @@ class _FlashCardsListView extends StatelessWidget {
             title: Text(cards.title),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return CardsPlayerScaffold(
+                return FlashCardBookPlayerScaffold(
                   book: cards,
                 );
               }));

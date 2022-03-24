@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import '../modules/swipable_stack/swipable_stack.dart';
 import '../modules/flashcard.dart';
 
-class CardsPlayerScaffold extends StatefulWidget {
-  const CardsPlayerScaffold({Key? key, required this.book}) : super(key: key);
+class FlashCardBookPlayerScaffold extends StatefulWidget {
+  const FlashCardBookPlayerScaffold({Key? key, required this.book}) : super(key: key);
   final FlashCardBook book;
   @override
-  State<CardsPlayerScaffold> createState() => _CardsPlayerScaffoldState();
+  State<FlashCardBookPlayerScaffold> createState() => _FlashCardBookPlayerScaffoldState();
 }
 
-class _CardsPlayerScaffoldState extends State<CardsPlayerScaffold> {
+class _FlashCardBookPlayerScaffoldState extends State<FlashCardBookPlayerScaffold> {
   late final SwipableStackController _controller;
   void _listenController() {
     setState(() {});
