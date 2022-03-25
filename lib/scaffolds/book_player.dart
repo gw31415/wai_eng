@@ -44,6 +44,7 @@ class _FlashCardBookPlayerScaffoldState extends State<FlashCardBookPlayerScaffol
             tooltip: "Play again",
             icon: const Icon(Icons.replay),
             onPressed: () {
+	      widget.book.init();
               _controller.currentIndex = 0;
             },
           )),

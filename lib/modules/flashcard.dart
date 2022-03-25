@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 class FlashCard {
   final Widget question;
@@ -20,7 +21,7 @@ abstract class FlashCardBook {
   String get title;
   FlashCard? get(int index);
   void init() {}
-  void onNext(int index, FlashCardResult direction) {}
+  void onNext(int index, FlashCardResult res) {}
   void onUndo() {}
 }
 
@@ -35,4 +36,41 @@ class QueueBook extends FlashCardBook {
   }
 
   const QueueBook({required this.title, required this.body});
+}
+
+class RandomBook extends FlashCardBook {
+  static List<int> _range(int i) {
+    List<int> res = [];
+    for (var j = 0; j < i; j++) {
+      res.add(j);
+    }
+    return res;
+  }
+
+  @override
+  final String title;
+  final List<FlashCard> body;
+  late List<int> _rest;
+  late List<int> _log;
+  var rand = math.Random();
+  @override
+  init() {
+    _rest = _range(body.length);
+    _log = [];
+  }
+  @override
+  get(int index) {
+    if (index < _log.length) return body[_log[index]];
+    if (_rest.isEmpty) return null;
+    _rest.shuffle();
+    _log.add(_rest.last);
+    return get(index);
+  }
+
+  @override
+  onNext(int index, FlashCardResult res) {
+    if (res == FlashCardResult.ok) _rest.remove(_log[index]);
+  }
+
+  RandomBook({required this.title, required this.body});
 }
