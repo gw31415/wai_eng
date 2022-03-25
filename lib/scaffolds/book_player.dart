@@ -62,7 +62,7 @@ class _FlashCardBookPlayerScaffoldState extends State<FlashCardBookPlayerScaffol
                   swipeDirection: SwipeDirection.down,
                   shouldCallCompletionCallback: true,
                   ignoreOnWillMoveNext: false,
-                  duration: Duration(milliseconds: 100),
+                  duration: Duration(milliseconds: 200),
                 ),
                 onWillMoveNext: (_, __) {
                   ScaffoldMessenger.of(context).clearSnackBars();
