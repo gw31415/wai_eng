@@ -58,11 +58,16 @@ class RandomBook extends FlashCardBook {
     _rest = _range(body.length);
     _log = [];
   }
+
   @override
   get(int index) {
     if (index < _log.length) return body[_log[index]];
     if (_rest.isEmpty) return null;
-    _rest.shuffle();
+    if (_rest.length != 1) {
+      do {
+        _rest.shuffle();
+      } while (_log.isNotEmpty && _log.last == _rest.last);
+    }
     _log.add(_rest.last);
     return get(index);
   }
