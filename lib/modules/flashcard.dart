@@ -75,29 +75,47 @@ class RandomBook extends FlashCardBookWithBody {
   final String title;
   late List<int> _rest;
   late List<int> _log;
+  late List<int> _buffer;
   var rand = math.Random();
   @override
   init() {
     _rest = _range(body.length);
+    _rest.shuffle();
     _log = [];
+    if (_rest.length > 10) {
+      _buffer = _rest.sublist(0, 10);
+      _rest.removeRange(0, 10);
+    } else {
+	  _buffer = _rest;
+	  _rest = [];
+	}
   }
 
   @override
   get(int index) {
     if (index < _log.length) return body[_log[index]];
-    if (_rest.isEmpty) return null;
-    if (_rest.length != 1) {
-      do {
-        _rest.shuffle();
-      } while (_log.isNotEmpty && _log.last == _rest.last);
-    }
-    _log.add(_rest.last);
+    if (_buffer.isEmpty) return null;
+    _log.add(_buffer.last);
+    _buffer.removeLast();
     return get(index);
   }
 
   @override
   onNext(int index, FlashCardResult res) {
-    if (res == FlashCardResult.ok) _rest.remove(_log[index]);
+    if (_buffer.length > 2) {
+      late final int addedIndex;
+      switch (res) {
+        case FlashCardResult.ok:
+          if (_rest.isEmpty) return;
+          addedIndex = _rest.last;
+          _rest.removeLast();
+          break;
+        case FlashCardResult.skipped:
+          addedIndex = _log[index];
+          break;
+      }
+      _buffer.insert(rand.nextInt(4), addedIndex);
+    }
   }
 
   RandomBook({required this.title, required body}) : super(body: body);
