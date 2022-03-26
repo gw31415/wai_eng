@@ -25,20 +25,44 @@ abstract class FlashCardBook {
   void onUndo() {}
 }
 
-class QueueBook extends FlashCardBook {
+abstract class FlashCardBookWithBody extends FlashCardBook {
+  static List<FlashCard> _convertToBody(String csv) {
+    return csv.split('\n').map((rowString) {
+      final row = rowString.split(',');
+      switch (row.length) {
+        case 0:
+          return FlashCard.fromString(question: "", answer: "");
+        case 1:
+          return FlashCard.fromString(question: row[0], answer: "");
+        default:
+          return FlashCard.fromString(question: row[0], answer: row[1]);
+      }
+    }).toList();
+  }
+
+  final List<FlashCard> body;
+  const FlashCardBookWithBody({required this.body}) : super();
+
+  FlashCardBookWithBody.fromCsv({required String csv})
+      : body = _convertToBody(csv),
+        super();
+}
+
+class QueueBook extends FlashCardBookWithBody {
   @override
   final String title;
-  final List<FlashCard> body;
   @override
   FlashCard? get(int index) {
     if (index < body.length) return body[index];
     return null;
   }
 
-  const QueueBook({required this.title, required this.body});
+  const QueueBook({required this.title, required body}) : super(body: body);
+  QueueBook.fromCsv({required this.title, required csv})
+      : super.fromCsv(csv: csv);
 }
 
-class RandomBook extends FlashCardBook {
+class RandomBook extends FlashCardBookWithBody {
   static List<int> _range(int i) {
     List<int> res = [];
     for (var j = 0; j < i; j++) {
@@ -49,7 +73,6 @@ class RandomBook extends FlashCardBook {
 
   @override
   final String title;
-  final List<FlashCard> body;
   late List<int> _rest;
   late List<int> _log;
   var rand = math.Random();
@@ -77,5 +100,7 @@ class RandomBook extends FlashCardBook {
     if (res == FlashCardResult.ok) _rest.remove(_log[index]);
   }
 
-  RandomBook({required this.title, required this.body});
+  RandomBook({required this.title, required body}) : super(body: body);
+  RandomBook.fromCsv({required this.title, required csv})
+      : super.fromCsv(csv: csv);
 }
