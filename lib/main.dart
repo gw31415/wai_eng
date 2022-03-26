@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'scaffolds/flashcards_menu.dart';
 import 'modules/flashcard.dart';
+import 'modules/books.dart';
 
 void main() {
   runApp(const MainApp());
@@ -15,7 +16,7 @@ class MainApp extends StatelessWidget {
       title: '和医大 英単語',
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: FlashCardsMenuScaffold(flashcards: [_howToUse, _debug]),
+      home: FlashCardsMenuScaffold(flashcards: [_howToUse, _debug, histologyPreBook]),
     );
   }
 }
