@@ -19,14 +19,18 @@ enum FlashCardResult {
 abstract class FlashCardBook {
   const FlashCardBook();
   String get title;
+  Future<FlashCardBookOperator> init();
+}
+
+abstract class FlashCardBookOperator {
   FlashCard? get(int index);
-  void init() {}
   void onNext(int index, FlashCardResult res) {}
   void onUndo() {}
 }
 
-abstract class FlashCardBookWithBody extends FlashCardBook {
-  static List<FlashCard> _convertToBody(String csv) {
+class QueueBook extends FlashCardBook {
+  static Future<List<FlashCard>> _convertToBody(Future<String> futureCsv) async {
+    final csv = await futureCsv;
     return csv.split('\n').map((rowString) {
       final row = rowString.split(',');
       switch (row.length) {
@@ -40,29 +44,43 @@ abstract class FlashCardBookWithBody extends FlashCardBook {
     }).toList();
   }
 
-  final List<FlashCard> body;
-  const FlashCardBookWithBody({required this.body}) : super();
-
-  FlashCardBookWithBody.fromCsv({required String csv})
-      : body = _convertToBody(csv),
-        super();
-}
-
-class QueueBook extends FlashCardBookWithBody {
   @override
   final String title;
+  final Future<List<FlashCard>> body;
+
+  @override
+  init() async {
+    return Future.value(QueueBookOperator(body: await body));
+  }
+
+  QueueBook({required this.title, required List<FlashCard> body})
+      : body = Future.value(body);
+  QueueBook.fromCsv({required this.title, required Future<String> csv})
+      : body = _convertToBody(csv);
+}
+
+class QueueBookOperator extends FlashCardBookOperator {
+  final List<FlashCard> body;
+  QueueBookOperator({required this.body});
   @override
   FlashCard? get(int index) {
     if (index < body.length) return body[index];
     return null;
   }
-
-  const QueueBook({required this.title, required body}) : super(body: body);
-  QueueBook.fromCsv({required this.title, required csv})
-      : super.fromCsv(csv: csv);
 }
 
-class RandomBook extends FlashCardBookWithBody {
+class RandomBook extends QueueBook {
+  @override
+  init() async {
+    return Future.value(RandomBookOperator(body: await body));
+  }
+
+  RandomBook({required title, required body}) : super(title: title, body: body);
+  RandomBook.fromCsv({required title, required Future<String> csv})
+      : super.fromCsv(title: title, csv: csv);
+}
+
+class RandomBookOperator extends FlashCardBookOperator {
   static List<int> _range(int i) {
     List<int> res = [];
     for (var j = 0; j < i; j++) {
@@ -71,14 +89,8 @@ class RandomBook extends FlashCardBookWithBody {
     return res;
   }
 
-  @override
-  final String title;
-  late List<int> _rest;
-  late List<int> _log;
-  late List<int> _buffer;
-  var rand = math.Random();
-  @override
-  init() {
+  final List<FlashCard> body;
+  RandomBookOperator({required this.body}) {
     _rest = _range(body.length);
     _rest.shuffle();
     _log = [];
@@ -86,10 +98,15 @@ class RandomBook extends FlashCardBookWithBody {
       _buffer = _rest.sublist(0, 10);
       _rest.removeRange(0, 10);
     } else {
-	  _buffer = _rest;
-	  _rest = [];
-	}
+      _buffer = _rest;
+      _rest = [];
+    }
   }
+
+  late List<int> _rest;
+  late List<int> _log;
+  late List<int> _buffer;
+  var rand = math.Random();
 
   @override
   get(int index) {
@@ -117,8 +134,4 @@ class RandomBook extends FlashCardBookWithBody {
       _buffer.insert(rand.nextInt(4), addedIndex);
     }
   }
-
-  RandomBook({required this.title, required body}) : super(body: body);
-  RandomBook.fromCsv({required this.title, required csv})
-      : super.fromCsv(csv: csv);
 }
