@@ -25,7 +25,12 @@ class BookTableScaffold extends StatelessWidget {
                 ),
               ),
               DataColumn(
-                label: Text('答え'),
+                label: Text(
+                  '答え',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
             rows: cards.map((card) {
