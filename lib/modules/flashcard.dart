@@ -87,6 +87,7 @@ class RandomBook extends QueueBook {
 }
 
 class RandomBookOperator extends FlashCardBookOperator {
+  static const _bufferSize = 10;
   static List<int> _range(int i) {
     List<int> res = [];
     for (var j = 0; j < i; j++) {
@@ -100,9 +101,9 @@ class RandomBookOperator extends FlashCardBookOperator {
     _rest = _range(body.length);
     _rest.shuffle();
     _log = [];
-    if (_rest.length > 10) {
-      _buffer = _rest.sublist(0, 10);
-      _rest.removeRange(0, 10);
+    if (_rest.length > _bufferSize) {
+      _buffer = _rest.sublist(0, _bufferSize);
+      _rest.removeRange(0, _bufferSize);
     } else {
       _buffer = _rest;
       _rest = [];
@@ -125,7 +126,7 @@ class RandomBookOperator extends FlashCardBookOperator {
 
   @override
   onNext(int index, FlashCardResult res) {
-    if (_buffer.length > 2) {
+    if (_buffer.length >= 3) {
       late final int addedIndex;
       switch (res) {
         case FlashCardResult.ok:
@@ -142,5 +143,11 @@ class RandomBookOperator extends FlashCardBookOperator {
   }
 
   @override
-  onUndo() {}
+  onUndo() {
+    if (_log.isNotEmpty) _log.removeLast();
+    while (_buffer.length > _bufferSize - 3) {
+      _rest.add(_buffer.first);
+      _buffer.remove(0);
+    }
+  }
 }
