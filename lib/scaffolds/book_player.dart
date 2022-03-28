@@ -45,6 +45,11 @@ class _FlashCardBookPlayerScaffoldState
               future: _bookop,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text("Unknown error occurred."),
+                    );
+                  }
                   return const Center(
                     child: Text("Loading..."),
                   );
