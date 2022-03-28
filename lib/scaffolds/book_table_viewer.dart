@@ -3,8 +3,8 @@ import '../modules/flashcard.dart';
 
 class BookTableScaffold extends StatelessWidget {
   final UsersBook book;
-  const BookTableScaffold({Key? key, required this.book})
-      : super(key: key);
+  const BookTableScaffold({Key? key, required this.book}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,43 +12,41 @@ class BookTableScaffold extends StatelessWidget {
           title: Text(book.title),
         ),
         body: SafeArea(
-            child: FutureBuilder(
-                future: book.body,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    if (snapshot.hasError) {
-                      return const Center(
-                        child: Text("Unknown error occurred."),
-                      );
-                    }
-                    return const Center(
-                      child: Text("Loading..."),
-                    );
-                  }
-                  final cards = snapshot.data as List<FlashCard>;
-                  return DataTable(
-                    columns: const [
-                      DataColumn(
-                        label: Text(
-                          '問題',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text('答え'),
-                      ),
-                    ],
-                    rows: cards.map((card) {
-                      return DataRow(
-                        cells: [
-                          DataCell(card.questionAlt),
-                          DataCell(card.answerAlt)
-                        ],
-                      );
-                    }).toList(),
-                  );
-                })));
+            child: FutureBuilder(future: Future.microtask(() async {
+          final cards = await book.body;
+          return DataTable(
+            columns: const [
+              DataColumn(
+                label: Text(
+                  '問題',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Text('答え'),
+              ),
+            ],
+            rows: cards.map((card) {
+              return DataRow(
+                cells: [DataCell(card.questionAlt), DataCell(card.answerAlt)],
+              );
+            }).toList(),
+          );
+        }), builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text("Unknown error occurred."),
+              );
+            }
+            return const Center(
+              child: Text("Loading..."),
+            );
+          }
+          final dataTable = snapshot.data as DataTable;
+          return SingleChildScrollView(child: Center(child: dataTable));
+        })));
   }
 }
