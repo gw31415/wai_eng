@@ -4,18 +4,36 @@ import 'dart:math' as math;
 abstract class FlashCard {
   Widget get question;
   Widget get answer;
+  Text get questionAlt {
+    return const Text("(表示できません)");
+  }
+
+  Text get answerAlt {
+    return const Text("(表示できません)");
+  }
+
   const FlashCard();
 }
 
 class StringCard extends FlashCard {
   @override
-  Widget question;
+  Widget get question {
+    return Padding(padding: const EdgeInsets.all(8), child: questionAlt);
+  }
+
   @override
-  Widget answer;
+  Widget get answer {
+    return Padding(padding: const EdgeInsets.all(8), child: answerAlt);
+  }
+
+  @override
+  Text questionAlt;
+  @override
+  Text answerAlt;
+
   StringCard({required String question, required String answer})
-      : question =
-            Padding(padding: const EdgeInsets.all(8), child: Text(question)),
-        answer = Padding(padding: const EdgeInsets.all(8), child: Text(answer)),
+      : questionAlt = Text(question),
+        answerAlt = Text(answer),
         super();
 }
 
