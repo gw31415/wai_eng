@@ -61,7 +61,7 @@ class _FlashCardsListView extends StatelessWidget {
                           children: dialogItems,
                         );
                       });
-				  if (nextTask != null) nextTask();
+                  if (nextTask != null) nextTask();
                 });
               },
             ),
@@ -81,6 +81,7 @@ class FlashCardsMenuScaffold extends StatelessWidget {
         title: const Text('Menu'),
       ),
       body: _FlashCardsListView(flashcards: flashcards),
+      /*
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: const Icon(Icons.add),
@@ -90,6 +91,7 @@ class FlashCardsMenuScaffold extends StatelessWidget {
         child: Container(height: 50.0),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+	  */
     );
   }
 }
