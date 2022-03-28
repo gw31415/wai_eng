@@ -41,7 +41,7 @@ class _FlashCardsListView extends StatelessWidget {
             dialogItems.add(
               SimpleDialogOption(
                 onPressed: () => Navigator.pop(context, _openBookTable),
-                child: const Text('内容の閲覧'),
+                child: const Text('一覧'),
               ),
             );
           }
