@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../modules/flashcard.dart';
 
-class FlashCardBookPlayerScaffold extends StatelessWidget {
+class BookTableScaffold extends StatelessWidget {
   final FlashCardBookWithBody book;
-  const FlashCardBookPlayerScaffold({Key? key, required this.book})
+  const BookTableScaffold({Key? key, required this.book})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
