@@ -61,7 +61,7 @@ class _FlashCardsListView extends StatelessWidget {
                           children: dialogItems,
                         );
                       });
-                  nextTask!();
+				  if (nextTask != null) nextTask();
                 });
               },
             ),
