@@ -27,7 +27,7 @@ class MainApp extends StatelessWidget {
   }
 }
 
-final _howToUse = QueueBook(title: "使い方", body: [
+final _howToUse = TutorialBook(title: "使い方", body: [
   StringCard(
       question: "触れてください。", answer: "Good job!\nこちらが裏面です。\n手を離すと次のカードに進みます。"),
   StringCard(question: "こちらは表面です。", answer: "覚えたカードは左右にスワイプしましょう。"),

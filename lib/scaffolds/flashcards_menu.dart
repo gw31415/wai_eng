@@ -29,7 +29,7 @@ class _FlashCardsListView extends StatelessWidget {
               child: const Text('開く'),
             ),
           );
-          if (cards is FlashCardBookWithBody) {
+          if (cards is UsersBook) {
             _openBookTable() {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return BookTableScaffold(

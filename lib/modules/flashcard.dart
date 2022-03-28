@@ -58,7 +58,7 @@ abstract class FlashCardBookOperator {
   void onUndo();
 }
 
-abstract class FlashCardBookWithBody extends FlashCardBook {
+abstract class UsersBook extends FlashCardBook {
   static Future<List<FlashCard>> _convertToBody(
       Future<String> futureCsv) async {
     final csv = await futureCsv;
@@ -80,22 +80,24 @@ abstract class FlashCardBookWithBody extends FlashCardBook {
   @override
   final Future<List<FlashCard>> body;
 
-  FlashCardBookWithBody({required this.title, required List<FlashCard> body})
+  UsersBook({required this.title, required List<FlashCard> body})
       : body = Future.value(body);
-  FlashCardBookWithBody.fromCsv(
-      {required this.title, required Future<String> csv})
+  UsersBook.fromCsv({required this.title, required Future<String> csv})
       : body = _convertToBody(csv);
 }
 
-class QueueBook extends FlashCardBookWithBody {
+class TutorialBook extends FlashCardBook {
+  @override
+  final String title;
+  final List<FlashCard> _body;
   @override
   init() async {
-    return Future.value(QueueBookOperator(body: await body));
+    return Future.value(QueueBookOperator(body: _body));
   }
 
-  QueueBook({required title, required body}) : super(title: title, body: body);
-  QueueBook.fromCsv({required title, required Future<String> csv})
-      : super.fromCsv(title: title, csv: csv);
+  TutorialBook({required this.title, required body})
+      : _body = body,
+        super();
 }
 
 class QueueBookOperator extends FlashCardBookOperator {
@@ -113,7 +115,7 @@ class QueueBookOperator extends FlashCardBookOperator {
   onUndo() {}
 }
 
-class RandomBook extends FlashCardBookWithBody {
+class RandomBook extends UsersBook {
   @override
   init() async {
     return Future.value(RandomBookOperator(body: await body));
