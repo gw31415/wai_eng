@@ -29,7 +29,8 @@ abstract class FlashCardBookOperator {
 }
 
 class QueueBook extends FlashCardBook {
-  static Future<List<FlashCard>> _convertToBody(Future<String> futureCsv) async {
+  static Future<List<FlashCard>> _convertToBody(
+      Future<String> futureCsv) async {
     final csv = await futureCsv;
     return csv.split('\n').map((rowString) {
       final row = rowString.split(',');
@@ -67,8 +68,9 @@ class QueueBookOperator extends FlashCardBookOperator {
     if (index < body.length) return body[index];
     return null;
   }
+
   @override
-  onNext(index, res){}
+  onNext(index, res) {}
   @override
   onUndo() {}
 }
