@@ -78,7 +78,7 @@ class FlashCardsMenuScaffold extends StatelessWidget {
   Widget build(context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Menu'),
+        title: const Text('和医大'),
       ),
       body: _FlashCardsListView(flashcards: flashcards),
       /*
