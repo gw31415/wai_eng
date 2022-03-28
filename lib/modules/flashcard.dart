@@ -24,8 +24,8 @@ abstract class FlashCardBook {
 
 abstract class FlashCardBookOperator {
   FlashCard? get(int index);
-  void onNext(int index, FlashCardResult res) {}
-  void onUndo() {}
+  void onNext(int index, FlashCardResult res);
+  void onUndo();
 }
 
 class QueueBook extends FlashCardBook {
@@ -67,6 +67,10 @@ class QueueBookOperator extends FlashCardBookOperator {
     if (index < body.length) return body[index];
     return null;
   }
+  @override
+  onNext(index, res){}
+  @override
+  onUndo() {}
 }
 
 class RandomBook extends QueueBook {
@@ -134,4 +138,7 @@ class RandomBookOperator extends FlashCardBookOperator {
       _buffer.insert(rand.nextInt(4), addedIndex);
     }
   }
+
+  @override
+  onUndo() {}
 }
