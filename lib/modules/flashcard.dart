@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-class FlashCard {
-  final Widget question;
-  final Widget answer;
-  const FlashCard({required this.question, required this.answer});
-  FlashCard.fromString({required String question, required String answer})
+abstract class FlashCard {
+  Widget get question;
+  Widget get answer;
+  const FlashCard();
+}
+
+class StringCard extends FlashCard {
+  @override
+  Widget question;
+  @override
+  Widget answer;
+  StringCard({required String question, required String answer})
       : question =
             Padding(padding: const EdgeInsets.all(8), child: Text(question)),
-        answer = Padding(padding: const EdgeInsets.all(8), child: Text(answer));
+        answer = Padding(padding: const EdgeInsets.all(8), child: Text(answer)),
+        super();
 }
 
 enum FlashCardResult {
@@ -40,11 +48,11 @@ abstract class FlashCardBookWithBody extends FlashCardBook {
       final row = rowString.split(',');
       switch (row.length) {
         case 0:
-          return FlashCard.fromString(question: "", answer: "");
+          return StringCard(question: "", answer: "");
         case 1:
-          return FlashCard.fromString(question: row[0], answer: "");
+          return StringCard(question: row[0], answer: "");
         default:
-          return FlashCard.fromString(question: row[0], answer: row[1]);
+          return StringCard(question: row[0], answer: row[1]);
       }
     }).toList();
   }

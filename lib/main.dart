@@ -28,10 +28,10 @@ class MainApp extends StatelessWidget {
 }
 
 final _howToUse = QueueBook(title: "使い方", body: [
-  FlashCard.fromString(
+  StringCard(
       question: "触れてください。", answer: "Good job!\nこちらが裏面です。\n手を離すと次のカードに進みます。"),
-  FlashCard.fromString(question: "こちらは表面です。", answer: "覚えたカードは左右にスワイプしましょう。"),
-  FlashCard.fromString(
+  StringCard(question: "こちらは表面です。", answer: "覚えたカードは左右にスワイプしましょう。"),
+  StringCard(
       question: "覚えていないカードは再び出題されるようになっています。\n（チュートリアルは戻りません）",
       answer: "それでは頑張ってください！"),
 ]);
