@@ -18,7 +18,6 @@ class MainApp extends StatelessWidget {
       darkTheme: ThemeData.dark(),
       home: FlashCardsMenuScaffold(flashcards: [
         _howToUse,
-        _debug,
         RandomBook.fromCsv(
           title: "組織学プレ-英単語",
           csv: rootBundle.loadString('lib/assets/csv/組織学プレ-英単語.csv'),
@@ -35,11 +34,4 @@ final _howToUse = QueueBook(title: "使い方", body: [
   FlashCard.fromString(
       question: "覚えていないカードは再び出題されるようになっています。\n（チュートリアルは戻りません）",
       answer: "それでは頑張ってください！"),
-]);
-final _debug = RandomBook(title: "デバッグ", body: [
-  FlashCard.fromString(question: "問題1", answer: "答え1"),
-  FlashCard.fromString(question: "問題2", answer: "答え2"),
-  FlashCard.fromString(question: "問題3", answer: "答え3"),
-  FlashCard.fromString(question: "問題4", answer: "答え4"),
-  FlashCard.fromString(question: "問題5", answer: "答え5"),
 ]);
