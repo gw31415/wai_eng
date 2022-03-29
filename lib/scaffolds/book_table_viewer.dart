@@ -51,7 +51,7 @@ class BookTableScaffold extends StatelessWidget {
             );
           }
           final dataTable = snapshot.data as DataTable;
-          return SingleChildScrollView(child: Center(child: dataTable));
+          return SingleChildScrollView(child: Center(child: FittedBox(child: dataTable)));
         })));
   }
 }
