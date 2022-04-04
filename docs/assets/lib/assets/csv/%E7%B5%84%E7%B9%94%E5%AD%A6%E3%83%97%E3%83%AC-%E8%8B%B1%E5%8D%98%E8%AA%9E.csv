@@ -65,8 +65,10 @@ HE染色,Hematoxylin-Eosin staining
 マクロファージ,macrophage
 肥満細胞,mast cell
 脂肪組織,adipose tissue
-白色脂肪組織,white adipocyte
-褐色脂肪組織,brown adipocyte
+白色脂肪組織,white adipose tissue
+褐色脂肪組織,brown adipose tissue
+白色脂肪細胞,white adipocyte
+褐色脂肪細胞,brown adipocyte
 硝子軟骨,hyaline cartilage
 弾性軟骨,elastic cartilage
 線維軟骨,fibrocartilage
@@ -107,7 +109,7 @@ HE染色,Hematoxylin-Eosin staining
 好酸性後骨髄球,eosinophilic metamyelocyte
 桿状核好中球,neutrophilic band cell
 巨核芽球,megakaryoblast
-巨核球,megabaryocyte
+巨核球,megakaryocyte
 血液塗抹標本,blood smear
 ギムザ染色,giemsa staining
 横紋筋,striated muscle
@@ -154,7 +156,7 @@ HE染色,Hematoxylin-Eosin staining
 被覆型終末,encapsulated ending
 硬膜,dura mater
 くも膜,arachnoid layer
-軟骨,pia mater
+軟膜,pia mater
 多列繊毛上皮,ciliated pseudostratified epithelium
 ホルモン,hormone
 基底板,basal lamina
