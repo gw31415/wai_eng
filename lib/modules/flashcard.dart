@@ -62,17 +62,25 @@ abstract class UsersBook extends FlashCardBook {
   static Future<List<FlashCard>> _convertToBody(
       Future<String> futureCsv) async {
     final csv = await futureCsv;
-    return csv.split('\n').map((rowString) {
+    List<StringCard> cards = [];
+    for (var rowString in csv.split('\n')) {
       final row = rowString.split(',');
       switch (row.length) {
         case 0:
-          return StringCard(question: "", answer: "");
+          break;
         case 1:
-          return StringCard(question: row[0], answer: "");
+          if (row[0] != "") {
+            cards.add(StringCard(question: row[0], answer: ""));
+          }
+          break;
         default:
-          return StringCard(question: row[0], answer: row[1]);
+          if (row[0] != "" && row[1] != "") {
+            cards.add(StringCard(question: row[0], answer: row[1]));
+          }
+          break;
       }
-    }).toList();
+    }
+    return cards;
   }
 
   @override
