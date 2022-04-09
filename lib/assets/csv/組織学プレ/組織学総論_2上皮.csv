@@ -1,6 +1,5 @@
 上皮,epithelium
 細胞接着装置,cell junctions
-極性,polarity
 自由表面/頂上領域,free surface/apical domain
 外側領域,lateral domain
 基底領域,basal domain
@@ -8,7 +7,7 @@
 細胞層,cell layer
 単層,simple
 重層,stratified
-表面の細胞の形,polarity
+極性(表面の細胞の形),polarity
 扁平,squamous
 立方,cuboidal
 円柱,columnar
