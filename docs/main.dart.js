@@ -15946,12 +15946,11 @@ case 3:j=c
 i=A.b([],t.nF)
 for(p=j.split("\n"),o=p.length,n=0;n<o;++n){m=J.abv(p[n],",")
 switch(m.length){case 0:break
-case 1:i.push(new A.l8(A.h9(m[0],null),A.h9("",null)))
+case 1:if(!J.f(m[0],""))i.push(new A.l8(A.h9(m[0],null),A.h9("",null)))
 break
-default:l=m[0]
+default:if(!J.f(m[0],"")&&!J.f(m[1],"")){l=m[0]
 k=m[1]
-i.push(new A.l8(A.h9(l,null),A.h9(k,null)))
-break}}q=i
+i.push(new A.l8(A.h9(l,null),A.h9(k,null)))}break}}q=i
 s=1
 break
 case 1:return A.af(q,r)}})
