@@ -178,7 +178,11 @@ class RandomBookOperator extends FlashCardBookOperator {
   late List<_Record> _log;
   late List<int> _buffer;
   int get _okCount {
-    return _log.where((r) => (r.res == FlashCardResult.ok)).length;
+    return _log
+        .where((r) => (r.res == FlashCardResult.ok))
+        .map((e) => e.index)
+        .toSet()
+        .length;
   }
 
   var rand = math.Random();
