@@ -56,6 +56,9 @@ abstract class FlashCardBookOperator {
   FlashCard? get(int index);
   void onNext(int index, FlashCardResult res);
   void onUndo();
+  Row? get statusRow {
+    return null;
+  }
 }
 
 abstract class UsersBook extends FlashCardBook {
@@ -134,6 +137,12 @@ class RandomBook extends UsersBook {
       : super.fromCsv(title: title, csv: csv);
 }
 
+class _Record {
+  final int index;
+  FlashCardResult? res;
+  _Record({required this.index, this.res});
+}
+
 class RandomBookOperator extends FlashCardBookOperator {
   static const _bufferSize = 10;
   static List<int> _range(int i) {
@@ -159,21 +168,32 @@ class RandomBookOperator extends FlashCardBookOperator {
   }
 
   late List<int> _rest;
-  late List<int> _log;
+  late List<_Record> _log;
   late List<int> _buffer;
+  int get _okCount {
+    return _log.where((r) => (r.res == FlashCardResult.ok)).length;
+  }
+
   var rand = math.Random();
 
   @override
   get(int index) {
-    if (index < _log.length) return body[_log[index]];
+    if (index < _log.length) return body[_log[index].index];
     if (_buffer.isEmpty) return null;
-    _log.add(_buffer.last);
+    _log.add(_Record(index: _buffer.last));
     _buffer.removeLast();
     return get(index);
   }
 
   @override
   onNext(int index, FlashCardResult res) {
+    if (res == FlashCardResult.ok) {
+      final changingRecord = _log[index];
+      _log[index] = _Record(
+        index: changingRecord.index,
+        res: FlashCardResult.ok,
+      );
+    }
     if (_buffer.length >= 3) {
       late final int addedIndex;
       switch (res) {
@@ -183,7 +203,7 @@ class RandomBookOperator extends FlashCardBookOperator {
           _rest.removeLast();
           break;
         case FlashCardResult.skipped:
-          addedIndex = _log[index];
+          addedIndex = _log[index].index;
           break;
       }
       _buffer.insert(rand.nextInt(4), addedIndex);
@@ -197,5 +217,13 @@ class RandomBookOperator extends FlashCardBookOperator {
       _rest.add(_buffer.first);
       _buffer.remove(0);
     }
+  }
+
+  @override
+  get statusRow {
+    if (_okCount >= body.length) {
+      return Row(children: const [Text("Completed.")]);
+    }
+    return Row(children: [Text(" $_okCount / ${body.length}")]);
   }
 }
