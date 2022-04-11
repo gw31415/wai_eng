@@ -59,6 +59,10 @@ abstract class FlashCardBookOperator {
   Row? get statusRow {
     return null;
   }
+
+  bool get isForceFinished {
+    return false;
+  }
 }
 
 abstract class UsersBook extends FlashCardBook {
@@ -124,6 +128,9 @@ class QueueBookOperator extends FlashCardBookOperator {
   onNext(index, res) {}
   @override
   onUndo() {}
+
+  @override
+  final isForceFinished = false;
 }
 
 class RandomBook extends UsersBook {
@@ -179,21 +186,31 @@ class RandomBookOperator extends FlashCardBookOperator {
   @override
   get(int index) {
     if (index < _log.length) return body[_log[index].index];
-    if (_buffer.isEmpty) return null;
-    _log.add(_Record(index: _buffer.last));
-    _buffer.removeLast();
+    if (_buffer.isNotEmpty) {
+      _log.add(_Record(index: _buffer.last));
+      _buffer.removeLast();
+    } else {
+      _log.add(_Record(index: _log[rand.nextInt(_log.length)].index));
+    }
     return get(index);
+  }
+
+  @override
+  get isForceFinished {
+    return _okCount >= body.length;
   }
 
   @override
   onNext(int index, FlashCardResult res) {
     if (res == FlashCardResult.ok) {
+      // 既に記録されたレコードの修正
       final changingRecord = _log[index];
       _log[index] = _Record(
         index: changingRecord.index,
         res: FlashCardResult.ok,
       );
     }
+
     if (_buffer.length >= 3) {
       late final int addedIndex;
       switch (res) {
