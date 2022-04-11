@@ -61,6 +61,15 @@ class _FlashCardBookPlayerScaffoldState
                   );
                 }
                 final bookop = snapshot.data as FlashCardBookOperator;
+                final replayButton = Center(
+                    child: IconButton(
+                  iconSize: 50,
+                  tooltip: "Play again",
+                  icon: const Icon(Icons.replay),
+                  onPressed: () {
+                    _initCards();
+                  },
+                ));
                 return Stack(
                   children: [
                     Align(
@@ -73,16 +82,9 @@ class _FlashCardBookPlayerScaffoldState
                     AnimatedSwitcher(
                       duration: const Duration(milliseconds: 100),
                       child: bookop.isForceFinished
-                          ? Center(
-                              child: IconButton(
-                              iconSize: 50,
-                              tooltip: "Play again",
-                              icon: const Icon(Icons.replay),
-                              onPressed: () {
-                                _initCards();
-                              },
-                            ))
+                          ? replayButton
                           : Stack(children: [
+                              replayButton,
                               Padding(
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 100, horizontal: 8),

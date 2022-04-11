@@ -53228,17 +53228,18 @@ s.d=r
 s.e=s.a.c.iZ()},
 $S:0}
 A.Y8.prototype={
-$2(a,b){var s,r,q,p,o,n,m=null,l="_controller",k=b.b
-if(k==null){if(b.c!=null)return B.kr
-return B.kq}t.gX.a(k)
-s=k.gxv()
-r=this.a
-if(k.gvL())k=A.iN(A.qB(m,B.wY,50,new A.Y2(r),"Play again"),m,m)
-else{q=A.a(r.d,l)
-p=$.aa4()
-o=q.a
-n=A.a(r.d,l)
-k=A.lb(B.b_,A.b([new A.cn(B.wy,new A.uf(new A.Y3(k),q,new A.Y4(k,a),new A.Y5(a),B.uA,new A.Y6(k),B.Cp,B.a2,B.y,B.rZ,p,B.uf,o),m),new A.dt(B.k0,m,m,new A.cn(B.wt,A.qB(m,B.x_,m,n.d!=null&&n.b>0?new A.Y7(r,k):m,"Undo"),m),m)],t.E),B.a5,B.bn)}return A.lb(B.b_,A.b([new A.dt(B.k_,m,m,new A.cn(B.aF,s,m),m),new A.pb(k,B.a2,m)],t.E),B.a5,B.bn)},
+$2(a,b){var s,r,q,p,o,n,m,l=null,k="_controller",j=b.b
+if(j==null){if(b.c!=null)return B.kr
+return B.kq}t.gX.a(j)
+s=this.a
+r=A.iN(A.qB(l,B.wY,50,new A.Y2(s),"Play again"),l,l)
+q=j.gxv()
+if(j.gvL())j=r
+else{p=A.a(s.d,k)
+o=$.aa4()
+n=p.a
+m=A.a(s.d,k)
+j=A.lb(B.b_,A.b([r,new A.cn(B.wy,new A.uf(new A.Y3(j),p,new A.Y4(j,a),new A.Y5(a),B.uA,new A.Y6(j),B.Cp,B.a2,B.y,B.rZ,o,B.uf,n),l),new A.dt(B.k0,l,l,new A.cn(B.wt,A.qB(l,B.x_,l,m.d!=null&&m.b>0?new A.Y7(s,j):l,"Undo"),l),l)],t.E),B.a5,B.bn)}return A.lb(B.b_,A.b([new A.dt(B.k_,l,l,new A.cn(B.aF,q,l),l),new A.pb(j,B.a2,l)],t.E),B.a5,B.bn)},
 $S:325}
 A.Y2.prototype={
 $0(){this.a.Ab()},
