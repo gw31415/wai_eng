@@ -242,9 +242,11 @@ class RandomBookOperator extends FlashCardBookOperator {
 
   @override
   get statusRow {
-    if (_okCount >= body.length) {
-      return Row(children: const [Text("Completed.")]);
+    if (_okCount < body.length) {
+      return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text(" $_okCount / ${body.length}")]);
     }
-    return Row(children: [Text(" $_okCount / ${body.length}")]);
+    return null;
   }
 }
