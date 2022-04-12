@@ -151,7 +151,9 @@ class _Record {
 }
 
 class RandomBookOperator extends FlashCardBookOperator {
-  static const _bufferSize = 10;
+  static const _bufferMaximumSize = 10;
+  static const _bufferMinimumSize = 4; // 4以上
+  static const _flowRange = 4; // _bufferMinimumSize以下
   static List<int> _range(int i) {
     List<int> res = [];
     for (var j = 0; j < i; j++) {
@@ -165,9 +167,9 @@ class RandomBookOperator extends FlashCardBookOperator {
     _rest = _range(body.length);
     _rest.shuffle();
     _log = [];
-    if (_rest.length > _bufferSize) {
-      _buffer = _rest.sublist(0, _bufferSize);
-      _rest.removeRange(0, _bufferSize);
+    if (_rest.length > _bufferMaximumSize) {
+      _buffer = _rest.sublist(0, _bufferMaximumSize);
+      _rest.removeRange(0, _bufferMaximumSize);
     } else {
       _buffer = _rest;
       _rest = [];
@@ -190,12 +192,8 @@ class RandomBookOperator extends FlashCardBookOperator {
   @override
   get(int index) {
     if (index < _log.length) return body[_log[index].index];
-    if (_buffer.isNotEmpty) {
-      _log.add(_Record(index: _buffer.last));
-      _buffer.removeLast();
-    } else {
-      _log.add(_Record(index: _log[rand.nextInt(_log.length)].index));
-    }
+    _log.add(_Record(index: _buffer.last));
+    _buffer.removeLast();
     return get(index);
   }
 
@@ -215,26 +213,32 @@ class RandomBookOperator extends FlashCardBookOperator {
       );
     }
 
-    if (_buffer.length >= 3) {
-      late final int addedIndex;
-      switch (res) {
-        case FlashCardResult.ok:
+    // getして減った_bufferリストを補填する
+    late final int addedIndex;
+    switch (res) {
+      case FlashCardResult.skipped:
+        // skipped -> _log[index].index
+        addedIndex = _log[index].index;
+        break;
+      case FlashCardResult.ok:
+        if (_buffer.length >= _bufferMinimumSize) {
+          // ok -> _rest.last?
           if (_rest.isEmpty) return;
           addedIndex = _rest.last;
           _rest.removeLast();
-          break;
-        case FlashCardResult.skipped:
-          addedIndex = _log[index].index;
-          break;
-      }
-      _buffer.insert(rand.nextInt(4), addedIndex);
+        } else {
+          // ok -> _log[rand.nextInt(_log.length)].index
+          addedIndex = _log[rand.nextInt(_log.length)].index;
+        }
+        break;
     }
+    _buffer.insert(rand.nextInt(_flowRange), addedIndex);
   }
 
   @override
   onUndo() {
     if (_log.isNotEmpty) _log.removeLast();
-    while (_buffer.length > _bufferSize - 3) {
+    while (_buffer.length > _bufferMaximumSize - 3) {
       _rest.add(_buffer.first);
       _buffer.remove(0);
     }
