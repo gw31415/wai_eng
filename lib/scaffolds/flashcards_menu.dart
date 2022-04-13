@@ -79,6 +79,35 @@ class FlashCardsMenuScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('和医大'),
+        actions: [
+          PopupMenuButton<Function()>(
+            onSelected: (Function func) {
+              func();
+            },
+            itemBuilder: (BuildContext c) {
+              return [
+                PopupMenuItem(
+                  child: const Text("このアプリについて"),
+                  value: () {
+                    showAboutDialog(
+                      context: context,
+                      applicationIcon: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(
+                          'lib/assets/icon.png',
+			  width: 80,
+			  height: 80,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      applicationLegalese: '©2022 gw31415', // 権利情報
+                    );
+                  },
+                )
+              ];
+            },
+          )
+        ],
       ),
       body: _FlashCardsListView(flashcards: flashcards),
       /*

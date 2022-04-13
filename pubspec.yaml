@@ -75,6 +75,7 @@ flutter:
       - lib/assets/csv/組織学プレ/組織学総論_7骨髄.csv
       - lib/assets/csv/組織学プレ/組織学総論_8筋肉.csv
       - lib/assets/csv/組織学プレ/組織学総論_9神経組織.csv
+      - lib/assets/icon.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
