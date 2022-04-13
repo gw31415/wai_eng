@@ -15,17 +15,21 @@ class _FlashCardBookPlayerScaffoldState
     extends State<FlashCardBookPlayerScaffold> {
   late SwipableStackController _controller;
   late Future<FlashCardBookOperator> _opFuture;
+  late bool nextCardAvailable;
   void _listenController() {
     setState(() {});
   }
 
+  // Cardの初期化処理: initStateやリプレイボタンを押下したら発火
   void _initCards() {
     setState(() {
       _controller = SwipableStackController()..addListener(_listenController);
       _opFuture = widget.book.init();
+      nextCardAvailable = true;
     });
   }
 
+  // Stateの初期化
   @override
   void initState() {
     super.initState();
@@ -48,6 +52,7 @@ class _FlashCardBookPlayerScaffoldState
         ),
         body: SafeArea(
           child: FutureBuilder(
+              // カードを読みこむ
               future: _opFuture,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
@@ -61,18 +66,10 @@ class _FlashCardBookPlayerScaffoldState
                   );
                 }
                 final bookop = snapshot.data as FlashCardBookOperator;
-                final replayButton = Center(
-                    child: IconButton(
-                  iconSize: 50,
-                  tooltip: "Play again",
-                  icon: const Icon(Icons.replay),
-                  onPressed: () {
-                    _initCards();
-                  },
-                ));
                 return Stack(
                   children: [
                     Align(
+                      // StatusRow
                       alignment: Alignment.bottomCenter,
                       child: Padding(
                         padding: const EdgeInsets.all(8),
@@ -80,84 +77,103 @@ class _FlashCardBookPlayerScaffoldState
                       ),
                     ),
                     AnimatedSwitcher(
+                      // リプレイボタンとの切りかえ
                       duration: const Duration(milliseconds: 100),
-                      child: bookop.isForceFinished
-                          ? replayButton
-                          : Stack(children: [
-                              replayButton,
-                              Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 100, horizontal: 8),
-                                  child: SwipableStack(
-                                    controller: _controller,
-                                    swipeAnchor: SwipeAnchor.top,
-                                    swipeAssistDuration:
-                                        const Duration(milliseconds: 100),
-                                    detectableSwipeDirections: const {
-                                      SwipeDirection.right,
-                                      SwipeDirection.left,
-                                    },
-                                    swipeNextOnSwipeCanceled:
-                                        const SwipeNextArgs(
-                                      swipeDirection: SwipeDirection.down,
-                                      shouldCallCompletionCallback: true,
-                                      ignoreOnWillMoveNext: false,
-                                      duration: Duration(milliseconds: 200),
-                                    ),
-                                    onWillMoveNext: (_, __) {
-                                      ScaffoldMessenger.of(context)
-                                          .clearSnackBars();
-                                      return true;
-                                    },
-                                    overlayBuilder: (_, properties) {
-                                      final card = bookop.get(properties.index);
-                                      if (card == null) {
-                                        return Container();
-                                      }
-                                      return Card(
-                                          child: Center(child: card.answer));
-                                    },
-                                    stackClipBehaviour: Clip.none,
-                                    builder: (context, properties) {
-                                      final card = bookop.get(properties.index);
-                                      if (card == null) {
-                                        return Container();
-                                      }
-                                      return Card(
-                                          child: Center(child: card.question));
-                                    },
-                                    onSwipeCompleted: (index, direction) {
-                                      switch (direction) {
-                                        case SwipeDirection.down:
-                                          bookop.onNext(
-                                              index, FlashCardResult.skipped);
-                                          _showSnackBar(
-                                              context, "SKIPPED", Colors.grey);
-                                          break;
-                                        default:
-                                          bookop.onNext(
-                                              index, FlashCardResult.ok);
-                                          _showSnackBar(
-                                              context, "OK", Colors.green);
-                                      }
-                                    },
-                                  )),
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: Padding(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    child: IconButton(
-                                      icon: const Icon(Icons.undo),
-                                      onPressed: _controller.canRewind
-                                          ? () {
-                                              bookop.onUndo();
-                                              _controller.rewind();
-                                            }
-                                          : null,
-                                      tooltip: "Undo",
-                                    )),
-                              ),
-                            ]),
+                      child: bookop.isForceFinished || !nextCardAvailable
+                          ? Center(
+                              // リプレイボタン
+                              child: IconButton(
+                              iconSize: 50,
+                              tooltip: "Replay",
+                              icon: const Icon(Icons.replay),
+                              onPressed: () {
+                                _initCards();
+                              },
+                            ))
+                          : Stack(
+                              // FlashCard & アンドゥボタン表示部
+                              children: [
+                                  Padding(
+                                      // FlashCard
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 100, horizontal: 8),
+                                      child: SwipableStack(
+                                        controller: _controller,
+                                        swipeAnchor: SwipeAnchor.top,
+                                        swipeAssistDuration:
+                                            const Duration(milliseconds: 100),
+                                        detectableSwipeDirections: const {
+                                          SwipeDirection.right,
+                                          SwipeDirection.left,
+                                        },
+                                        swipeNextOnSwipeCanceled:
+                                            const SwipeNextArgs(
+                                          swipeDirection: SwipeDirection.down,
+                                          shouldCallCompletionCallback: true,
+                                          ignoreOnWillMoveNext: false,
+                                          duration: Duration(milliseconds: 200),
+                                        ),
+                                        onWillMoveNext: (_, __) {
+                                          ScaffoldMessenger.of(context)
+                                              .clearSnackBars();
+                                          return true;
+                                        },
+                                        overlayBuilder: (_, properties) {
+                                          final card =
+                                              bookop.get(properties.index);
+                                          if (card == null) {
+                                            return Container();
+                                          }
+                                          return Card(
+                                              child:
+                                                  Center(child: card.answer));
+                                        },
+                                        stackClipBehaviour: Clip.none,
+                                        builder: (context, properties) {
+                                          final card =
+                                              bookop.get(properties.index);
+                                          if (card == null) {
+                                            return Container();
+                                          }
+                                          return Card(
+                                              child:
+                                                  Center(child: card.question));
+                                        },
+                                        onSwipeCompleted: (index, direction) {
+                                          switch (direction) {
+                                            case SwipeDirection.down:
+                                              bookop.onNext(index,
+                                                  FlashCardResult.skipped);
+                                              _showSnackBar(context, "SKIPPED",
+                                                  Colors.grey);
+                                              break;
+                                            default:
+                                              bookop.onNext(
+                                                  index, FlashCardResult.ok);
+                                              _showSnackBar(
+                                                  context, "OK", Colors.green);
+                                          }
+                                          nextCardAvailable =
+                                              bookop.get(index + 1) != null;
+                                        },
+                                      )),
+                                  Align(
+                                    // アンドゥボタン
+                                    alignment: Alignment.topCenter,
+                                    child: Padding(
+                                        padding: const EdgeInsets.only(top: 8),
+                                        child: IconButton(
+                                          icon: const Icon(Icons.undo),
+                                          onPressed: _controller.canRewind
+                                              ? () {
+                                                  bookop.onUndo();
+                                                  _controller.rewind();
+                                                }
+                                              : null,
+                                          tooltip: "Undo",
+                                        )),
+                                  ),
+                                ]),
                     ),
                   ],
                 );
