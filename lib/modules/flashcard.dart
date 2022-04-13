@@ -188,11 +188,17 @@ class RandomBookOperator extends FlashCardBookOperator {
   late List<_Record> _log;
   late List<int> _buffer;
   int get _okCount {
-    return _log
-        .where((r) => (r.res == FlashCardResult.ok))
-        .map((e) => e.index)
-        .toSet()
-        .length;
+    int okcount = 0;
+    for (var cardId = 0; cardId < body.length; cardId++) {
+      for (var logI = _log.length - 1; logI >= 0; logI--) {
+        final record = _log[logI];
+        if (record.index == cardId && record.res != null) {
+          if (record.res == FlashCardResult.ok) okcount++;
+          break;
+        }
+      }
+    }
+    return okcount;
   }
 
   var rand = math.Random();
@@ -212,12 +218,12 @@ class RandomBookOperator extends FlashCardBookOperator {
 
   @override
   onNext(int index, FlashCardResult res) {
-    if (res == FlashCardResult.ok) {
-      // 既に記録されたレコードの修正
-      final changingRecord = _log[index];
+    // 既に記録されたレコードの修正
+    final changingRecord = _log[index];
+    if (changingRecord.res == null) {
       _log[index] = _Record(
         index: changingRecord.index,
-        res: FlashCardResult.ok,
+        res: res,
       );
     }
 
