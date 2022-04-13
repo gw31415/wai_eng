@@ -71,10 +71,7 @@ class _FlashCardBookPlayerScaffoldState
                     Align(
                       // StatusRow
                       alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: bookop.statusRow,
-                      ),
+                      child: bookop.statusBar,
                     ),
                     AnimatedSwitcher(
                       // リプレイボタンとの切りかえ

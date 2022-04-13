@@ -45,10 +45,14 @@ enum FlashCardResult {
 abstract class FlashCardBook {
   const FlashCardBook();
   String get title;
+
+  /// nullを返した場合、最表面カードがnullの番になったタイミングでカード操作が終了されリプレイボタンが表示される。
   Future<List<FlashCard>>? get body {
     return null;
   }
 
+  /// FlashCardBookPlayerの初期化時やリプレイ時に発火する。
+  /// FlashCardBookOperatorのインスタンスを新規に作成しFlashCardBookPlayerに返す。
   Future<FlashCardBookOperator> init();
 }
 
@@ -56,10 +60,14 @@ abstract class FlashCardBookOperator {
   FlashCard? get(int index);
   void onNext(int index, FlashCardResult res);
   void onUndo();
-  Row? get statusRow {
+
+  /// 下部に表示されるFlashCardBook実行中ステータス
+  Widget? get statusBar {
     return null;
   }
 
+  /// FlashCard? get(int index)が空を返さなかった場合でも中断したい場合にtrueを返すように実装する。
+  /// onNextで発火
   bool get isForceFinished {
     return false;
   }
@@ -245,11 +253,13 @@ class RandomBookOperator extends FlashCardBookOperator {
   }
 
   @override
-  get statusRow {
+  get statusBar {
     if (_okCount < body.length) {
-      return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text(" $_okCount / ${body.length}")]);
+      return Padding(
+          padding: const EdgeInsets.all(8),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [Text(" $_okCount / ${body.length}")]));
     }
     return null;
   }
