@@ -240,7 +240,11 @@ class RandomBookOperator extends FlashCardBookOperator {
         }
         break;
     }
-    _buffer.insert(rand.nextInt(_flowRange), addedIndex);
+
+    // _bufferへの挿入箇所
+    // _bufferの前方(後に取りだされる方)に入りやすいよう重みをつけている
+    final position = rand.nextInt(_flowRange ^ 2) ~/ _flowRange;
+    _buffer.insert(position, addedIndex);
   }
 
   @override
