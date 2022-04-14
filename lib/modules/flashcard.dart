@@ -184,9 +184,17 @@ class RandomBookOperator extends FlashCardBookOperator {
     }
   }
 
+  /// 一度も出題されていないカードのIdリスト
   late List<int> _rest;
+
+  /// 呼びだされたカードと結果を順番に記録。
+  /// カードがUIによって呼ばれると一旦結果をnullにして登録しておき、後でスワイプされた時に結果を登録しなおす
   late List<_Record> _log;
+
+  /// カードを呼びだす前にプールしておくところ。
+  /// スキップされたカードは再び_bufferの後ろのほうに無作為に戻される。
   late List<int> _buffer;
+
   int get _okCount {
     int okcount = 0;
     for (var cardId = 0; cardId < body.length; cardId++) {
@@ -247,16 +255,32 @@ class RandomBookOperator extends FlashCardBookOperator {
         break;
     }
 
-    // _bufferへの挿入箇所
-    // _bufferの前方(後に取りだされる方)に入りやすいよう重みをつけている
+    // _bufferへの挿入箇所。
+    // _bufferの前方(後に取りだされる方)に入りやすいよう重みをつけている。
     final position = rand.nextInt(_flowRange ^ 2) ~/ _flowRange;
     _buffer.insert(position, addedIndex);
   }
 
   @override
   onUndo() {
-    if (_log.isNotEmpty) _log.removeLast();
-    while (_buffer.length > _bufferMaximumSize - 3) {
+    // _log: 一枚追加され待機状態になっている & 結果が一枚余計に登録されている。
+
+    // 待機状態に入ったレコードを削除。
+    if (_log.isNotEmpty && _log.last.res == null) _log.removeLast();
+
+    // 最後に結果を登録したレコードを待機状態に戻す
+    for (var logI = _log.length - 1; logI >= 0; logI--) {
+      final record = _log[logI];
+      if (record.res != null) {
+        // 結果が出た最後のレコードを修正
+        _log[logI] = _Record(index: record.index, res: null);
+        break;
+      }
+    }
+
+    // _buffer: Undoの後一枚余計に追加してしまうので、このままだと枚数が多くなってしまうので補正する。
+    // onUndoする前最後にどこに追加したか分からないので、影響の少ないとみなせる最初の要素を_restの最後尾に移動。
+    if (_buffer.isNotEmpty) {
       _rest.add(_buffer.first);
       _buffer.remove(0);
     }
