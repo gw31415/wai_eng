@@ -93,9 +93,15 @@ class MainApp extends StatelessWidget {
 
 final _howToUse = TutorialBook(title: "使い方", body: [
   StringCard(
-      question: "触れてください。", answer: "Good job!\nこちらが裏面です。\n手を離すと次のカードに進みます。"),
-  StringCard(question: "こちらは表面です。", answer: "覚えたカードは左右にスワイプしましょう。"),
+    question: "触れてください。",
+    answer: "Good job!\nこちらが裏面です。\n手を離すと次のカードに進みます。",
+  ),
   StringCard(
-      question: "覚えていないカードは再び出題されるようになっています。\n（チュートリアルは戻りません）",
-      answer: "それでは頑張ってください！"),
+    question: "こちらは表面です。",
+    answer: "覚えたカードは左右にスワイプしましょう。\n覚えられなかったカードは指を離してスキップしましょう。",
+  ),
+  StringCard(
+    question: "覚えていないカードは記録されます。",
+    answer: "それでは頑張ってください！",
+  ),
 ]);
