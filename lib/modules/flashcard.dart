@@ -46,7 +46,7 @@ abstract class FlashCardBook {
   const FlashCardBook();
   String get title;
 
-  /// nullを返した場合、最表面カードがnullの番になったタイミングでカード操作が終了されリプレイボタンが表示される。
+  /// null以外を返したときのみ一覧表示に対応
   Future<List<FlashCard>>? get body {
     return null;
   }
@@ -57,7 +57,9 @@ abstract class FlashCardBook {
 }
 
 abstract class FlashCardBookOperator {
+  /// nullを返した場合、最表面カードがnullの番になったタイミングでカード操作が終了されリプレイボタンが表示される。
   FlashCard? get(int index);
+
   void onNext(int index, FlashCardResult res);
   void onUndo();
 
