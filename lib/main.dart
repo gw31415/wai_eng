@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'scaffolds/flashcards_menu.dart';
 import 'modules/flashcard.dart';
+import 'modules/convert.dart' as convert;
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 
@@ -46,56 +47,24 @@ class MainApp extends StatelessWidget {
       darkTheme: ThemeData.dark(),
       home: FlashCardsMenuScaffold(flashcards: [
         _howToUse,
-        RandomBook.fromCsv(
-          title: "組織学プレ 重要単語",
-          csvGetter: () =>
-              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学プレ_重要単語.csv'),
-        ),
-        RandomBook.fromCsv(
-          title: "組織学総論 1:方法",
-          csvGetter: () =>
-              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_1方法.csv'),
-        ),
-        RandomBook.fromCsv(
-          title: "組織学総論 2:上皮",
-          csvGetter: () =>
-              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_2上皮.csv'),
-        ),
-        RandomBook.fromCsv(
-          title: "組織学総論 3:結合組織",
-          csvGetter: () =>
-              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_3結合組織.csv'),
-        ),
-        RandomBook.fromCsv(
-          title: "組織学総論 4:軟骨",
-          csvGetter: () =>
-              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_4軟骨.csv'),
-        ),
-        RandomBook.fromCsv(
-          title: "組織学総論 5:骨",
-          csvGetter: () =>
-              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_5骨.csv'),
-        ),
-        RandomBook.fromCsv(
-          title: "組織学総論 6:血液",
-          csvGetter: () =>
-              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_6血液.csv'),
-        ),
-        RandomBook.fromCsv(
-          title: "組織学総論 7:骨髄",
-          csvGetter: () =>
-              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_7骨髄.csv'),
-        ),
-        RandomBook.fromCsv(
-          title: "組織学総論 8:筋肉",
-          csvGetter: () =>
-              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_8筋肉.csv'),
-        ),
-        RandomBook.fromCsv(
-          title: "組織学総論 9:神経組織",
-          csvGetter: () =>
-              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_9神経組織.csv'),
-        ),
+        ... const [
+          "組織学プレ_重要単語",
+          "組織学総論_1方法",
+          "組織学総論_2上皮",
+          "組織学総論_3結合組織",
+          "組織学総論_4軟骨",
+          "組織学総論_5骨",
+          "組織学総論_6血液",
+          "組織学総論_7骨髄",
+          "組織学総論_8筋肉",
+          "組織学総論_9神経組織",
+        ].map((name) => RandomBook(
+            title: name,
+            body: () async {
+              final csv =
+                  await rootBundle.loadString('lib/assets/csv/組織学プレ/$name.csv');
+              return convert.cardFromCsv(csv);
+            })),
       ]),
     );
   }

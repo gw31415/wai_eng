@@ -76,29 +76,6 @@ abstract class FlashCardBookOperator {
 }
 
 abstract class UsersBook extends FlashCardBook {
-  static Future<List<FlashCard>> _convertToBody(
-      Future<String> futureCsv) async {
-    final csv = await futureCsv;
-    List<StringCard> cards = [];
-    for (var rowString in csv.split('\n')) {
-      final row = rowString.split(',');
-      switch (row.length) {
-        case 0:
-          break;
-        case 1:
-          if (row[0] != "") {
-            cards.add(StringCard(question: row[0], answer: ""));
-          }
-          break;
-        default:
-          if (row[0] != "" && row[1] != "") {
-            cards.add(StringCard(question: row[0], answer: row[1]));
-          }
-          break;
-      }
-    }
-    return cards;
-  }
 
   @override
   final String title;
@@ -109,11 +86,8 @@ abstract class UsersBook extends FlashCardBook {
 
   final Future<List<FlashCard>> Function() _body;
 
-  UsersBook({required this.title, required List<FlashCard> body})
-      : _body = (() => Future.value(body));
-  UsersBook.fromCsv(
-      {required this.title, required Future<String> Function() csvGetter})
-      : _body = (() => _convertToBody(csvGetter()));
+  UsersBook({required this.title, required Future<List<FlashCard>> Function() body})
+      : _body = (() => Future.value(body()));
 }
 
 class TutorialBook extends FlashCardBook {
@@ -155,8 +129,6 @@ class RandomBook extends UsersBook {
   }
 
   RandomBook({required title, required body}) : super(title: title, body: body);
-  RandomBook.fromCsv({required title, required Future<String> Function() csvGetter})
-      : super.fromCsv(title: title, csvGetter: csvGetter);
 }
 
 class _Record {
