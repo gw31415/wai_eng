@@ -46,7 +46,7 @@ abstract class FlashCardBook {
   const FlashCardBook();
   String get title;
 
-  /// null以外を返したときのみ一覧表示に対応
+  /// 一覧表示するためのゲッター。一覧表示に対応しない場合はnullを返す
   Future<List<FlashCard>>? get body {
     return null;
   }
@@ -103,12 +103,17 @@ abstract class UsersBook extends FlashCardBook {
   @override
   final String title;
   @override
-  final Future<List<FlashCard>> body;
+  Future<List<FlashCard>> get body {
+    return _body();
+  }
+
+  final Future<List<FlashCard>> Function() _body;
 
   UsersBook({required this.title, required List<FlashCard> body})
-      : body = Future.value(body);
-  UsersBook.fromCsv({required this.title, required Future<String> csv})
-      : body = _convertToBody(csv);
+      : _body = (() => Future.value(body));
+  UsersBook.fromCsv(
+      {required this.title, required Future<String> Function() csvGetter})
+      : _body = (() => _convertToBody(csvGetter()));
 }
 
 class TutorialBook extends FlashCardBook {
@@ -150,8 +155,8 @@ class RandomBook extends UsersBook {
   }
 
   RandomBook({required title, required body}) : super(title: title, body: body);
-  RandomBook.fromCsv({required title, required Future<String> csv})
-      : super.fromCsv(title: title, csv: csv);
+  RandomBook.fromCsv({required title, required Future<String> Function() csvGetter})
+      : super.fromCsv(title: title, csvGetter: csvGetter);
 }
 
 class _Record {
