@@ -48,43 +48,53 @@ class MainApp extends StatelessWidget {
         _howToUse,
         RandomBook.fromCsv(
           title: "組織学プレ 重要単語",
-          csv: rootBundle.loadString('lib/assets/csv/組織学プレ/組織学プレ_重要単語.csv'),
+          csvGetter: () =>
+              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学プレ_重要単語.csv'),
         ),
         RandomBook.fromCsv(
           title: "組織学総論 1:方法",
-          csv: rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_1方法.csv'),
+          csvGetter: () =>
+              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_1方法.csv'),
         ),
         RandomBook.fromCsv(
           title: "組織学総論 2:上皮",
-          csv: rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_2上皮.csv'),
+          csvGetter: () =>
+              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_2上皮.csv'),
         ),
         RandomBook.fromCsv(
           title: "組織学総論 3:結合組織",
-          csv: rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_3結合組織.csv'),
+          csvGetter: () =>
+              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_3結合組織.csv'),
         ),
         RandomBook.fromCsv(
           title: "組織学総論 4:軟骨",
-          csv: rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_4軟骨.csv'),
+          csvGetter: () =>
+              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_4軟骨.csv'),
         ),
         RandomBook.fromCsv(
           title: "組織学総論 5:骨",
-          csv: rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_5骨.csv'),
+          csvGetter: () =>
+              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_5骨.csv'),
         ),
         RandomBook.fromCsv(
           title: "組織学総論 6:血液",
-          csv: rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_6血液.csv'),
+          csvGetter: () =>
+              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_6血液.csv'),
         ),
         RandomBook.fromCsv(
           title: "組織学総論 7:骨髄",
-          csv: rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_7骨髄.csv'),
+          csvGetter: () =>
+              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_7骨髄.csv'),
         ),
         RandomBook.fromCsv(
           title: "組織学総論 8:筋肉",
-          csv: rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_8筋肉.csv'),
+          csvGetter: () =>
+              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_8筋肉.csv'),
         ),
         RandomBook.fromCsv(
           title: "組織学総論 9:神経組織",
-          csv: rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_9神経組織.csv'),
+          csvGetter: () =>
+              rootBundle.loadString('lib/assets/csv/組織学プレ/組織学総論_9神経組織.csv'),
         ),
       ]),
     );
