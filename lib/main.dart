@@ -71,6 +71,7 @@ class MainApp extends StatelessWidget {
   }
 }
 
+// チュートリアルのカードを記述
 final _howToUse = TutorialBook(title: "使い方", body: [
   StringCard(
     question: "触れてください。",
@@ -85,3 +86,35 @@ final _howToUse = TutorialBook(title: "使い方", body: [
     answer: "それでは頑張ってください！",
   ),
 ]);
+
+class TutorialBook extends FlashCardBook {
+  @override
+  final String title;
+  final List<FlashCard> _body;
+  @override
+  init() async {
+    return Future.value(TutorialOperator(body: _body));
+  }
+
+  TutorialBook({required this.title, required body})
+      : _body = body,
+        super();
+}
+
+class TutorialOperator extends FlashCardBookOperator {
+  final List<FlashCard> body;
+  TutorialOperator({required this.body});
+  @override
+  FlashCard? get(int index) {
+    if (index < body.length) return body[index];
+    return null;
+  }
+
+  @override
+  onNext(index, res) {}
+  @override
+  onUndo() {}
+
+  @override
+  final isForceFinished = false;
+}

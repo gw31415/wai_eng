@@ -55,38 +55,6 @@ abstract class UsersBook extends FlashCardBook {
       : _body = (() => Future.value(body()));
 }
 
-class TutorialBook extends FlashCardBook {
-  @override
-  final String title;
-  final List<FlashCard> _body;
-  @override
-  init() async {
-    return Future.value(QueueBookOperator(body: _body));
-  }
-
-  TutorialBook({required this.title, required body})
-      : _body = body,
-        super();
-}
-
-class QueueBookOperator extends FlashCardBookOperator {
-  final List<FlashCard> body;
-  QueueBookOperator({required this.body});
-  @override
-  FlashCard? get(int index) {
-    if (index < body.length) return body[index];
-    return null;
-  }
-
-  @override
-  onNext(index, res) {}
-  @override
-  onUndo() {}
-
-  @override
-  final isForceFinished = false;
-}
-
 class RandomBook extends UsersBook {
   @override
   init() async {
