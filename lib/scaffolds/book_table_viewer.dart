@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../modules/flashcard.dart';
+import '../modules/flashcardbook.dart';
 
 class BookTableScaffold extends StatelessWidget {
   final UsersBook book;

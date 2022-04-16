@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'scaffolds/flashcards_menu.dart';
 import 'modules/flashcard.dart';
+import 'modules/flashcardbook.dart';
 import 'modules/convert.dart' as convert;
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
@@ -47,7 +48,7 @@ class MainApp extends StatelessWidget {
       darkTheme: ThemeData.dark(),
       home: FlashCardsMenuScaffold(flashcards: [
         _howToUse,
-        ... const [
+        ...const [
           "組織学プレ_重要単語",
           "組織学総論_1方法",
           "組織学総論_2上皮",

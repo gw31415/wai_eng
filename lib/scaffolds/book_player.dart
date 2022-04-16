@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../modules/swipable_stack/swipable_stack.dart';
-import '../modules/flashcard.dart';
+import '../modules/flashcardbook.dart';
 
 class FlashCardBookPlayerScaffold extends StatefulWidget {
   const FlashCardBookPlayerScaffold({Key? key, required this.book})

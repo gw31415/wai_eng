@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../modules/flashcard.dart';
+import '../modules/flashcardbook.dart';
 import './book_player.dart';
 import './book_table_viewer.dart';
 
