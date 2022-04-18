@@ -49,21 +49,25 @@ class MainApp extends StatelessWidget {
       home: FlashCardsMenuScaffold(flashcards: [
         _howToUse,
         ...const [
-          "組織学プレ_重要単語",
-          "組織学総論_1方法",
-          "組織学総論_2上皮",
-          "組織学総論_3結合組織",
-          "組織学総論_4軟骨",
-          "組織学総論_5骨",
-          "組織学総論_6血液",
-          "組織学総論_7骨髄",
-          "組織学総論_8筋肉",
-          "組織学総論_9神経組織",
+          "骨筋_下肢英単語_1足",
+          "骨筋_下肢英単語_2内転筋群",
+          "骨筋_下肢英単語_3大腿神経支配",
+          "骨筋_下肢英単語_4坐骨神経支配",
+          "組織学プレ/組織学プレ_重要単語",
+          "組織学プレ/組織学総論_1方法",
+          "組織学プレ/組織学総論_2上皮",
+          "組織学プレ/組織学総論_3結合組織",
+          "組織学プレ/組織学総論_4軟骨",
+          "組織学プレ/組織学総論_5骨",
+          "組織学プレ/組織学総論_6血液",
+          "組織学プレ/組織学総論_7骨髄",
+          "組織学プレ/組織学総論_8筋肉",
+          "組織学プレ/組織学総論_9神経組織",
         ].map((name) => RandomBook(
             title: name,
             body: () async {
               final csv =
-                  await rootBundle.loadString('lib/assets/csv/組織学プレ/$name.csv');
+                  await rootBundle.loadString('lib/assets/csv/$name.csv');
               return convert.cardFromCsv(csv);
             })),
       ]),
