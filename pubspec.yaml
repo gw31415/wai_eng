@@ -79,6 +79,8 @@ flutter:
       - lib/assets/csv/骨筋_下肢英単語_2内転筋群.csv
       - lib/assets/csv/骨筋_下肢英単語_3大腿神経支配.csv
       - lib/assets/csv/骨筋_下肢英単語_4坐骨神経支配.csv
+      - lib/assets/csv/骨筋_頭部_脳神経通路.csv
+      - lib/assets/csv/骨筋_頭部_分離骨英語と個数.csv
       - lib/assets/icon.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
