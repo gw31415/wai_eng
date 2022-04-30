@@ -3,8 +3,8 @@ import 'scaffolds/flashcards_menu.dart';
 import 'modules/flashcard.dart';
 import 'modules/flashcardbook.dart';
 import 'modules/convert.dart' as convert;
-import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   LicenseRegistry.addLicense(() {
@@ -69,7 +69,8 @@ class MainApp extends StatelessWidget {
             title: name,
             body: () async {
               final csv =
-                  await rootBundle.loadString('lib/assets/csv/$name.csv');
+                  await _getRepoAssetsFromGitHub('sources/$name.csv')
+                      .timeout(const Duration(minutes: 3));
               return convert.cardFromCsv(csv);
             })),
       ]),
@@ -123,4 +124,12 @@ class TutorialOperator extends FlashCardBookOperator {
 
   @override
   final isForceFinished = false;
+}
+
+Future<String> _getRepoAssetsFromGitHub(String path) async {
+  final httpClient = http.Client();
+  final uri =
+      "http://raw.githubusercontent.com/gw31415/wai_eng/master/${Uri.encodeComponent(path)}";
+  final res = await httpClient.get(Uri.parse(uri));
+  return res.body;
 }
