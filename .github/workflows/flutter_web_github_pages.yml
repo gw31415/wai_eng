@@ -31,9 +31,10 @@ jobs:
         name: Test
       - run: flutter build web --base-href="/wai_eng/" --web-renderer html
         name: Build
+      - run: touch ./build/web/.nojekyll
+        name: Set nojekyll
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build/web
-      
