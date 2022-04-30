@@ -57,8 +57,8 @@ class _FlashCardBookPlayerScaffoldState
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   if (snapshot.hasError) {
-                    return const Center(
-                      child: Text("Unknown error occurred."),
+                    return Center(
+                      child: Text("${snapshot.error}"),
                     );
                   }
                   return const Center(
