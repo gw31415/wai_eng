@@ -69,7 +69,7 @@ class MainApp extends StatelessWidget {
             title: name,
             body: () async {
               final csv =
-                  await _getRepoAssetsFromGitHub('sources/$name.csv')
+                  await _getReposFromSourcesDir('$name.csv')
                       .timeout(const Duration(minutes: 3));
               return convert.cardFromCsv(csv);
             })),
@@ -126,10 +126,10 @@ class TutorialOperator extends FlashCardBookOperator {
   final isForceFinished = false;
 }
 
-Future<String> _getRepoAssetsFromGitHub(String path) async {
+Future<String> _getReposFromSourcesDir(String path) async {
   final httpClient = http.Client();
   final uri =
-      "http://raw.githubusercontent.com/gw31415/wai_eng/master/${Uri.encodeComponent(path)}";
+      "https://gw31415.github.io/wai_eng/sources/${Uri.encodeFull(path)}";
   final res = await httpClient.get(Uri.parse(uri));
   return res.body;
 }

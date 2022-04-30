@@ -33,6 +33,8 @@ jobs:
         name: Build
       - run: touch ./build/web/.nojekyll
         name: Set nojekyll
+      - run: mv ./sources ./build/web/sources
+        name: Setup Repositories
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
