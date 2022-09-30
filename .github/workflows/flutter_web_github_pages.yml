@@ -27,12 +27,8 @@ jobs:
         with:
           flutter-version: '2.10.5'
       - run: flutter pub get
-      - run: flutter test
-        name: Test
       - run: flutter build web --base-href="/wai_eng/" --web-renderer html
         name: Build
-      - run: touch ./build/web/.nojekyll
-        name: Set nojekyll
       - run: mv ./sources ./build/web/sources
         name: Setup Repositories
       - name: Deploy
