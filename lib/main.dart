@@ -65,6 +65,7 @@ class MainApp extends StatelessWidget {
           "組織学プレ/組織学総論_7骨髄",
           "組織学プレ/組織学総論_8筋肉",
           "組織学プレ/組織学総論_9神経組織",
+          "系統解剖/大腿断面",
           "ハングル14-17単語",
         ].map((name) => RandomBook(
             title: name,
