@@ -78,7 +78,7 @@ class FlashCardsMenuScaffold extends StatelessWidget {
   Widget build(context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('和医大'),
+        title: const Text("WaiEng"),
         actions: [
           PopupMenuButton<Function()>(
             onSelected: (Function func) {

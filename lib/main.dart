@@ -44,8 +44,12 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '和医大 英単語',
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
+      theme: ThemeData.light(
+	    useMaterial3: true,
+		),
+      darkTheme: ThemeData.dark(
+	    useMaterial3: true,
+	    ),
       home: FlashCardsMenuScaffold(flashcards: [
         _howToUse,
         ...const [
