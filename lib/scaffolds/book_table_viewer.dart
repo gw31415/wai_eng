@@ -48,8 +48,12 @@ class BookTableScaffold extends StatelessWidget {
                 child: Text("${snapshot.error}"),
               );
             }
-            return const Center(
-              child: Text("Loading..."),
+            return Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).splashColor.withAlpha(153)),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           }
           final dataTable = snapshot.data as DataTable;
