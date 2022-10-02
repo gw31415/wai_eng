@@ -92,7 +92,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '和医大 英単語',
+      title: 'WaiEng',
       theme: ThemeData.light(
         useMaterial3: true,
       ),
