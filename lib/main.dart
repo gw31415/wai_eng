@@ -93,35 +93,38 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'WaiEng',
-      theme: ThemeData.light(
+      theme: ThemeData(
         useMaterial3: true,
+        primarySwatch: Colors.teal,
       ),
-      darkTheme: ThemeData.dark(
+      darkTheme: ThemeData(
         useMaterial3: true,
+        primarySwatch: Colors.teal,
+        brightness: Brightness.dark,
       ),
       home: FlashCardBookBrowseScaffold(
-	      title: const Text('WaiEng'),
+          title: const Text('WaiEng'),
           browser: UrlBrowser(urls: const {
-        "骨筋/下肢英単語_1足",
-        "骨筋/下肢英単語_2内転筋群",
-        "骨筋/下肢英単語_3大腿神経支配",
-        "骨筋/下肢英単語_4坐骨神経支配",
-        "骨筋/頭部_脳神経通路",
-        "骨筋/頭部_分離骨英語と個数",
-        "組織学プレ/組織学プレ_重要単語",
-        "組織学プレ/組織学総論_1方法",
-        "組織学プレ/組織学総論_2上皮",
-        "組織学プレ/組織学総論_3結合組織",
-        "組織学プレ/組織学総論_4軟骨",
-        "組織学プレ/組織学総論_5骨",
-        "組織学プレ/組織学総論_6血液",
-        "組織学プレ/組織学総論_7骨髄",
-        "組織学プレ/組織学総論_8筋肉",
-        "組織学プレ/組織学総論_9神経組織",
-        "系統解剖/大腿断面",
-        "系統解剖/下腿断面",
-        "ハングル14-17単語",
-      })),
+            "骨筋/下肢英単語_1足",
+            "骨筋/下肢英単語_2内転筋群",
+            "骨筋/下肢英単語_3大腿神経支配",
+            "骨筋/下肢英単語_4坐骨神経支配",
+            "骨筋/頭部_脳神経通路",
+            "骨筋/頭部_分離骨英語と個数",
+            "組織学プレ/組織学プレ_重要単語",
+            "組織学プレ/組織学総論_1方法",
+            "組織学プレ/組織学総論_2上皮",
+            "組織学プレ/組織学総論_3結合組織",
+            "組織学プレ/組織学総論_4軟骨",
+            "組織学プレ/組織学総論_5骨",
+            "組織学プレ/組織学総論_6血液",
+            "組織学プレ/組織学総論_7骨髄",
+            "組織学プレ/組織学総論_8筋肉",
+            "組織学プレ/組織学総論_9神経組織",
+            "系統解剖/大腿断面",
+            "系統解剖/下腿断面",
+            "ハングル14-17単語",
+          })),
     );
   }
 }

@@ -139,7 +139,10 @@ class FlashCardBookBrowseScaffold extends StatelessWidget {
                       );
                     }))
                   },
-                  trailing: const Icon(Icons.chevron_right),
+                  trailing: Icon(
+                    Icons.chevron_right,
+                    color: Theme.of(context).highlightColor,
+                  ),
                 );
             }
           }),
