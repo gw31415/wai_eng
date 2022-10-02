@@ -141,7 +141,7 @@ class FlashCardBookBrowseScaffold extends StatelessWidget {
                   },
                   trailing: Icon(
                     Icons.chevron_right,
-                    color: Theme.of(context).highlightColor,
+                    color: Theme.of(context).colorScheme.surfaceVariant,
                   ),
                 );
             }
