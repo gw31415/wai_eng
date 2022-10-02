@@ -9,7 +9,6 @@ enum FlashCardResult {
 
 abstract class FlashCardBook {
   const FlashCardBook();
-  String get title;
 
   /// 一覧表示するためのゲッター。一覧表示に対応しない場合はnullを返す
   Future<List<FlashCard>>? get body {
@@ -41,9 +40,6 @@ abstract class FlashCardBookOperator {
 }
 
 abstract class UsersBook extends FlashCardBook {
-
-  @override
-  final String title;
   @override
   Future<List<FlashCard>> get body {
     return _body();
@@ -51,7 +47,7 @@ abstract class UsersBook extends FlashCardBook {
 
   final Future<List<FlashCard>> Function() _body;
 
-  UsersBook({required this.title, required Future<List<FlashCard>> Function() body})
+  UsersBook({required Future<List<FlashCard>> Function() body})
       : _body = (() => Future.value(body()));
 }
 
@@ -61,7 +57,7 @@ class RandomBook extends UsersBook {
     return Future.value(RandomBookOperator(body: await body));
   }
 
-  RandomBook({required title, required body}) : super(title: title, body: body);
+  RandomBook({required body}) : super(body: body);
 }
 
 class _Record {

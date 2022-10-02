@@ -3,82 +3,30 @@ import '../modules/flashcardbook.dart';
 import './book_player.dart';
 import './book_table_viewer.dart';
 
-class _FlashCardsListView extends StatelessWidget {
-  final List<FlashCardBook> flashcards;
-  const _FlashCardsListView({Key? key, required this.flashcards})
-      : super(key: key);
-  @override
-  Widget build(context) {
-    return ListView.builder(
-        itemCount: flashcards.length,
-        itemBuilder: (context, index) {
-          // ダイアログの構築
-          List<Widget> dialogItems = [];
-          final cards = flashcards[index];
-          _openBookPlayer() {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return FlashCardBookPlayerScaffold(
-                book: cards,
-              );
-            }));
-          }
-
-          dialogItems.add(
-            SimpleDialogOption(
-              onPressed: () => Navigator.pop(context, _openBookPlayer),
-              child: const Text('開く'),
-            ),
-          );
-          if (cards is UsersBook) {
-            _openBookTable() {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return BookTableScaffold(
-                  book: cards,
-                );
-              }));
-            }
-
-            dialogItems.add(
-              SimpleDialogOption(
-                onPressed: () => Navigator.pop(context, _openBookTable),
-                child: const Text('一覧'),
-              ),
-            );
-          }
-
-          return ListTile(
-            title: Text(cards.title),
-            onTap: _openBookPlayer,
-            trailing: IconButton(
-              icon: const Icon(Icons.more_vert),
-              onPressed: () {
-                Future.microtask(() async {
-                  final nextTask = await showDialog<Function>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return SimpleDialog(
-                          title: Text(cards.title),
-                          children: dialogItems,
-                        );
-                      });
-                  if (nextTask != null) nextTask();
-                });
-              },
-            ),
-          );
-        });
-  }
+enum SegmentType {
+  flashCardBook,
+  directory,
 }
 
-class FlashCardsMenuScaffold extends StatelessWidget {
-  final List<FlashCardBook> flashcards;
-  const FlashCardsMenuScaffold({Key? key, required this.flashcards})
+abstract class FlashCardBookBrowser {
+  Set<String> ls(List<String> dir);
+  SegmentType type(List<String> path);
+  FlashCardBook getBook(List<String> path);
+}
+
+class FlashCardBookBrowseScaffold extends StatelessWidget {
+  final FlashCardBookBrowser browser;
+  final List<String> pwd;
+  const FlashCardBookBrowseScaffold(
+      {Key? key, required this.browser, this.pwd = const []})
       : super(key: key);
   @override
   Widget build(context) {
+    final ls = browser.ls(pwd);
+    final title = pwd.isEmpty ? const Text("WaiEng") : Text(pwd.last);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("WaiEng"),
+        title: title,
         actions: [
           PopupMenuButton<Function()>(
             onSelected: (Function func) {
@@ -95,8 +43,8 @@ class FlashCardsMenuScaffold extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                         child: Image.asset(
                           'lib/assets/icon.png',
-			  width: 80,
-			  height: 80,
+                          width: 80,
+                          height: 80,
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -109,18 +57,83 @@ class FlashCardsMenuScaffold extends StatelessWidget {
           )
         ],
       ),
-      body: _FlashCardsListView(flashcards: flashcards),
-      /*
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        child: Container(height: 50.0),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-	  */
+      body: ListView.builder(
+          itemCount: ls.length,
+          itemBuilder: (context, index) {
+            final name = ls.elementAt(index);
+            final path = pwd + [name];
+            switch (browser.type(path)) {
+              case SegmentType.flashCardBook:
+                // ダイアログの構築
+                List<Widget> dialogItems = [];
+                final cards = browser.getBook(path);
+                _openBookPlayer() {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return FlashCardBookPlayerScaffold(
+                      book: cards,
+                      title: Text(name),
+                    );
+                  }));
+                }
+
+                dialogItems.add(
+                  SimpleDialogOption(
+                    onPressed: () => Navigator.pop(context, _openBookPlayer),
+                    child: const Text('開く'),
+                  ),
+                );
+                if (cards is UsersBook) {
+                  _openBookTable() {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return BookTableScaffold(
+                        book: cards,
+                        title: Text(name),
+                      );
+                    }));
+                  }
+
+                  dialogItems.add(
+                    SimpleDialogOption(
+                      onPressed: () => Navigator.pop(context, _openBookTable),
+                      child: const Text('一覧'),
+                    ),
+                  );
+                }
+
+                return ListTile(
+                  title: Text(name),
+                  onTap: _openBookPlayer,
+                  trailing: IconButton(
+                    icon: const Icon(Icons.more_vert),
+                    onPressed: () {
+                      Future.microtask(() async {
+                        final nextTask = await showDialog<Function>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return SimpleDialog(
+                                title: Text(name),
+                                children: dialogItems,
+                              );
+                            });
+                        if (nextTask != null) nextTask();
+                      });
+                    },
+                  ),
+                );
+              case SegmentType.directory:
+                return ListTile(
+                  title: Text(name),
+                  onTap: () => {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return FlashCardBookBrowseScaffold(browser: browser, pwd: path);
+                    }))
+                  },
+                );
+            }
+          }),
     );
   }
 }

@@ -37,6 +37,55 @@ void main() {
   runApp(const MainApp());
 }
 
+class UrlBrowser extends FlashCardBookBrowser {
+  final Set<List<String>> urls;
+  UrlBrowser({required Set<String> urls})
+      : urls = urls.map((url) => url.split('/')).toSet();
+  @override
+  Set<String> ls(List<String> dir) {
+    return urls
+        .where((url) => url.length >= dir.length)
+        .where((url) {
+          for (var i = 0; i < dir.length; i++) {
+            if (url[i] != dir[i]) {
+              return false;
+            }
+          }
+          return true;
+        })
+        .map((url) => url[dir.length])
+        .toSet();
+  }
+
+  @override
+  FlashCardBook getBook(List<String> path) {
+    final uri =
+        "https://gw31415.github.io/wai_eng/sources/${Uri.encodeFull(path.join("/"))}.csv";
+    return RandomBook(body: () async {
+      final httpClient = http.Client();
+      final csv = (await httpClient
+              .get(Uri.parse(uri))
+              .timeout(const Duration(minutes: 1)))
+          .body;
+      return convert.cardFromCsv(csv);
+    });
+  }
+
+  @override
+  SegmentType type(List<String> path) {
+    main:
+    for (var url in urls.where((element) => path.length == element.length)) {
+      for (var i = 0; i < url.length; i++) {
+        if (url[i] != path[i]) {
+          continue main;
+        }
+      }
+      return SegmentType.flashCardBook;
+    }
+    return SegmentType.directory;
+  }
+}
+
 class MainApp extends StatelessWidget {
   const MainApp({Key? key}) : super(key: key);
 
@@ -45,47 +94,38 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: '和医大 英単語',
       theme: ThemeData.light(
-	    useMaterial3: true,
-		),
+        useMaterial3: true,
+      ),
       darkTheme: ThemeData.dark(
-	    useMaterial3: true,
-	    ),
-      home: FlashCardsMenuScaffold(flashcards: [
-        _howToUse,
-        ...const [
-          "骨筋/下肢英単語_1足",
-          "骨筋/下肢英単語_2内転筋群",
-          "骨筋/下肢英単語_3大腿神経支配",
-          "骨筋/下肢英単語_4坐骨神経支配",
-          "骨筋/頭部_脳神経通路",
-          "骨筋/頭部_分離骨英語と個数",
-          "組織学プレ/組織学プレ_重要単語",
-          "組織学プレ/組織学総論_1方法",
-          "組織学プレ/組織学総論_2上皮",
-          "組織学プレ/組織学総論_3結合組織",
-          "組織学プレ/組織学総論_4軟骨",
-          "組織学プレ/組織学総論_5骨",
-          "組織学プレ/組織学総論_6血液",
-          "組織学プレ/組織学総論_7骨髄",
-          "組織学プレ/組織学総論_8筋肉",
-          "組織学プレ/組織学総論_9神経組織",
-          "系統解剖/大腿断面",
-          "ハングル14-17単語",
-        ].map((name) => RandomBook(
-            title: name,
-            body: () async {
-              final csv =
-                  await _getReposFromSourcesDir('$name.csv')
-                      .timeout(const Duration(minutes: 3));
-              return convert.cardFromCsv(csv);
-            })),
-      ]),
+        useMaterial3: true,
+      ),
+      home: FlashCardBookBrowseScaffold(
+          browser: UrlBrowser(urls: const {
+        "骨筋/下肢英単語_1足",
+        "骨筋/下肢英単語_2内転筋群",
+        "骨筋/下肢英単語_3大腿神経支配",
+        "骨筋/下肢英単語_4坐骨神経支配",
+        "骨筋/頭部_脳神経通路",
+        "骨筋/頭部_分離骨英語と個数",
+        "組織学プレ/組織学プレ_重要単語",
+        "組織学プレ/組織学総論_1方法",
+        "組織学プレ/組織学総論_2上皮",
+        "組織学プレ/組織学総論_3結合組織",
+        "組織学プレ/組織学総論_4軟骨",
+        "組織学プレ/組織学総論_5骨",
+        "組織学プレ/組織学総論_6血液",
+        "組織学プレ/組織学総論_7骨髄",
+        "組織学プレ/組織学総論_8筋肉",
+        "組織学プレ/組織学総論_9神経組織",
+        "系統解剖/大腿断面",
+        "ハングル14-17単語",
+      })),
     );
   }
 }
 
 // チュートリアルのカードを記述
-final _howToUse = TutorialBook(title: "使い方", body: [
+final _howToUse = TutorialBook(body: [
   StringCard(
     question: "触れてください。",
     answer: "Good job!\nこちらが裏面です。\n手を離すと次のカードに進みます。",
@@ -101,15 +141,13 @@ final _howToUse = TutorialBook(title: "使い方", body: [
 ]);
 
 class TutorialBook extends FlashCardBook {
-  @override
-  final String title;
   final List<FlashCard> _body;
   @override
   init() async {
     return Future.value(TutorialOperator(body: _body));
   }
 
-  TutorialBook({required this.title, required body})
+  TutorialBook({required body})
       : _body = body,
         super();
 }
@@ -130,12 +168,4 @@ class TutorialOperator extends FlashCardBookOperator {
 
   @override
   final isForceFinished = false;
-}
-
-Future<String> _getReposFromSourcesDir(String path) async {
-  final httpClient = http.Client();
-  final uri =
-      "https://gw31415.github.io/wai_eng/sources/${Uri.encodeFull(path)}";
-  final res = await httpClient.get(Uri.parse(uri));
-  return res.body;
 }

@@ -3,9 +3,11 @@ import '../modules/swipable_stack/swipable_stack.dart';
 import '../modules/flashcardbook.dart';
 
 class FlashCardBookPlayerScaffold extends StatefulWidget {
-  const FlashCardBookPlayerScaffold({Key? key, required this.book})
+  const FlashCardBookPlayerScaffold(
+      {Key? key, required this.book, required this.title})
       : super(key: key);
   final FlashCardBook book;
+  final Text title;
   @override
   State<FlashCardBookPlayerScaffold> createState() =>
       _FlashCardBookPlayerScaffoldState();
@@ -48,7 +50,7 @@ class _FlashCardBookPlayerScaffoldState
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.book.title),
+          title: widget.title,
         ),
         body: SafeArea(
           child: FutureBuilder(

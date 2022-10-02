@@ -3,13 +3,15 @@ import '../modules/flashcardbook.dart';
 
 class BookTableScaffold extends StatelessWidget {
   final UsersBook book;
-  const BookTableScaffold({Key? key, required this.book}) : super(key: key);
+  final Text title;
+  const BookTableScaffold({Key? key, required this.book, required this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(book.title),
+          title: title,
         ),
         body: SafeArea(
             child: FutureBuilder(future: Future.microtask(() async {
@@ -51,7 +53,8 @@ class BookTableScaffold extends StatelessWidget {
             );
           }
           final dataTable = snapshot.data as DataTable;
-          return SingleChildScrollView(child: Center(child: FittedBox(child: dataTable)));
+          return SingleChildScrollView(
+              child: Center(child: FittedBox(child: dataTable)));
         })));
   }
 }
