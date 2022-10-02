@@ -17,16 +17,20 @@ abstract class FlashCardBookBrowser {
 class FlashCardBookBrowseScaffold extends StatelessWidget {
   final FlashCardBookBrowser browser;
   final List<String> pwd;
+  final Text title;
   const FlashCardBookBrowseScaffold(
-      {Key? key, required this.browser, this.pwd = const []})
+      {Key? key,
+      required this.browser,
+      this.pwd = const [],
+      required this.title})
       : super(key: key);
   @override
   Widget build(context) {
     final ls = browser.ls(pwd);
-    final title = pwd.isEmpty ? const Text("WaiEng") : Text(pwd.last);
+    final titleText = pwd.isEmpty ? title : Text(pwd.last);
     return Scaffold(
       appBar: AppBar(
-        title: title,
+        title: titleText,
         actions: [
           PopupMenuButton<Function()>(
             onSelected: (Function func) {
@@ -128,7 +132,11 @@ class FlashCardBookBrowseScaffold extends StatelessWidget {
                   onTap: () => {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
-                      return FlashCardBookBrowseScaffold(browser: browser, pwd: path);
+                      return FlashCardBookBrowseScaffold(
+                        browser: browser,
+                        pwd: path,
+                        title: title,
+                      );
                     }))
                   },
                 );

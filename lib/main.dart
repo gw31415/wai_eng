@@ -100,6 +100,7 @@ class MainApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: FlashCardBookBrowseScaffold(
+	      title: const Text('WaiEng'),
           browser: UrlBrowser(urls: const {
         "骨筋/下肢英単語_1足",
         "骨筋/下肢英単語_2内転筋群",
