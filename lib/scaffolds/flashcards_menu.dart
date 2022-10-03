@@ -89,6 +89,7 @@ class FlashCardBookBrowseScaffold extends StatelessWidget {
                     title: const Text('開く'),
                   ),
                 );
+
                 if (cards is UsersBook) {
                   _openBookTable() {
                     Navigator.of(context)
@@ -110,45 +111,48 @@ class FlashCardBookBrowseScaffold extends StatelessWidget {
                   );
                 }
 
+                _openSubMenu() {
+                  Future.microtask(() async {
+                    final nextTask = await showModalBottomSheet<Function>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ListView(
+                            shrinkWrap: true,
+                            // title: Text(name),
+                            children: [
+                              ListTile(
+                                dense: true,
+                                title: Text(
+                                  name,
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
+                                ),
+                              ),
+                              ...listItems,
+                              const Divider(),
+                              ListTile(
+                                dense: true,
+                                title: const Text('閉じる'),
+                                leading: const Icon(Icons.close),
+                                onTap: () => Navigator.of(context).pop(),
+                              )
+                            ],
+                          );
+                        });
+                    if (nextTask != null) nextTask();
+                  });
+                }
+
                 return ListTile(
                   title: Text(name),
                   onTap: _openBookPlayer,
+                  onLongPress: _openSubMenu,
                   trailing: IconButton(
                     icon: const Icon(Icons.more_vert),
-                    onPressed: () {
-                      Future.microtask(() async {
-                        final nextTask = await showModalBottomSheet<Function>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return ListView(
-                                shrinkWrap: true,
-                                // title: Text(name),
-                                children: [
-                                  ListTile(
-                                    dense: true,
-                                    title: Text(
-                                      name,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium,
-                                    ),
-                                  ),
-                                  ...listItems,
-                                  const Divider(),
-                                  ListTile(
-                                    dense: true,
-                                    title: const Text('閉じる'),
-                                    leading: const Icon(Icons.close),
-                                    onTap: () => Navigator.of(context).pop(),
-                                  )
-                                ],
-                              );
-                            });
-                        if (nextTask != null) nextTask();
-                      });
-                    },
+                    onPressed: _openSubMenu,
                   ),
                 );
+
               case SegmentType.directory:
                 return ListTile(
                   title: Text(name),
