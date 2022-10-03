@@ -65,7 +65,7 @@ class _FlashCardBookPlayerScaffoldState
                   }
                   return Container(
                     decoration: BoxDecoration(
-                        color: Theme.of(context).splashColor.withAlpha(153)),
+                        color: Theme.of(context).splashColor),
                     child: const Center(
                       child: CircularProgressIndicator.adaptive(),
                     ),

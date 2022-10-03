@@ -69,7 +69,7 @@ class FlashCardBookBrowseScaffold extends StatelessWidget {
             switch (browser.type(path)) {
               case SegmentType.flashCardBook:
                 // ダイアログの構築
-                List<Widget> dialogItems = [];
+                List<Widget> listItems = [];
                 final cards = browser.getBook(path);
                 _openBookPlayer() {
                   Navigator.of(context)
@@ -81,10 +81,12 @@ class FlashCardBookBrowseScaffold extends StatelessWidget {
                   }));
                 }
 
-                dialogItems.add(
-                  SimpleDialogOption(
-                    onPressed: () => Navigator.pop(context, _openBookPlayer),
-                    child: const Text('開く'),
+                listItems.add(
+                  ListTile(
+                    dense: true,
+                    onTap: () => Navigator.pop(context, _openBookPlayer),
+                    leading: const Icon(Icons.play_circle_outline),
+                    title: const Text('開く'),
                   ),
                 );
                 if (cards is UsersBook) {
@@ -98,10 +100,12 @@ class FlashCardBookBrowseScaffold extends StatelessWidget {
                     }));
                   }
 
-                  dialogItems.add(
-                    SimpleDialogOption(
-                      onPressed: () => Navigator.pop(context, _openBookTable),
-                      child: const Text('一覧'),
+                  listItems.add(
+                    ListTile(
+                      dense: true,
+                      onTap: () => Navigator.pop(context, _openBookTable),
+                      leading: const Icon(Icons.list),
+                      title: const Text('一覧'),
                     ),
                   );
                 }
@@ -113,12 +117,29 @@ class FlashCardBookBrowseScaffold extends StatelessWidget {
                     icon: const Icon(Icons.more_vert),
                     onPressed: () {
                       Future.microtask(() async {
-                        final nextTask = await showDialog<Function>(
+                        final nextTask = await showModalBottomSheet<Function>(
                             context: context,
                             builder: (BuildContext context) {
-                              return SimpleDialog(
-                                title: Text(name),
-                                children: dialogItems,
+                              return ListView(
+                                shrinkWrap: true,
+                                // title: Text(name),
+                                children: [
+                                  ListTile(
+                                    dense: true,
+                                    title: Text(
+                                      name,
+									  style: Theme.of(context).textTheme.labelMedium,
+                                    ),
+                                  ),
+                                  ...listItems,
+                                  const Divider(),
+                                  ListTile(
+                                    dense: true,
+                                    title: const Text('閉じる'),
+                                    leading: const Icon(Icons.close),
+                                    onTap: () => Navigator.of(context).pop(),
+                                  )
+                                ],
                               );
                             });
                         if (nextTask != null) nextTask();
