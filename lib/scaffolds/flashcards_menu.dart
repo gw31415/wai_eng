@@ -128,7 +128,9 @@ class FlashCardBookBrowseScaffold extends StatelessWidget {
                                     dense: true,
                                     title: Text(
                                       name,
-									  style: Theme.of(context).textTheme.labelMedium,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium,
                                     ),
                                   ),
                                   ...listItems,
