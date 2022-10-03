@@ -53,11 +53,10 @@ class _FlashCardBookPlayerScaffoldState
     return Scaffold(
         appBar: AppBar(
           title: widget.title,
-          bottom: progressbar == null
-              ? null
-              : PreferredSize(
-                  child: LinearProgressIndicator(value: progressbar?.call()),
-                  preferredSize: const Size.fromHeight(8)),
+          bottom: PreferredSize(
+              child: LinearProgressIndicator(
+                  value: progressbar == null ? 0 : progressbar?.call()),
+              preferredSize: const Size.fromHeight(8)),
         ),
         body: SafeArea(
           child: FutureBuilder(
