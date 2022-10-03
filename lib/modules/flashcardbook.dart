@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import './flashcard.dart';
 
@@ -27,8 +26,13 @@ abstract class FlashCardBookOperator {
   void onNext(int index, FlashCardResult res);
   void onUndo();
 
-  /// 下部に表示されるFlashCardBook実行中ステータス
-  Widget? get statusBar {
+  /// 進捗状況:何枚目か
+  int? get progress {
+    return null;
+  }
+
+  /// 全部で何枚あるか
+  int? get length {
     return null;
   }
 
@@ -80,6 +84,7 @@ class RandomBookOperator extends FlashCardBookOperator {
 
   final List<FlashCard> body;
   RandomBookOperator({required this.body}) {
+    length = body.length;
     _rest = _range(body.length);
     _rest.shuffle();
     _log = [];
@@ -195,14 +200,8 @@ class RandomBookOperator extends FlashCardBookOperator {
   }
 
   @override
-  get statusBar {
-    if (_okCount < body.length) {
-      return Padding(
-          padding: const EdgeInsets.all(8),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [Text(" $_okCount / ${body.length}")]));
-    }
-    return null;
-  }
+  late final int length;
+
+  @override
+  int get progress => _okCount;
 }

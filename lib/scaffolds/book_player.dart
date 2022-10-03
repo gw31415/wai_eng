@@ -18,6 +18,8 @@ class _FlashCardBookPlayerScaffoldState
   late SwipableStackController _controller;
   late Future<FlashCardBookOperator> _opFuture;
   late bool nextCardAvailable;
+  double Function()? progressbar = null;
+
   void _listenController() {
     setState(() {});
   }
@@ -51,6 +53,11 @@ class _FlashCardBookPlayerScaffoldState
     return Scaffold(
         appBar: AppBar(
           title: widget.title,
+          bottom: progressbar == null
+              ? null
+              : PreferredSize(
+                  child: LinearProgressIndicator(value: progressbar?.call()),
+                  preferredSize: const Size.fromHeight(8)),
         ),
         body: SafeArea(
           child: FutureBuilder(
@@ -64,20 +71,27 @@ class _FlashCardBookPlayerScaffoldState
                     );
                   }
                   return Container(
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).splashColor),
+                    decoration:
+                        BoxDecoration(color: Theme.of(context).splashColor),
                     child: const Center(
                       child: CircularProgressIndicator.adaptive(),
                     ),
                   );
                 }
                 final bookop = snapshot.data as FlashCardBookOperator;
+                progressbar = () {
+                  if (bookop.length == null || bookop.progress == null) {
+                    return 0;
+                  }
+                  return bookop.progress!.toDouble() /
+                      bookop.length!.toDouble();
+                };
                 return Stack(
                   children: [
                     Align(
                       // StatusRow
                       alignment: Alignment.bottomCenter,
-                      child: bookop.statusBar,
+                      child: Text("${bookop.progress} / ${bookop.length}"),
                     ),
                     AnimatedSwitcher(
                       // リプレイボタンとの切りかえ
