@@ -38,7 +38,7 @@ void main() {
   runApp(const MainApp());
 }
 
-const _dbName = 'webdata.sembast';
+const _dbName = 'http_get_cache.sembast';
 
 class UrlBrowser extends FlashCardBookBrowser {
   final Set<List<String>> urls;
