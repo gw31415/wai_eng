@@ -139,7 +139,10 @@ class _FlashCardBookBrowseScaffoldState
                   title: Text(name),
                   onTap: _openBookPlayer,
                   onLongPress: _openSubMenu,
-		  leading: const Icon(Icons.play_arrow),
+                  leading: Icon(
+                    Icons.play_arrow,
+		    color: Theme.of(context).colorScheme.primary,
+                  ),
                   trailing: IconButton(
                     icon: const Icon(Icons.more_vert),
                     onPressed: _openSubMenu,
