@@ -18,7 +18,7 @@ class _FlashCardBookPlayerScaffoldState
   late SwipableStackController _controller;
   late Future<FlashCardBookOperator> _opFuture;
   late bool nextCardAvailable;
-  double Function()? progressbar = null;
+  double Function()? progressbar;
 
   void _listenController() {
     setState(() {});

@@ -14,54 +14,41 @@ abstract class FlashCardBookBrowser {
   FlashCardBook getBook(List<String> path);
 }
 
-class FlashCardBookBrowseScaffold extends StatelessWidget {
+class FlashCardBookBrowseScaffold extends StatefulWidget {
   final FlashCardBookBrowser browser;
-  final List<String> pwd;
   final Text title;
   const FlashCardBookBrowseScaffold(
-      {Key? key,
-      required this.browser,
-      this.pwd = const [],
-      required this.title})
+      {Key? key, required this.browser, required this.title})
       : super(key: key);
   @override
-  Widget build(context) {
-    final ls = browser.ls(pwd);
-    final titleText = pwd.isEmpty ? title : Text(pwd.last);
-    return Scaffold(
-      appBar: AppBar(
-        title: titleText,
-        actions: [
-          PopupMenuButton<Function()>(
-            onSelected: (Function func) {
-              func();
-            },
-            itemBuilder: (BuildContext c) {
-              return [
-                PopupMenuItem(
-                  child: const Text("このアプリについて"),
-                  value: () {
-                    showAboutDialog(
-                      context: context,
-                      applicationIcon: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.asset(
-                          'lib/assets/icon.png',
-                          width: 80,
-                          height: 80,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      applicationLegalese: '©2022 gw31415', // 権利情報
-                    );
-                  },
-                )
-              ];
-            },
-          )
-        ],
-      ),
-      body: ListView.builder(
+  State<FlashCardBookBrowseScaffold> createState() =>
+      _FlashCardBookBrowseScaffoldState();
+}
+
+class _FlashCardBookBrowseScaffoldState
+    extends State<FlashCardBookBrowseScaffold> {
+  List<String> pwd = [];
+  void setPwd(List<String> newPwd) {
+    setState(() {
+      pwd = newPwd;
+    });
+  }
+
+  bool popPwd() {
+    if (pwd == []) {
+      return false;
+    }
+    pwd.removeLast();
+    setPwd(pwd);
+    return true;
+  }
+
+  MaterialPage _flashCardBookBrowsePage(List<String> dir) {
+    final pwd = dir;
+    final browser = widget.browser;
+    final ls = widget.browser.ls(pwd);
+    return MaterialPage(
+      child: ListView.builder(
           itemCount: ls.length,
           itemBuilder: (context, index) {
             final name = ls.elementAt(index);
@@ -72,7 +59,7 @@ class FlashCardBookBrowseScaffold extends StatelessWidget {
                 List<Widget> listItems = [];
                 final cards = browser.getBook(path);
                 _openBookPlayer() {
-                  Navigator.of(context)
+                  Navigator.of(context, rootNavigator: true)
                       .push(MaterialPageRoute(builder: (context) {
                     return FlashCardBookPlayerScaffold(
                       book: cards,
@@ -92,7 +79,7 @@ class FlashCardBookBrowseScaffold extends StatelessWidget {
 
                 if (cards is UsersBook) {
                   _openBookTable() {
-                    Navigator.of(context)
+                    Navigator.of(context, rootNavigator: true)
                         .push(MaterialPageRoute(builder: (context) {
                       return BookTableScaffold(
                         book: cards,
@@ -156,16 +143,7 @@ class FlashCardBookBrowseScaffold extends StatelessWidget {
               case SegmentType.directory:
                 return ListTile(
                   title: Text(name),
-                  onTap: () => {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) {
-                      return FlashCardBookBrowseScaffold(
-                        browser: browser,
-                        pwd: path,
-                        title: title,
-                      );
-                    }))
-                  },
+                  onTap: () => setPwd(dir + [name]),
                   trailing: Icon(
                     Icons.chevron_right,
                     color: Theme.of(context).colorScheme.surfaceVariant,
@@ -173,6 +151,56 @@ class FlashCardBookBrowseScaffold extends StatelessWidget {
                 );
             }
           }),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: pwd.isEmpty ? widget.title : Text(pwd.last),
+        leading: pwd.isEmpty
+            ? null
+            : IconButton(
+                onPressed: popPwd, icon: const Icon(Icons.keyboard_arrow_up)),
+        actions: [
+          PopupMenuButton<Function()>(
+            onSelected: (Function func) {
+              func();
+            },
+            itemBuilder: (BuildContext c) {
+              return [
+                PopupMenuItem(
+                  child: const Text("このアプリについて"),
+                  value: () {
+                    showAboutDialog(
+                      context: context,
+                      applicationIcon: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(
+                          'lib/assets/icon.png',
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      applicationLegalese: '©2022 gw31415', // 権利情報
+                    );
+                  },
+                )
+              ];
+            },
+          )
+        ],
+      ),
+      body: Navigator(
+          onPopPage: (route, result) {
+            return popPwd();
+          },
+          pages: [
+            _flashCardBookBrowsePage([]),
+            if (pwd.isNotEmpty) _flashCardBookBrowsePage(pwd),
+          ]),
     );
   }
 }
