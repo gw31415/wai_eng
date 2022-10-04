@@ -139,6 +139,7 @@ class _FlashCardBookBrowseScaffoldState
                   title: Text(name),
                   onTap: _openBookPlayer,
                   onLongPress: _openSubMenu,
+		  leading: const Icon(Icons.play_arrow),
                   trailing: IconButton(
                     icon: const Icon(Icons.more_vert),
                     onPressed: _openSubMenu,
@@ -148,6 +149,7 @@ class _FlashCardBookBrowseScaffoldState
               case SegmentType.directory:
                 return ListTile(
                   title: Text(name),
+                  leading: const Icon(Icons.folder),
                   onTap: () => _pushPwd(dir + [name]),
                   trailing: Icon(
                     Icons.chevron_right,
