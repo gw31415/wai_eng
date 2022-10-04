@@ -27,24 +27,19 @@ class FlashCardBookBrowseScaffold extends StatefulWidget {
 
 class _FlashCardBookBrowseScaffoldState
     extends State<FlashCardBookBrowseScaffold> {
-  List<MaterialPage> pages = [];
   List<String> pwd = [];
-
-  void _pushPwd(List<String> newPwd) {
+  void setPwd(List<String> newPwd) {
     setState(() {
       pwd = newPwd;
-      pages.add(_flashCardBookBrowsePage(newPwd));
     });
   }
 
-  bool _popPwd() {
-    if (pages == []) {
+  bool popPwd() {
+    if (pwd == []) {
       return false;
     }
-    setState(() {
-      pages.removeLast();
-      pwd.removeLast();
-    });
+    pwd.removeLast();
+    setPwd(pwd);
     return true;
   }
 
@@ -148,7 +143,7 @@ class _FlashCardBookBrowseScaffoldState
               case SegmentType.directory:
                 return ListTile(
                   title: Text(name),
-                  onTap: () => _pushPwd(dir + [name]),
+                  onTap: () => setPwd(dir + [name]),
                   trailing: Icon(
                     Icons.chevron_right,
                     color: Theme.of(context).colorScheme.surfaceVariant,
@@ -163,11 +158,11 @@ class _FlashCardBookBrowseScaffoldState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: pages.isEmpty ? widget.title : Text(pwd.last),
-        leading: pages.isEmpty
+        title: pwd.isEmpty ? widget.title : Text(pwd.last),
+        leading: pwd.isEmpty
             ? null
             : IconButton(
-                onPressed: _popPwd, icon: const Icon(Icons.keyboard_arrow_up)),
+                onPressed: popPwd, icon: const Icon(Icons.keyboard_arrow_up)),
         actions: [
           PopupMenuButton<Function()>(
             onSelected: (Function func) {
@@ -200,11 +195,11 @@ class _FlashCardBookBrowseScaffoldState
       ),
       body: Navigator(
           onPopPage: (route, result) {
-            return _popPwd();
+            return popPwd();
           },
           pages: [
             _flashCardBookBrowsePage([]),
-            ...pages,
+            if (pwd.isNotEmpty) _flashCardBookBrowsePage(pwd),
           ]),
     );
   }

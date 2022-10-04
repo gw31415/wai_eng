@@ -5,9 +5,6 @@ import 'modules/flashcardbook.dart';
 import 'modules/convert.dart' as convert;
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 void main() {
   LicenseRegistry.addLicense(() {
@@ -40,22 +37,10 @@ void main() {
   runApp(const MainApp());
 }
 
-const _dbName = 'flash_card_book.sqlite';
-const _tableName = 'urlbrowser';
-
 class UrlBrowser extends FlashCardBookBrowser {
   final Set<List<String>> urls;
-  final Future<Database> urldb;
   UrlBrowser({required Set<String> urls})
-      : urls = urls.map((url) => url.split('/')).toSet(),
-        urldb = (() async {
-          final path =
-              join((await getApplicationSupportDirectory()).path, _dbName);
-          return openDatabase(
-            path,
-            version: 1,
-          );
-        })();
+      : urls = urls.map((url) => url.split('/')).toSet();
   @override
   Set<String> ls(List<String> dir) {
     return urls
@@ -77,44 +62,12 @@ class UrlBrowser extends FlashCardBookBrowser {
     final uri =
         "https://gw31415.github.io/wai_eng/sources/${Uri.encodeFull(path.join("/"))}.csv";
     return RandomBook(body: () async {
-      final db = await urldb;
-      try {
-        final httpClient = http.Client();
-        final res = (await httpClient
-            .get(Uri.parse(uri))
-            .timeout(const Duration(minutes: 1)));
-        if (res.statusCode != 200) {
-          throw Exception('Cannot get data.');
-        }
-        await db.execute('''
-          CREATE TABLE IF NOT EXISTS $_tableName (
-            url TEXT PRIMARY KEY,
-            data TEXT
-          )
-	    ''');
-        await db.insert(
-          _tableName,
-          {
-            'url': uri,
-            'data': res.body,
-          },
-          conflictAlgorithm: ConflictAlgorithm.replace,
-        );
-        return convert.cardFromCsv(res.body);
-      } catch (e) {
-        final res = await db.query(
-          _tableName,
-          where: 'url=?',
-          whereArgs: [uri],
-        );
-        if (res.isNotEmpty) {
-          if (res.first['data'] != null) {
-            final String csv = res.first['data']!.toString();
-            return convert.cardFromCsv(csv);
-          }
-        }
-      }
-      throw Exception('Cannot get data from $uri');
+      final httpClient = http.Client();
+      final csv = (await httpClient
+              .get(Uri.parse(uri))
+              .timeout(const Duration(minutes: 1)))
+          .body;
+      return convert.cardFromCsv(csv);
     });
   }
 
