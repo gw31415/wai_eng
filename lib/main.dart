@@ -4,8 +4,7 @@ import 'modules/flashcard.dart';
 import 'modules/flashcardbook.dart';
 import 'modules/convert.dart' as convert;
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
-import 'package:tekartik_app_flutter_sembast/sembast.dart';
+import 'modules/httpgetcache.dart';
 
 void main() {
   LicenseRegistry.addLicense(() {
@@ -38,15 +37,10 @@ void main() {
   runApp(const MainApp());
 }
 
-const _dbName = 'http_get_cache.sembast';
-
 class UrlBrowser extends FlashCardBookBrowser {
   final Set<List<String>> urls;
-  final Future<Database> urldb;
   UrlBrowser({required Set<String> urls})
-      : urls = urls.map((url) => url.split('/')).toSet(),
-        urldb = getDatabaseFactory(packageName: 'dev.amas.waiEng')
-            .openDatabase(_dbName);
+      : urls = urls.map((url) => url.split('/')).toSet();
   @override
   Set<String> ls(List<String> dir) {
     return urls
@@ -63,33 +57,16 @@ class UrlBrowser extends FlashCardBookBrowser {
         .toSet();
   }
 
-  var store = StoreRef<String, String>.main();
   @override
   FlashCardBook getBook(List<String> path) {
     final uri =
         "https://gw31415.github.io/wai_eng/sources/${Uri.encodeFull(path.join("/"))}.csv";
-    final record = store.record(uri);
     return RandomBook(body: () async {
-      final db = await urldb;
-      try {
-        final httpClient = http.Client();
-        final res = (await httpClient
-            .get(Uri.parse(uri))
-            .timeout(const Duration(minutes: 1)));
-        if (res.statusCode != 200) {
-          throw Exception('Cannot get data.');
-        }
-        db.transaction((transaction) async {
-          await record.put(transaction, res.body);
-        });
+      final res = await httpGetCache(uri);
+      if (res.status != HttpGetCacheStatus.error) {
         return convert.cardFromCsv(res.body);
-      } catch (e) {
-        final cache = await record.get(db);
-        if (cache != null) {
-          return convert.cardFromCsv(cache);
-        }
       }
-      throw Exception('Cannot get data from $uri');
+      throw Exception(res.body);
     });
   }
 
