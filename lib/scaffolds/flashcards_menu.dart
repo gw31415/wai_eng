@@ -141,7 +141,7 @@ class _FlashCardBookBrowseScaffoldState
                   onLongPress: _openSubMenu,
                   leading: Icon(
                     Icons.play_arrow,
-		    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                   trailing: IconButton(
                     icon: const Icon(Icons.more_vert),

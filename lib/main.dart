@@ -37,10 +37,13 @@ void main() {
   runApp(const MainApp());
 }
 
-class UrlBrowser extends FlashCardBookBrowser {
+class HttpGetBrowser extends FlashCardBookBrowser {
+  // セグメントをスラッシュで区切って表現したパスのセット
   final Set<List<String>> urls;
-  UrlBrowser({required Set<String> urls})
-      : urls = urls.map((url) => url.split('/')).toSet();
+  // PATHをHTTP GetするURLに変換する関数
+  final String Function(List<String>) converter;
+  HttpGetBrowser({required Set<String> paths, required this.converter})
+      : urls = paths.map((url) => url.split('/')).toSet();
   @override
   Set<String> ls(List<String> dir) {
     return urls
@@ -59,8 +62,7 @@ class UrlBrowser extends FlashCardBookBrowser {
 
   @override
   FlashCardBook getBook(List<String> path) {
-    final uri =
-        "https://gw31415.github.io/wai_eng/sources/${Uri.encodeFull(path.join("/"))}.csv";
+    final uri = converter(path);
     return RandomBook(body: () async {
       final res = await httpGetCache(uri);
       if (res.status != HttpGetCacheStatus.error) {
@@ -103,27 +105,30 @@ class MainApp extends StatelessWidget {
       ),
       home: FlashCardBookBrowseScaffold(
           title: const Text('WaiEng'),
-          browser: UrlBrowser(urls: const {
-            "骨筋/下肢英単語/1足",
-            "骨筋/下肢英単語/2内転筋群",
-            "骨筋/下肢英単語/3大腿神経支配",
-            "骨筋/下肢英単語/4坐骨神経支配",
-            "骨筋/頭部/脳神経通路",
-            "骨筋/頭部/分離骨英語と個数",
-            "組織学プレ/組織学プレ_重要単語",
-            "組織学プレ/組織学総論_1方法",
-            "組織学プレ/組織学総論_2上皮",
-            "組織学プレ/組織学総論_3結合組織",
-            "組織学プレ/組織学総論_4軟骨",
-            "組織学プレ/組織学総論_5骨",
-            "組織学プレ/組織学総論_6血液",
-            "組織学プレ/組織学総論_7骨髄",
-            "組織学プレ/組織学総論_8筋肉",
-            "組織学プレ/組織学総論_9神経組織",
-            "系統解剖/大腿断面",
-            "系統解剖/下腿断面",
-            "ハングル14-17単語",
-          })),
+          browser: HttpGetBrowser(
+              converter: (path) =>
+                  "https://gw31415.github.io/wai_eng/sources/${Uri.encodeFull(path.join("/"))}.csv",
+              paths: const {
+                "骨筋/下肢英単語/1足",
+                "骨筋/下肢英単語/2内転筋群",
+                "骨筋/下肢英単語/3大腿神経支配",
+                "骨筋/下肢英単語/4坐骨神経支配",
+                "骨筋/頭部/脳神経通路",
+                "骨筋/頭部/分離骨英語と個数",
+                "組織学プレ/組織学プレ_重要単語",
+                "組織学プレ/組織学総論_1方法",
+                "組織学プレ/組織学総論_2上皮",
+                "組織学プレ/組織学総論_3結合組織",
+                "組織学プレ/組織学総論_4軟骨",
+                "組織学プレ/組織学総論_5骨",
+                "組織学プレ/組織学総論_6血液",
+                "組織学プレ/組織学総論_7骨髄",
+                "組織学プレ/組織学総論_8筋肉",
+                "組織学プレ/組織学総論_9神経組織",
+                "系統解剖/大腿断面",
+                "系統解剖/下腿断面",
+                "ハングル14-17単語",
+              })),
     );
   }
 }
