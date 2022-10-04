@@ -1,6 +1,6 @@
 name: wai_eng
 description: A flashcard App.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
@@ -12,6 +12,8 @@ dependencies:
   sprung: ^3.0.0
   http: ^0.13.4
   google_fonts: ^3.0.1
+  path_provider: ^2.0.11
+  sqflite: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -25,7 +27,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-      - lib/assets/icon.png
+    - lib/assets/icon.png
 flutter_icons:
   android: true
   ios: true
