@@ -1,4 +1,4 @@
-package com.example.wai_eng
+package dev.amas.wai_eng
 
 import io.flutter.embedding.android.FlutterActivity
 

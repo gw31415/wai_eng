@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.wai_eng">
+    package="dev.amas.wai_eng">
    <application
         android:label="wai_eng"
         android:name="${applicationName}"

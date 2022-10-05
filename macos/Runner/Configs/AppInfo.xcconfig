@@ -8,7 +8,7 @@
 PRODUCT_NAME = wai_eng
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.waiEng
+PRODUCT_BUNDLE_IDENTIFIER = dev.amas.waiEng
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2022 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2022 @gw31415. All rights reserved.
