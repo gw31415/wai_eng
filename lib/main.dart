@@ -107,7 +107,7 @@ class MainApp extends StatelessWidget {
           title: const Text('WaiEng'),
           browser: HttpGetBrowser(
               converter: (path) =>
-                  "https://gw31415.github.io/wai_eng/sources/${Uri.encodeFull(path.join("/"))}.csv",
+                  "https://raw.githubusercontent.com/gw31415/wai_eng/main/sources/${Uri.encodeFull(path.join("/"))}.csv",
               paths: const {
                 "骨筋/下肢英単語/1足",
                 "骨筋/下肢英単語/2内転筋群",
