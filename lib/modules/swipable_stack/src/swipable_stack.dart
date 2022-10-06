@@ -22,6 +22,7 @@ class SwipableStack extends StatefulWidget {
     SwipableStackController? controller,
     this.onSwipeCompleted,
     this.onWillMoveNext,
+    this.onPanStart,
     this.onSwipeCanceled,
     this.swipeNextOnSwipeCanceled,
     this.overlayBuilder,
@@ -60,6 +61,9 @@ class SwipableStack extends StatefulWidget {
   ///
   /// If this Callback returns false, the action will be canceled.
   final OnWillMoveNext? onWillMoveNext;
+
+  /// Callback called on pan start.
+  final Function(DragStartDetails)? onPanStart;
 
   /// Callback called when the Swipe action is canceled.
   final void Function()? onSwipeCanceled;
@@ -316,6 +320,8 @@ class _SwipableStackState extends State<SwipableStack>
             if (!canSwipe) {
               return;
             }
+
+            widget.onPanStart?.call(d);
 
             if (_swipeCancelAnimationController.animating) {
               _swipeCancelAnimationController

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../modules/swipable_stack/swipable_stack.dart';
 import '../modules/flashcardbook.dart';
 
@@ -121,6 +122,9 @@ class _FlashCardBookPlayerScaffoldState
                                         detectableSwipeDirections: const {
                                           SwipeDirection.right,
                                           SwipeDirection.left,
+                                        },
+                                        onPanStart: (_) {
+                                          HapticFeedback.lightImpact();
                                         },
                                         swipeNextOnSwipeCanceled:
                                             const SwipeNextArgs(
