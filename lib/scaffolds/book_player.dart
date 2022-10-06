@@ -153,11 +153,13 @@ class _FlashCardBookPlayerScaffoldState
                     switch (direction) {
                       case SwipeDirection.down:
                         bookop.onNext(index, FlashCardResult.skipped);
-                        _showSnackBar(context, "SKIPPED", Colors.grey);
+                        _showSnackBar(context, "SKIPPED",
+                            Theme.of(context).colorScheme.surface);
                         break;
                       default:
                         bookop.onNext(index, FlashCardResult.ok);
-                        _showSnackBar(context, "OK", Colors.green);
+                        _showSnackBar(context, "OK",
+                            Theme.of(context).colorScheme.primaryContainer);
                     }
                     nextCardAvailable = bookop.get(index + 1) != null;
                   },
