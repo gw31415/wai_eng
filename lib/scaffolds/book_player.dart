@@ -116,7 +116,7 @@ class _FlashCardBookPlayerScaffoldState
                 final bookView = SwipableStack(
                   controller: _controller,
                   swipeAnchor: SwipeAnchor.top,
-                  swipeAssistDuration: const Duration(milliseconds: 100),
+                  swipeAssistDuration: const Duration(milliseconds: 300),
                   detectableSwipeDirections: const {
                     SwipeDirection.right,
                     SwipeDirection.left,
@@ -128,7 +128,7 @@ class _FlashCardBookPlayerScaffoldState
                     swipeDirection: SwipeDirection.down,
                     shouldCallCompletionCallback: true,
                     ignoreOnWillMoveNext: false,
-                    duration: Duration(milliseconds: 200),
+                    duration: Duration(milliseconds: 250),
                   ),
                   onWillMoveNext: (_, __) {
                     ScaffoldMessenger.of(context).clearSnackBars();
@@ -153,13 +153,11 @@ class _FlashCardBookPlayerScaffoldState
                     switch (direction) {
                       case SwipeDirection.down:
                         bookop.onNext(index, FlashCardResult.skipped);
-                        _showSnackBar(context, "SKIPPED",
-                            Theme.of(context).colorScheme.surface);
+                        _showSnackBar(context, "SKIPPED");
                         break;
                       default:
                         bookop.onNext(index, FlashCardResult.ok);
-                        _showSnackBar(context, "OK",
-                            Theme.of(context).colorScheme.primaryContainer);
+                        _showSnackBar(context, "OK", primary: true);
                     }
                     nextCardAvailable = bookop.get(index + 1) != null;
                   },
@@ -201,23 +199,29 @@ class _FlashCardBookPlayerScaffoldState
 }
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason> _showSnackBar(
-        BuildContext context, String msg, Color color) =>
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        duration: const Duration(milliseconds: 500),
-        backgroundColor: color,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
-        content: SizedBox(
-          height: 48,
-          child: Center(
-            child: Text(
-              msg,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+    BuildContext context, String msg,
+    {bool primary = false}) {
+  final colorScheme = Theme.of(context).colorScheme;
+  return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      duration: const Duration(milliseconds: 500),
+      backgroundColor:
+          primary ? colorScheme.primaryContainer : colorScheme.surfaceVariant,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+      ),
+      content: SizedBox(
+        height: 48,
+        child: Center(
+          child: Text(
+            msg,
+            style: TextStyle(
+              color: primary
+                  ? colorScheme.onPrimaryContainer
+                  : colorScheme.onSurfaceVariant,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
             ),
           ),
-        )));
+        ),
+      )));
+}
