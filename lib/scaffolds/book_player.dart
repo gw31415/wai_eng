@@ -167,27 +167,34 @@ class _FlashCardBookPlayerScaffoldState
                     Align(
                       // StatusRow
                       alignment: Alignment.bottomCenter,
-                      child: progressIndicateText,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: progressIndicateText,
+                      ),
                     ),
                     AnimatedSwitcher(
                       // リプレイボタンとの切りかえ
                       duration: const Duration(milliseconds: 100),
                       child: bookop.isForceFinished || !nextCardAvailable
                           ? Center(child: replayButton)
-                          : Stack(
+                          : Column(
                               // FlashCard & アンドゥボタン表示部
                               children: [
                                   Padding(
                                       // FlashCard
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 100, horizontal: 8),
-                                      child: bookView),
-                                  Align(
-                                    // アンドゥボタン
-                                    alignment: Alignment.topCenter,
+                                      padding: const EdgeInsets.all(8),
+                                      child: undoButton),
+                                  Expanded(
                                     child: Padding(
-                                        padding: const EdgeInsets.only(top: 8),
-                                        child: undoButton),
+									  // progressIndicateTextのためのスペース
+                                      padding: const EdgeInsets.only(bottom: 24),
+                                      child: LayoutBuilder(
+                                          builder: (context, constraints) {
+                                        return Padding(
+                                            padding: const EdgeInsets.all(8),
+                                            child: bookView);
+                                      }),
+                                    ),
                                   ),
                                 ]),
                     ),
