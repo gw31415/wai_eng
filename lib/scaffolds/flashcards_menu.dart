@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../modules/flashcardbook.dart';
 import './book_player.dart';
 import './book_table_viewer.dart';
@@ -105,6 +106,7 @@ class _FlashCardBookBrowseScaffoldState
 
                 _openSubMenu() {
                   Future.microtask(() async {
+                    final hapticService = HapticFeedback.lightImpact();
                     final nextTask = await showModalBottomSheet<Function>(
                         context: context,
                         builder: (BuildContext context) {
@@ -132,6 +134,7 @@ class _FlashCardBookBrowseScaffoldState
                           );
                         });
                     if (nextTask != null) nextTask();
+                    await hapticService;
                   });
                 }
 
