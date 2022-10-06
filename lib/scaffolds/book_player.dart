@@ -19,7 +19,7 @@ class _FlashCardBookPlayerScaffoldState
   late SwipableStackController _controller;
   late Future<FlashCardBookOperator> _opFuture;
   late bool nextCardAvailable;
-  double Function()? progressbar;
+  var progressbar = () => .0;
 
   void _listenController() {
     setState(() {});
@@ -55,8 +55,7 @@ class _FlashCardBookPlayerScaffoldState
         appBar: AppBar(
           title: widget.title,
           bottom: PreferredSize(
-              child: LinearProgressIndicator(
-                  value: progressbar == null ? 0 : progressbar?.call()),
+              child: LinearProgressIndicator(value: progressbar()),
               preferredSize: const Size.fromHeight(8)),
         ),
         body: SafeArea(
