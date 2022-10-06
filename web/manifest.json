@@ -3,9 +3,9 @@
     "short_name": "wai_eng",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#000000",
+    "theme_color": "#009688",
+    "description": "A Flashcard App.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
