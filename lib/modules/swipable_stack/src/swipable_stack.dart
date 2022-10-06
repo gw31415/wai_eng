@@ -628,11 +628,32 @@ class _SwipableStackState extends State<SwipableStack>
       context: context,
       difference: currentSession.difference,
     );
-    _swipeAssistController.duration = _getSwipeAssistDuration(
+    final duration = _getSwipeAssistDuration(
       distToAssist: distToAssist,
       swipeDirection: swipeDirection,
       difference: currentSession.difference,
     );
+    // 終了時コールバック
+    final onEnd = (() {
+      widget.onSwipeCompleted?.call(
+        _currentIndex,
+        swipeDirection,
+      );
+      widget.controller._completeAction();
+    });
+    // 終了時コールバックでのエラー処理
+    var errWhileOnEnd = ((dynamic c) {
+      widget.controller.cancelAction();
+    });
+    if (duration.isNegative) {
+      try {
+        onEnd();
+      } catch (e) {
+        errWhileOnEnd(e);
+      }
+      return;
+    }
+    _swipeAssistController.duration = duration;
 
     final animation = _swipeAssistController.swipeAnimation(
       startPosition: currentSession.current,
@@ -650,18 +671,12 @@ class _SwipableStackState extends State<SwipableStack>
     }
 
     animation.addListener(animate);
-    _swipeAssistController.forward(from: 0).then(
-      (_) {
-        animation.removeListener(animate);
-        widget.onSwipeCompleted?.call(
-          _currentIndex,
-          swipeDirection,
-        );
-        widget.controller._completeAction();
-      },
-    ).catchError((dynamic c) {
+    _swipeAssistController.forward(from: 0).then((_) {
       animation.removeListener(animate);
-      widget.controller.cancelAction();
+      onEnd();
+    }).catchError((e) {
+      animation.removeListener(animate);
+      errWhileOnEnd(e);
     });
   }
 
