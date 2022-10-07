@@ -186,12 +186,32 @@ class _FlashCardBookPlayerScaffoldState
                                       child: undoButton),
                                   Expanded(
                                     child: Padding(
-									  // progressIndicateTextのためのスペース
-                                      padding: const EdgeInsets.only(bottom: 24),
+                                      // progressIndicateTextのためのスペース
+                                      padding:
+                                          const EdgeInsets.only(bottom: 24),
                                       child: LayoutBuilder(
                                           builder: (context, constraints) {
+                                        double padWidth = 240;
+                                        if (constraints.maxWidth < 600) {
+                                          padWidth = 8;
+                                        } else if (constraints.maxWidth < 764) {
+                                          padWidth = 100;
+                                        } else if (constraints.maxWidth <
+                                            1024) {
+                                          padWidth = 160;
+                                        }
+                                        double padHeight = 8;
+                                        if (constraints.maxHeight > 600) {
+                                          padHeight = 20;
+                                        } else if (constraints.maxHeight >
+                                            400) {
+                                          padHeight = 16;
+                                        }
                                         return Padding(
-                                            padding: const EdgeInsets.all(8),
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: padWidth,
+                                              vertical: padHeight,
+                                            ),
                                             child: bookView);
                                       }),
                                     ),
