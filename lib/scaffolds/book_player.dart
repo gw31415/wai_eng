@@ -113,7 +113,7 @@ class _FlashCardBookPlayerScaffoldState
                 );
 
                 /// カードのレイアウト
-                final bookView = SwipableStack(
+                final flashcard = SwipableStack(
                   controller: _controller,
                   swipeAnchor: SwipeAnchor.top,
                   swipeAssistDuration: const Duration(milliseconds: 300),
@@ -174,16 +174,16 @@ class _FlashCardBookPlayerScaffoldState
                     ),
                     AnimatedSwitcher(
                       // リプレイボタンとの切りかえ
-                      duration: const Duration(milliseconds: 100),
+                      duration: const Duration(milliseconds: 150),
                       child: bookop.isForceFinished || !nextCardAvailable
                           ? Center(child: replayButton)
                           : Column(
                               // FlashCard & アンドゥボタン表示部
                               children: [
                                   Padding(
-                                      // FlashCard
-                                      padding: const EdgeInsets.all(8),
-                                      child: undoButton),
+                                    padding: const EdgeInsets.all(8),
+                                    child: undoButton,
+                                  ),
                                   Expanded(
                                     child: Padding(
                                       // progressIndicateTextのためのスペース
@@ -208,11 +208,12 @@ class _FlashCardBookPlayerScaffoldState
                                           padHeight = 16;
                                         }
                                         return Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: padWidth,
-                                              vertical: padHeight,
-                                            ),
-                                            child: bookView);
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: padWidth,
+                                            vertical: padHeight,
+                                          ),
+                                          child: flashcard,
+                                        );
                                       }),
                                     ),
                                   ),
