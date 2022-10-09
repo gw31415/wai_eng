@@ -11,23 +11,27 @@ Future<HttpGetCacheResult> httpGetCache(String url) async {
   final record = _store.record(url);
   final db = await _urldb;
   final httpClient = http.Client();
-  final res = (await httpClient
-      .get(Uri.parse(url))
-      .timeout(const Duration(minutes: 1)));
-  if (res.statusCode == 200) {
-    return HttpGetCacheResult(status: HttpGetCacheStatus.ok, body: res.body);
-  }
   try {
-    db.transaction((transaction) async {
-      await record.put(transaction, res.body);
-    });
+    final res = (await httpClient
+        .get(Uri.parse(url))
+        .timeout(const Duration(seconds: 30)));
+    if (res.statusCode == 200) {
+      db.transaction((transaction) async {
+        await record.put(transaction, res.body);
+      });
+      return HttpGetCacheResult(status: HttpGetCacheStatus.ok, body: res.body);
+    }
+    throw res.statusCode;
   } catch (e) {
     final cache = await record.get(db);
     if (cache != null) {
       return HttpGetCacheResult(status: HttpGetCacheStatus.ok, body: cache);
     }
+    return HttpGetCacheResult(
+      status: HttpGetCacheStatus.error,
+      body: '$e',
+    );
   }
-  return HttpGetCacheResult(status: HttpGetCacheStatus.error, body: 'Cannot get data from $url');
 }
 
 enum HttpGetCacheStatus {
