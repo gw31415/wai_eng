@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import '../modules/flashcardbook.dart';
 import './book_player.dart';
 import './book_table_viewer.dart';
+import 'package:wakelock/wakelock.dart';
 
 enum SegmentType {
   flashCardBook,
@@ -65,13 +66,18 @@ class _FlashCardBookBrowseScaffoldState
                 List<Widget> listItems = [];
                 final cards = browser.getBook(path);
                 _openBookPlayer() {
+                  final platform = Theme.of(context).platform;
+                  if (platform == TargetPlatform.iOS ||
+                      platform == TargetPlatform.android) {
+                    Wakelock.enable();
+                  }
                   Navigator.of(context, rootNavigator: true)
                       .push(MaterialPageRoute(builder: (context) {
                     return FlashCardBookPlayerScaffold(
                       book: cards,
                       title: Text(name),
                     );
-                  }));
+                  })).then((value) => Wakelock.disable());
                 }
 
                 listItems.add(

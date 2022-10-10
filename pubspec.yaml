@@ -18,6 +18,7 @@ dependencies:
       ref: dart2_3
       path: app_sembast
       version: '>=0.3.0'
+  wakelock: ^0.6.2
 
 dev_dependencies:
   flutter_test:
