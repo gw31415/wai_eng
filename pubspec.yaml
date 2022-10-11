@@ -19,6 +19,7 @@ dependencies:
       path: app_sembast
       version: '>=0.3.0'
   wakelock: ^0.6.2
+  settings_ui: ^2.0.2
 
 dev_dependencies:
   flutter_test:

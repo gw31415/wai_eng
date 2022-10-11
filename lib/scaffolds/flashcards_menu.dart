@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import '../modules/flashcardbook.dart';
 import './book_player.dart';
 import './book_table_viewer.dart';
+import './preferences.dart';
+import '../modules/preferences.dart';
 import 'package:wakelock/wakelock.dart';
 
 enum SegmentType {
@@ -65,10 +67,9 @@ class _FlashCardBookBrowseScaffoldState
                 // ダイアログの構築
                 List<Widget> listItems = [];
                 final cards = browser.getBook(path);
-                _openBookPlayer() {
-                  final platform = Theme.of(context).platform;
-                  if (platform == TargetPlatform.iOS ||
-                      platform == TargetPlatform.android) {
+                _openBookPlayer() async {
+                  final wakelock = await PreferencesManager.wakelock.getter();
+                  if (wakelock) {
                     Wakelock.enable();
                   }
                   Navigator.of(context, rootNavigator: true)
@@ -205,6 +206,15 @@ class _FlashCardBookBrowseScaffoldState
                       ),
                       applicationLegalese: '©2022 gw31415', // 権利情報
                     );
+                  },
+                ),
+                PopupMenuItem(
+                  child: const Text('設定'),
+                  value: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return const PreferencesScaffold();
+                    }));
                   },
                 )
               ];
