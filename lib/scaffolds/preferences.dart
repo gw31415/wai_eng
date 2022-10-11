@@ -67,6 +67,29 @@ class _PreferencesScaffoldState extends State<PreferencesScaffold> {
                       title: const Text('画面消灯を抑制する'))
                 ],
               ),
+              SettingsSection(
+                title: const Text('情報'),
+                tiles: [
+                  SettingsTile.navigation(
+                    title: const Text('ライセンス情報'),
+                    onPressed: (context) {
+                      showLicensePage(
+                        context: context,
+                        applicationIcon: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.asset(
+                            'lib/assets/icon.png',
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        applicationLegalese: '©2022 gw31415', // 権利情報
+                      );
+                    },
+                  )
+                ],
+              )
             ],
           );
         },

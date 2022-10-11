@@ -184,42 +184,14 @@ class _FlashCardBookBrowseScaffoldState
             : IconButton(
                 onPressed: _popPwd, icon: const Icon(Icons.keyboard_arrow_up)),
         actions: [
-          PopupMenuButton<Function()>(
-            onSelected: (Function func) {
-              func();
-            },
-            itemBuilder: (BuildContext c) {
-              return [
-                PopupMenuItem(
-                  child: const Text("このアプリについて"),
-                  value: () {
-                    showAboutDialog(
-                      context: context,
-                      applicationIcon: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.asset(
-                          'lib/assets/icon.png',
-                          width: 80,
-                          height: 80,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      applicationLegalese: '©2022 gw31415', // 権利情報
-                    );
-                  },
-                ),
-                PopupMenuItem(
-                  child: const Text('設定'),
-                  value: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) {
-                      return const PreferencesScaffold();
-                    }));
-                  },
-                )
-              ];
-            },
-          )
+          IconButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return const PreferencesScaffold();
+                }));
+              },
+              icon: const Icon(Icons.settings))
         ],
       ),
       body: Navigator(
