@@ -75,14 +75,11 @@ class _PreferencesScaffoldState extends State<PreferencesScaffold> {
                     onPressed: (context) {
                       showLicensePage(
                         context: context,
-                        applicationIcon: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.asset(
-                            'lib/assets/icon.png',
-                            width: 80,
-                            height: 80,
-                            fit: BoxFit.fill,
-                          ),
+                        applicationIcon: Image.asset(
+                          'assets/icon.png',
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.fill,
                         ),
                         applicationLegalese: '©2022 gw31415', // 権利情報
                       );
