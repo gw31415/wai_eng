@@ -32,7 +32,8 @@ abstract class FlashCardBookOperator {
   /// アンドゥボタン押下時に発火するコールバック。
   void onUndo();
 
-  /// 進捗状況:何枚目か
+  /// 進捗が何枚分か。何枚覚えたかなどを表わす。
+  /// .lengthとの比でプログレスバーが表示され、下部のラベルが設定される。
   int? get progress {
     return null;
   }
