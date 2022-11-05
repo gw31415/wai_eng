@@ -307,6 +307,9 @@ class _SwipableStackState extends State<SwipableStack>
     super.dispose();
   }
 
+  /// rewindの際にバックに表示される、Operatorの状態が変化した後でも保持されるカードのWidget
+  Widget? _rewindingBackCard;
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -420,61 +423,65 @@ class _SwipableStackState extends State<SwipableStack>
       detectableDirections: widget.detectableSwipeDirections,
     );
 
-    final session = _currentSession ?? _SwipableStackPosition.notMoving();
-    final cards = List<Widget>.generate(
-      // swipeDirectionRate != null はスワイプ途中。
-			// スワイプ途中なら次のカードも見える。
-			// スワイプを始めるまでは最表面のみ表示する。
-      swipeDirectionRate == null ? 1 : 2,
-      (index) {
-        final itemIndex = _currentIndex + index;
-        final child = widget.builder(
-          context,
-          ItemSwipeProperties(
-            index: itemIndex,
-            stackIndex: index,
-            constraints: constraints,
-            direction: swipeDirectionRate?.direction,
-            swipeProgress: swipeDirectionRate?.rate ?? 0.0,
-          ),
-        );
-        return _SwipablePositioned(
-          key: child.key ?? ValueKey(_currentIndex + index),
-          session: session,
-          index: index,
-          viewFraction: widget.viewFraction,
-          swipeAnchor: widget.swipeAnchor,
-          areaConstraints: constraints,
-          child: child,
-        );
-      },
-    ).reversed.toList();
-    // preparing rewind
-    if (widget.controller.canRewind) {
-      final rewindTargetIndex = _currentIndex - 1;
+    _getCard(int index, {_SwipableStackPosition? session}) {
+      // sessionは位置を表わすらしい。明示的に指定していればそれにする。
+      // currentSessionがなく、かつ明示的に指定されていない場合はnotMovingにする。
+      final ss =
+          session ?? _currentSession ?? _SwipableStackPosition.notMoving();
+      final int itemIndex = _currentIndex + index;
       final child = widget.builder(
         context,
         ItemSwipeProperties(
-          index: rewindTargetIndex,
-          stackIndex: -1,
+          index: itemIndex,
+          stackIndex: index,
           constraints: constraints,
           direction: swipeDirectionRate?.direction,
           swipeProgress: swipeDirectionRate?.rate ?? 0.0,
         ),
       );
-      final previousSession = widget.controller._previousSession;
-      if (previousSession != null) {
-        cards.add(
+      return _SwipablePositioned(
+        key: child.key ?? ValueKey(_currentIndex + index),
+        session: ss,
+        index: index,
+        viewFraction: widget.viewFraction,
+        swipeAnchor: widget.swipeAnchor,
+        areaConstraints: constraints,
+        child: child,
+      );
+    }
+
+    // 末尾が操作中のカード
+    late final List<_SwipablePositioned> cards;
+    if (swipeDirectionRate == null) {
+      // カードに触れられていない。
+      cards = [_getCard(0)];
+    } else {
+      // スワイプ途中もしくはrewind途中。
+      if (_rewinding && _rewindingBackCard != null) {
+			  // rewind中
+        cards = [
           _SwipablePositioned(
-            key: child.key ?? ValueKey(rewindTargetIndex),
-            session: previousSession,
-            index: -1,
+            session: _SwipableStackPosition.notMoving(),
+            index: _currentIndex - 1,
             viewFraction: widget.viewFraction,
             swipeAnchor: widget.swipeAnchor,
             areaConstraints: constraints,
-            child: child,
+            child: _rewindingBackCard!,
           ),
-        );
+          _getCard(0)
+        ];
+      } else {
+			  // スワイプ中
+        cards = [_getCard(1), _getCard(0)];
+      }
+    }
+    _rewindingBackCard = cards.first.child;
+
+    // preparing rewind
+    if (widget.controller.canRewind) {
+      final previousSession = widget.controller._previousSession;
+      if (previousSession != null) {
+        cards.add(_getCard(-1, session: previousSession));
       }
     }
 
@@ -486,9 +493,10 @@ class _SwipableStackState extends State<SwipableStack>
       swipeDirectionRate: swipeDirectionRate,
     );
     if (overlay != null) {
-      cards.add(overlay);
+      return [...cards, overlay];
+    } else {
+      return cards;
     }
-    return cards;
   }
 
   Widget? _buildOverlay({
