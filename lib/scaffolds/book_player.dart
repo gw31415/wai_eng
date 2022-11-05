@@ -29,7 +29,7 @@ class _FlashCardBookPlayerScaffoldState
   void _initCards() {
     setState(() {
       _controller = SwipableStackController()..addListener(_listenController);
-      _opFuture = widget.book.init();
+      _opFuture = widget.book.open();
       nextCardAvailable = true;
     });
   }
@@ -152,11 +152,11 @@ class _FlashCardBookPlayerScaffoldState
                   onSwipeCompleted: (index, direction) {
                     switch (direction) {
                       case SwipeDirection.down:
-                        bookop.onNext(index, FlashCardResult.skipped);
+                        bookop.onSwipeCompleted(index, FlashCardResult.skipped);
                         _showSnackBar(context, "SKIPPED");
                         break;
                       default:
-                        bookop.onNext(index, FlashCardResult.ok);
+                        bookop.onSwipeCompleted(index, FlashCardResult.ok);
                         _showSnackBar(context, "OK", primary: true);
                     }
                     nextCardAvailable = bookop.get(index + 1) != null;

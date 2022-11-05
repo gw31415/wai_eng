@@ -139,7 +139,7 @@ final _howToUse = TutorialBook(body: [
 class TutorialBook extends FlashCardBook {
   final List<FlashCard> _body;
   @override
-  init() async {
+  open() async {
     return Future.value(TutorialOperator(body: _body));
   }
 
@@ -158,7 +158,7 @@ class TutorialOperator extends FlashCardBookOperator {
   }
 
   @override
-  onNext(index, res) {}
+  onSwipeCompleted(index, res) {}
   @override
   onUndo() {}
 

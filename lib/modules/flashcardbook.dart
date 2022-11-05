@@ -1,29 +1,35 @@
 import 'dart:math' as math;
 import './flashcard.dart';
 
+/// カードをスワイプしたか、スキップしたか。
 enum FlashCardResult {
   ok,
   skipped,
 }
 
+/// 全てのフラッシュカードブックの親クラス。
 abstract class FlashCardBook {
   const FlashCardBook();
 
   /// 一覧表示するためのゲッター。一覧表示に対応しない場合はnullを返す
-  Future<List<FlashCard>>? get body {
+  Future<List<FlashCard>>? intoCardList() {
     return null;
   }
 
   /// FlashCardBookPlayerの初期化時やリプレイ時に発火する。
   /// FlashCardBookOperatorのインスタンスを新規に作成しFlashCardBookPlayerに返す。
-  Future<FlashCardBookOperator> init();
+  Future<FlashCardBookOperator> open();
 }
 
+/// フラッシュカードを新しく実行する際にFlashCardBookPlayerに渡されるステートの遷移を司るクラス。
 abstract class FlashCardBookOperator {
   /// nullを返した場合、最表面カードがnullの番になったタイミングでカード操作が終了されリプレイボタンが表示される。
   FlashCard? get(int index);
 
-  void onNext(int index, FlashCardResult res);
+  /// カードのスワイプ終了時のコールバック。
+  void onSwipeCompleted(int index, FlashCardResult res);
+
+  /// アンドゥボタン押下時に発火するコールバック。
   void onUndo();
 
   /// 進捗状況:何枚目か
@@ -37,7 +43,7 @@ abstract class FlashCardBookOperator {
   }
 
   /// FlashCard? get(int index)が空を返さなかった場合でも中断したい場合にtrueを返すように実装する。
-  /// onNextで発火
+  /// 半永久的にカードを回す際など、終了条件をカードのスワイプ始めではなくスワイプ終わり(onSwipeCompletedのタイミング)で評価したい場合に使う。
   bool get isForceFinished {
     return false;
   }
@@ -45,7 +51,7 @@ abstract class FlashCardBookOperator {
 
 abstract class UsersBook extends FlashCardBook {
   @override
-  Future<List<FlashCard>> get body {
+  Future<List<FlashCard>> intoCardList() {
     return _body();
   }
 
@@ -57,8 +63,8 @@ abstract class UsersBook extends FlashCardBook {
 
 class RandomBook extends UsersBook {
   @override
-  init() async {
-    return Future.value(RandomBookOperator(body: await body));
+  open() async {
+    return Future.value(RandomBookOperator(body: await intoCardList()));
   }
 
   RandomBook({required body}) : super(body: body);
@@ -138,7 +144,7 @@ class RandomBookOperator extends FlashCardBookOperator {
   }
 
   @override
-  onNext(int index, FlashCardResult res) {
+  onSwipeCompleted(int index, FlashCardResult res) {
     // 既に記録されたレコードの修正
     final changingRecord = _log[index];
     if (changingRecord.res == null) {

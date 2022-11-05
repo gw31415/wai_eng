@@ -15,7 +15,7 @@ class BookTableScaffold extends StatelessWidget {
         ),
         body: SafeArea(
             child: FutureBuilder(future: Future.microtask(() async {
-          final cards = await book.body;
+          final cards = await book.intoCardList();
           return DataTable(
             columns: const [
               DataColumn(
