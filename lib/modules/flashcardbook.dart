@@ -3,7 +3,10 @@ import './flashcard.dart';
 
 /// カードをスワイプしたか、スキップしたか。
 enum FlashCardResult {
+  /// 左右にスワイプした場合
   ok,
+
+  /// 指を離してスキップした場合
   skipped,
 }
 
