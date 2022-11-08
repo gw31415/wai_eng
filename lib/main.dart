@@ -158,9 +158,10 @@ class TutorialOperator extends FlashCardBookOperator {
   }
 
   @override
-  onSwipeCompleted(index, res) {}
+  String state = "";
+
   @override
-  onUndo() {}
+  onSwipeCompleted(index, res) {}
 
   @override
   final isForceFinished = false;

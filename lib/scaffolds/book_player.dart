@@ -49,6 +49,9 @@ class _FlashCardBookPlayerScaffoldState
       ..dispose();
   }
 
+  // bookopの直前の状態
+  String? beforeState;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,9 +106,9 @@ class _FlashCardBookPlayerScaffoldState
                 /// アンドゥボタン
                 final undoButton = IconButton(
                   icon: const Icon(Icons.undo),
-                  onPressed: _controller.canRewind
+                  onPressed: _controller.canRewind && beforeState != null
                       ? () {
-                          bookop.onUndo();
+                          bookop.state = beforeState!;
                           _controller.rewind();
                         }
                       : null,
@@ -160,6 +163,7 @@ class _FlashCardBookPlayerScaffoldState
                         _showSnackBar(context, "OK", primary: true);
                     }
                     nextCardAvailable = bookop.get(index + 1) != null;
+                    beforeState = bookop.state;
                   },
                 );
                 return Stack(

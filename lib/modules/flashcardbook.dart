@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math' as math;
 import './flashcard.dart';
 
@@ -32,8 +33,9 @@ abstract class FlashCardBookOperator {
   /// カードのスワイプ終了時のコールバック。
   void onSwipeCompleted(int index, FlashCardResult res);
 
-  /// アンドゥボタン押下時に発火するコールバック。
-  void onUndo();
+  /// 状態を表す文字列。アンドゥに利用。
+  String get state;
+  set state(String state);
 
   /// 進捗が何枚分か。何枚覚えたかなどを表わす。
   /// .lengthとの比でプログレスバーが表示され、下部のラベルが設定される。
@@ -75,9 +77,29 @@ class RandomBook extends UsersBook {
 }
 
 class _Record {
-  final int index;
+  late final int index;
   FlashCardResult? res;
   _Record({required this.index, this.res});
+  _Record.fromJson(String json) {
+    final obj = jsonDecode(json);
+    assert(obj is Map);
+    // assert(obj['index'] is int);
+    // assert(obj['ok'] is bool?);
+
+    index = obj['index'] as int;
+    final objOk = obj['ok'] as bool?;
+    if (objOk == null) {
+      res = null;
+    } else {
+      res = objOk ? FlashCardResult.ok : FlashCardResult.skipped;
+    }
+  }
+  get _asJson {
+    return jsonEncode({
+      'index': index,
+      'ok': res == null ? null : res == FlashCardResult.ok,
+    });
+  }
 }
 
 class RandomBookOperator extends FlashCardBookOperator {
@@ -117,6 +139,29 @@ class RandomBookOperator extends FlashCardBookOperator {
   /// カードを呼びだす前にプールしておくところ。
   /// スキップされたカードは再び_bufferの後ろのほうに無作為に戻される。
   late List<int> _buffer;
+
+  @override
+  set state(state) {
+    final obj = jsonDecode(state);
+    assert(obj is Map);
+    assert(obj['rest'] is List<dynamic>);
+    _rest = obj['rest'].cast<int>();
+    assert(obj['log'] is List<dynamic>);
+    _log = (obj['log'].cast<String>() as List<String>)
+        .map((e) => _Record.fromJson(e))
+        .toList();
+    assert(obj['buffer'] is List<dynamic>);
+    _buffer = obj['buffer'].cast<int>();
+  }
+
+  @override
+  get state {
+    return jsonEncode({
+      'rest': _rest,
+      'log': _log.map((e) => e._asJson).toList(),
+      'buffer': _buffer,
+    });
+  }
 
   int get _okCount {
     int okcount = 0;
@@ -182,31 +227,6 @@ class RandomBookOperator extends FlashCardBookOperator {
     // _bufferの前方(後に取りだされる方)に入りやすいよう重みをつけている。
     final position = rand.nextInt(_flowRange ^ 2) ~/ _flowRange;
     _buffer.insert(position, addedIndex);
-  }
-
-  @override
-  onUndo() {
-    // _log: 一枚追加され待機状態になっている & 結果が一枚余計に登録されている。
-
-    // 待機状態に入ったレコードを削除。
-    if (_log.isNotEmpty && _log.last.res == null) _log.removeLast();
-
-    // 最後に結果を登録したレコードを待機状態に戻す
-    for (var logI = _log.length - 1; logI >= 0; logI--) {
-      final record = _log[logI];
-      if (record.res != null) {
-        // 結果が出た最後のレコードを修正
-        _log[logI] = _Record(index: record.index, res: null);
-        break;
-      }
-    }
-
-    // _buffer: Undoの後一枚余計に追加してしまうので、このままだと枚数が多くなってしまうので補正する。
-    // onUndoする前最後にどこに追加したか分からないので、影響の少ないとみなせる最初の要素を_restの最後尾に移動。
-    if (_buffer.isNotEmpty) {
-      _rest.add(_buffer.first);
-      _buffer.remove(0);
-    }
   }
 
   @override
