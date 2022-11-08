@@ -152,6 +152,7 @@ class RandomBookOperator extends FlashCardBookOperator {
         .toList();
     assert(obj['buffer'] is List<dynamic>);
     _buffer = obj['buffer'].cast<int>();
+	rand.nextDouble();
   }
 
   @override

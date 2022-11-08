@@ -153,6 +153,7 @@ class _FlashCardBookPlayerScaffoldState
                     return Card(child: Center(child: card.question));
                   },
                   onSwipeCompleted: (index, direction) {
+                    beforeState = bookop.state;
                     switch (direction) {
                       case SwipeDirection.down:
                         bookop.onSwipeCompleted(index, FlashCardResult.skipped);
@@ -163,7 +164,6 @@ class _FlashCardBookPlayerScaffoldState
                         _showSnackBar(context, "OK", primary: true);
                     }
                     nextCardAvailable = bookop.get(index + 1) != null;
-                    beforeState = bookop.state;
                   },
                 );
                 return Stack(
