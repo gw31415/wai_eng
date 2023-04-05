@@ -11,7 +11,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   sprung: ^3.0.0
   http: ^0.13.4
-  google_fonts: ^3.0.1
+  google_fonts: ^4.0.3
   tekartik_app_flutter_sembast:
     git:
       url: https://github.com/tekartik/app_flutter_utils.dart
@@ -28,7 +28,7 @@ dev_dependencies:
     git:
       url: https://github.com/Davenchy/flutter_launcher_icons.git
       ref: fixMinSdkParseFlutter2.8
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.1
   flutter_native_splash: ^2.1.1
 flutter:
   uses-material-design: true
