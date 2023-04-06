@@ -118,11 +118,12 @@ class MainApp extends StatelessWidget {
                 "内蔵/金井/内分泌",
                 "ハングル14-17単語",
                 "薬理学総論/GPCRの分類",
+                "薬理学総論/シトクロムP450と相互作用する薬剤",
               })),
     );
   }
 }
-
+/*
 // チュートリアルのカードを記述
 final _howToUse = TutorialBook(body: [
   StringCard(
@@ -138,7 +139,6 @@ final _howToUse = TutorialBook(body: [
     answer: "それでは頑張ってください！",
   ),
 ]);
-
 class TutorialBook extends FlashCardBook {
   final List<FlashCard> _body;
   @override
@@ -169,3 +169,4 @@ class TutorialOperator extends FlashCardBookOperator {
   @override
   final isForceFinished = false;
 }
+*/
