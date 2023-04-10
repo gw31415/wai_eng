@@ -1,23 +1,15 @@
+import 'package:csv/csv.dart';
 import "./flashcard.dart";
 
 List<FlashCard> cardFromCsv(String csv) {
-  List<StringCard> cards = [];
-  for (var rowString in csv.split('\n')) {
-    final row = rowString.split(',');
-    switch (row.length) {
-      case 0:
-        break;
-      case 1:
-        if (row[0] != "") {
-          cards.add(StringCard(question: row[0], answer: ""));
-        }
-        break;
-      default:
-        if (row[0] != "" && row[1] != "") {
-          cards.add(StringCard(question: row[0], answer: row[1]));
-        }
-        break;
+  final list = const CsvToListConverter().convert(csv).map((line) {
+    if (line.length < 2) {
+      throw Exception("There are not enough columns in the CSV.");
     }
+    return StringCard(question: line[0] as String, answer: line[1] as String);
+  }).toList();
+  if (list.length <= 1) {
+    throw Exception("There are not enough rows in the CSV.");
   }
-  return cards;
+  return list;
 }
