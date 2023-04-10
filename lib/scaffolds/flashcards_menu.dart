@@ -12,9 +12,13 @@ enum SegmentType {
   directory,
 }
 
+/// 階層構造に単語帳を整理しエクスプロールする構造体
 abstract class FlashCardBookBrowser {
+  /// 現在のディレクトリにあるセグメントを一覧する
   Set<String> ls(List<String> dir);
+  /// ディレクトリか単語帳かを判別する
   SegmentType type(List<String> path);
+  /// パスから辞書データを取得する
   FlashCardBook getBook(List<String> path);
 }
 
