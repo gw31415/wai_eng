@@ -17,20 +17,23 @@ void main() {
   runApp(const MainApp());
 }
 
+/// Dufsサーバーに公開されたファイルを閲覧する。
 class DufsBrowser extends FlashCardBookBrowser {
   /// ベースとなるURL
   /// 最後にスラッシュあり
-  final String baseUrl;
+  final String _baseUrl;
 
   /// ファイル一覧
   final Set<String> _files = {};
 
-  DufsBrowser({required String baseUrl})
-      : baseUrl = baseUrl[baseUrl.length - 1] == "/" ? baseUrl : "$baseUrl/";
+  DufsBrowser({
+    /// DufsサーバーのURL
+    required String dufsUrl,
+  }) : _baseUrl = dufsUrl[dufsUrl.length - 1] == "/" ? dufsUrl : "$dufsUrl/";
 
   // PATHをHTTP GetするURLに変換する関数
   String _converter(List<String> path, {bool json = false}) {
-    return "$baseUrl${Uri.encodeFull(path.join("/"))}?${json ? "json" : "simple"}";
+    return "$_baseUrl${Uri.encodeFull(path.join("/"))}?${json ? "json" : "simple"}";
   }
 
   @override
@@ -88,7 +91,7 @@ class MainApp extends StatelessWidget {
       ),
       home: FlashCardBookBrowseScaffold(
           title: const Text('WaiEng'),
-          browser: DufsBrowser(baseUrl: "https://dufs.amas.dev")),
+          browser: DufsBrowser(dufsUrl: "https://dufs.amas.dev")),
     );
   }
 }
