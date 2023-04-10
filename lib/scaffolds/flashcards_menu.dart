@@ -67,7 +67,7 @@ class _FlashCardBookBrowseScaffoldState
                 // ダイアログの構築
                 List<Widget> listItems = [];
                 final cards = browser.getBook(path);
-                _openBookPlayer() async {
+                openBookPlayer() async {
                   final wakelock = await PreferencesManager.wakelock.getter();
                   if (wakelock) {
                     Wakelock.enable();
@@ -84,14 +84,14 @@ class _FlashCardBookBrowseScaffoldState
                 listItems.add(
                   ListTile(
                     dense: true,
-                    onTap: () => Navigator.pop(context, _openBookPlayer),
+                    onTap: () => Navigator.pop(context, openBookPlayer),
                     leading: const Icon(Icons.play_circle_outline),
                     title: const Text('開く'),
                   ),
                 );
 
                 if (cards is UsersBook) {
-                  _openBookTable() {
+                  openBookTable() {
                     Navigator.of(context, rootNavigator: true)
                         .push(MaterialPageRoute(builder: (context) {
                       return BookTableScaffold(
@@ -104,14 +104,14 @@ class _FlashCardBookBrowseScaffoldState
                   listItems.add(
                     ListTile(
                       dense: true,
-                      onTap: () => Navigator.pop(context, _openBookTable),
+                      onTap: () => Navigator.pop(context, openBookTable),
                       leading: const Icon(Icons.list),
                       title: const Text('一覧'),
                     ),
                   );
                 }
 
-                _openSubMenu() {
+                openSubMenu() {
                   Future.microtask(() async {
                     final hapticService = HapticFeedback.lightImpact();
                     final nextTask = await showModalBottomSheet<Function>(
@@ -147,15 +147,15 @@ class _FlashCardBookBrowseScaffoldState
 
                 return ListTile(
                   title: Text(name),
-                  onTap: _openBookPlayer,
-                  onLongPress: _openSubMenu,
+                  onTap: openBookPlayer,
+                  onLongPress: openSubMenu,
                   leading: Icon(
                     Icons.play_arrow,
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   trailing: IconButton(
                     icon: const Icon(Icons.more_vert),
-                    onPressed: _openSubMenu,
+                    onPressed: openSubMenu,
                   ),
                 );
 

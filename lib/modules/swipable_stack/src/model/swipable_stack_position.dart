@@ -1,22 +1,22 @@
 part of '../swipable_stack.dart';
 
 /// The information to record swiping position for [SwipableStack].
-class _SwipableStackPosition {
-  const _SwipableStackPosition({
+class SwipableStackPosition {
+  const SwipableStackPosition({
     required this.start,
     required this.current,
     required this.local,
   });
 
-  factory _SwipableStackPosition.notMoving() {
-    return const _SwipableStackPosition(
+  factory SwipableStackPosition.notMoving() {
+    return const SwipableStackPosition(
       start: Offset.zero,
       current: Offset.zero,
       local: Offset.zero,
     );
   }
 
-  factory _SwipableStackPosition.readyToSwipeAnimation({
+  factory SwipableStackPosition.readyToSwipeAnimation({
     required SwipeDirection direction,
     required BoxConstraints areaConstraints,
   }) {
@@ -45,7 +45,7 @@ class _SwipableStackPosition {
       }
     }
 
-    return _SwipableStackPosition(
+    return SwipableStackPosition(
       start: Offset.zero,
       current: Offset.zero,
       local: localPosition(),
@@ -63,7 +63,7 @@ class _SwipableStackPosition {
 
   @override
   bool operator ==(Object other) =>
-      other is _SwipableStackPosition &&
+      other is SwipableStackPosition &&
       start == other.start &&
       current == other.current &&
       local == other.local;
@@ -73,18 +73,18 @@ class _SwipableStackPosition {
       runtimeType.hashCode ^ start.hashCode ^ current.hashCode ^ local.hashCode;
 
   @override
-  String toString() => '$_SwipableStackPosition('
+  String toString() => '$SwipableStackPosition('
       'startPosition:$start,'
       'currentPosition:$current,'
       'localPosition:$local'
       ')';
 
-  _SwipableStackPosition copyWith({
+  SwipableStackPosition copyWith({
     Offset? startPosition,
     Offset? currentPosition,
     Offset? localPosition,
   }) =>
-      _SwipableStackPosition(
+      SwipableStackPosition(
         start: startPosition ?? start,
         current: currentPosition ?? current,
         local: localPosition ?? local,

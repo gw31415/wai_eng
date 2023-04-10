@@ -130,10 +130,10 @@ class SwipableStack extends StatefulWidget {
   static const _defaultRewindAnimationCurve = ElasticOutCurve(0.95);
 
   @override
-  _SwipableStackState createState() => _SwipableStackState();
+  SwipableStackState createState() => SwipableStackState();
 }
 
-class _SwipableStackState extends State<SwipableStack>
+class SwipableStackState extends State<SwipableStack>
     with TickerProviderStateMixin {
   late final AnimationController _swipeCancelAnimationController =
       AnimationController(
@@ -163,7 +163,7 @@ class _SwipableStackState extends State<SwipableStack>
   }) {
     final deviceSize = MediaQuery.of(context).size;
     if (swipeDirection.isHorizontal) {
-      double _backMoveDistance({
+      double calculateBackMoveDistance({
         required double moveDistance,
         required double maxWidth,
         required double maxHeight,
@@ -175,12 +175,12 @@ class _SwipableStackState extends State<SwipableStack>
         return math.cos(math.pi / 2 - cardAngle) * maxHeight;
       }
 
-      double _remainingDistance({
+      double remainingDistance({
         required double moveDistance,
         required double maxWidth,
         required double maxHeight,
       }) {
-        final backMoveDistance = _backMoveDistance(
+        final backMoveDistance = calculateBackMoveDistance(
           moveDistance: moveDistance,
           maxHeight: maxHeight,
           maxWidth: maxWidth,
@@ -188,7 +188,7 @@ class _SwipableStackState extends State<SwipableStack>
         final diff = maxWidth - (moveDistance - backMoveDistance);
         return diff < 1
             ? moveDistance
-            : _remainingDistance(
+            : remainingDistance(
                 moveDistance: moveDistance + diff,
                 maxWidth: maxWidth,
                 maxHeight: maxHeight,
@@ -197,7 +197,7 @@ class _SwipableStackState extends State<SwipableStack>
 
       final maxWidth = _areConstraints?.maxWidth ?? deviceSize.width;
       final maxHeight = _areConstraints?.maxHeight ?? deviceSize.height;
-      final maxDistance = _remainingDistance(
+      final maxDistance = remainingDistance(
         moveDistance: maxWidth,
         maxWidth: maxWidth,
         maxHeight: maxHeight,
@@ -272,7 +272,7 @@ class _SwipableStackState extends State<SwipableStack>
   bool get _rewinding => _rewindAnimationController.animating;
 
   /// The current session of swipe action.
-  _SwipableStackPosition? get _currentSession =>
+  SwipableStackPosition? get _currentSession =>
       widget.controller.currentSession;
 
   BoxConstraints? _areConstraints;
@@ -330,7 +330,7 @@ class _SwipableStackState extends State<SwipableStack>
                 ..reset();
             }
             widget.controller._updateSwipe(
-              _SwipableStackPosition(
+              SwipableStackPosition(
                 local: d.localPosition,
                 start: d.globalPosition,
                 current: d.globalPosition,
@@ -354,7 +354,7 @@ class _SwipableStackState extends State<SwipableStack>
             );
             widget.controller._updateSwipe(
               updated ??
-                  _SwipableStackPosition(
+                  SwipableStackPosition(
                     local: d.localPosition,
                     start: d.globalPosition,
                     current: d.globalPosition,
@@ -423,11 +423,11 @@ class _SwipableStackState extends State<SwipableStack>
       detectableDirections: widget.detectableSwipeDirections,
     );
 
-    _getCard(int index, {_SwipableStackPosition? session}) {
+    getCard(int index, {SwipableStackPosition? session}) {
       // sessionは位置を表わすらしい。明示的に指定していればそれにする。
       // currentSessionがなく、かつ明示的に指定されていない場合はnotMovingにする。
       final ss =
-          session ?? _currentSession ?? _SwipableStackPosition.notMoving();
+          session ?? _currentSession ?? SwipableStackPosition.notMoving();
       final int itemIndex = _currentIndex + index;
       final child = widget.builder(
         context,
@@ -454,25 +454,25 @@ class _SwipableStackState extends State<SwipableStack>
     late final List<_SwipablePositioned> cards;
     if (swipeDirectionRate == null) {
       // カードに触れられていない。
-      cards = [_getCard(0)];
+      cards = [getCard(0)];
     } else {
       // スワイプ途中もしくはrewind途中。
       if (_rewinding && _rewindingBackCard != null) {
 			  // rewind中
         cards = [
           _SwipablePositioned(
-            session: _SwipableStackPosition.notMoving(),
+            session: SwipableStackPosition.notMoving(),
             index: _currentIndex - 1,
             viewFraction: widget.viewFraction,
             swipeAnchor: widget.swipeAnchor,
             areaConstraints: constraints,
             child: _rewindingBackCard!,
           ),
-          _getCard(0)
+          getCard(0)
         ];
       } else {
 			  // スワイプ中
-        cards = [_getCard(1), _getCard(0)];
+        cards = [getCard(1), getCard(0)];
       }
     }
     _rewindingBackCard = cards.first.child;
@@ -481,7 +481,7 @@ class _SwipableStackState extends State<SwipableStack>
     if (widget.controller.canRewind) {
       final previousSession = widget.controller._previousSession;
       if (previousSession != null) {
-        cards.add(_getCard(-1, session: previousSession));
+        cards.add(getCard(-1, session: previousSession));
       }
     }
 
@@ -521,7 +521,7 @@ class _SwipableStackState extends State<SwipableStack>
     if (overlay == null) {
       return null;
     }
-    final session = _currentSession ?? _SwipableStackPosition.notMoving();
+    final session = _currentSession ?? SwipableStackPosition.notMoving();
     return _SwipablePositioned.overlay(
       viewFraction: widget.viewFraction,
       session: session,
@@ -556,18 +556,18 @@ class _SwipableStackState extends State<SwipableStack>
       currentPosition: previousSession.current,
       curve: widget.rewindAnimationCurve,
     );
-    void _animate() {
+    void animate() {
       _animatePosition(rewindAnimation);
     }
 
-    rewindAnimation.addListener(_animate);
+    rewindAnimation.addListener(animate);
     _rewindAnimationController.forward(from: 0).then(
       (_) {
-        rewindAnimation.removeListener(_animate);
+        rewindAnimation.removeListener(animate);
         widget.controller._initializeSessions();
       },
     ).catchError((dynamic c) {
-      rewindAnimation.removeListener(_animate);
+      rewindAnimation.removeListener(animate);
       widget.controller._initializeSessions();
     });
   }
@@ -600,18 +600,18 @@ class _SwipableStackState extends State<SwipableStack>
       currentPosition: currentSession.current,
       curve: widget.cancelAnimationCurve,
     );
-    void _animate() {
+    void animate() {
       _animatePosition(cancelAnimation);
     }
 
-    cancelAnimation.addListener(_animate);
+    cancelAnimation.addListener(animate);
     _swipeCancelAnimationController.forward(from: 0).then(
       (_) {
-        cancelAnimation.removeListener(_animate);
+        cancelAnimation.removeListener(animate);
         widget.controller.cancelAction();
       },
     ).catchError((dynamic c) {
-      cancelAnimation.removeListener(_animate);
+      cancelAnimation.removeListener(animate);
       widget.controller.cancelAction();
     });
   }
@@ -701,7 +701,7 @@ class _SwipableStackState extends State<SwipableStack>
         return;
       }
     }
-    final startPosition = _SwipableStackPosition.readyToSwipeAnimation(
+    final startPosition = SwipableStackPosition.readyToSwipeAnimation(
       direction: swipeDirection,
       areaConstraints: _areConstraints!,
     );
@@ -764,7 +764,7 @@ class _SwipablePositioned extends StatelessWidget {
         super(key: key);
 
   static Widget overlay({
-    required _SwipableStackPosition session,
+    required SwipableStackPosition session,
     required BoxConstraints areaConstraints,
     required Widget child,
     required double viewFraction,
@@ -784,7 +784,7 @@ class _SwipablePositioned extends StatelessWidget {
   }
 
   final int index;
-  final _SwipableStackPosition session;
+  final SwipableStackPosition session;
   final Widget child;
   final BoxConstraints areaConstraints;
   final double viewFraction;

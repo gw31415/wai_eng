@@ -7,9 +7,9 @@ final Future<Database> _db = getDatabaseFactory(packageName: 'dev.amas.waiEng')
 Future _setPreference<T>(String label, T value) async {
   final db = await _db;
   final store = StoreRef<String, T>.main();
-  final _preferences = store.record(label);
+  final preferences = store.record(label);
   await db.transaction((transaction) async {
-    await _preferences.put(transaction, value);
+    await preferences.put(transaction, value);
   });
 }
 

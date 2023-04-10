@@ -21,7 +21,7 @@ class _PreferencesScaffoldState extends State<PreferencesScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    final _futureSubscription = [
+    final futureSubscription = [
       PreferencesManager.wakelock.listener((data) {
         if (!mounted) {
           return;
@@ -36,7 +36,7 @@ class _PreferencesScaffoldState extends State<PreferencesScaffold> {
       body: FutureBuilder(
         future: (() async {
           List<ListenerSubscription> res = [];
-          for (var element in _futureSubscription) {
+          for (var element in futureSubscription) {
             res.add(await element);
           }
           return res;

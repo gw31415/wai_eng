@@ -25,7 +25,7 @@ extension _DirectionCheck on SwipeDirection {
   }
 }
 
-extension _SwipableStackPositionX on _SwipableStackPosition {
+extension _SwipableStackPositionX on SwipableStackPosition {
   _SwipeRatePerThreshold? swipeDirectionRate({
     required BoxConstraints constraints,
     required double horizontalSwipeThreshold,

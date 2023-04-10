@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'scaffolds/flashcards_menu.dart';
-import 'modules/flashcard.dart';
 import 'modules/flashcardbook.dart';
 import 'modules/convert.dart' as convert;
 import 'package:flutter/foundation.dart';
@@ -123,50 +122,3 @@ class MainApp extends StatelessWidget {
     );
   }
 }
-/*
-// チュートリアルのカードを記述
-final _howToUse = TutorialBook(body: [
-  StringCard(
-    question: "触れてください。",
-    answer: "Good job!\nこちらが裏面です。\n手を離すと次のカードに進みます。",
-  ),
-  StringCard(
-    question: "こちらは表面です。",
-    answer: "覚えたカードは左右にスワイプしましょう。\n覚えられなかったカードは指を離してスキップしましょう。",
-  ),
-  StringCard(
-    question: "覚えていないカードは記録されます。",
-    answer: "それでは頑張ってください！",
-  ),
-]);
-class TutorialBook extends FlashCardBook {
-  final List<FlashCard> _body;
-  @override
-  open() async {
-    return Future.value(TutorialOperator(body: _body));
-  }
-
-  TutorialBook({required body})
-      : _body = body,
-        super();
-}
-
-class TutorialOperator extends FlashCardBookOperator {
-  final List<FlashCard> body;
-  TutorialOperator({required this.body});
-  @override
-  FlashCard? get(int index) {
-    if (index < body.length) return body[index];
-    return null;
-  }
-
-  @override
-  String state = "";
-
-  @override
-  onSwipeCompleted(index, res) {}
-
-  @override
-  final isForceFinished = false;
-}
-*/
