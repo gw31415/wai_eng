@@ -36,9 +36,6 @@ jobs:
       - run: flutter pub get
       - run: flutter build web --base-href="/wai_eng/" --web-renderer html
         name: Build
-      - run: mv ./sources ./build/web/sources
-        name: Setup Repositories
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
