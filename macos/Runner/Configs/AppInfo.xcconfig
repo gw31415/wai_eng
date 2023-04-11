@@ -5,7 +5,7 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = wai_eng
+PRODUCT_NAME = WaiEng
 
 // The application's bundle identifier
 PRODUCT_BUNDLE_IDENTIFIER = dev.amas.waiEng
