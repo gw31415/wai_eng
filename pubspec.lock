@@ -381,10 +381,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_foundation
-      sha256: "818b2dc38b0f178e0ea3f7cf3b28146faab11375985d815942a68eee11c2d0f7"
+      sha256: ad4c4d011830462633f03eb34445a45345673dfd4faf1ab0b4735fbd93b19183
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.1"
+    version: "2.2.2"
   path_provider_linux:
     dependency: transitive
     description:
@@ -594,18 +594,18 @@ packages:
     dependency: transitive
     description:
       name: sqflite_common_ffi
-      sha256: "79c719db08d3b779919da8679c4f1c2f5d8792b5ceb35a0eb872525ce2724cf8"
+      sha256: "0595da0b418deff5a93a20e15811e73ea1bbce89745eeebed87c37f8027b7a5d"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.2"
+    version: "2.2.3"
   sqflite_common_ffi_web:
     dependency: transitive
     description:
       name: sqflite_common_ffi_web
-      sha256: "9a750758387565458f897bedc79a5c2801ba9eb81d91dfd9deada9ee76676a2b"
+      sha256: cfeae4cac17f1e1621e1c7b582aff5ac51b2411fbfe63cb24896e7b1da274258
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.3+3"
+    version: "0.3.4"
   sqlite3:
     dependency: transitive
     description:
@@ -798,10 +798,10 @@ packages:
     dependency: transitive
     description:
       name: web_socket_channel
-      sha256: ca49c0bc209c687b887f30527fb6a9d80040b072cc2990f34b9bec3e7663101b
+      sha256: d88238e5eac9a42bb43ca4e721edba3c08c6354d4a53063afaa568516217621b
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.0"
+    version: "2.4.0"
   webkit_inspection_protocol:
     dependency: transitive
     description:
