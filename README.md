@@ -1,16 +1,22 @@
-# wai_eng
+# WaiEng - 英単語を覚えるためのアプリ
 
-A new Flutter project.
+WaiEngはFlutter製の汎用単語学習アプリです。カード形式で単語と意味を表示し、タップすると答えが表示されます。覚えていない単語は画面から指を離すだけでOKです。十分覚えたらスワイプしてください。覚えていない単語は優先的に表示されるようになっています。
 
-## Getting Started
+## 特徴
 
-This project is a starting point for a Flutter application.
+- シンプルで使いやすいUI
+- カスタマイズ可能な単語帳
+- 覚えていない単語を優先的に表示する
+- ダークモード対応
+- オフラインでも利用可能
 
-A few resources to get you started if this is your first Flutter project:
+## 使い方
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+1. アプリを起動すると、サーバーに保持されている単語帳が一覧で表示されます。
+2. 単語帳を選択すると、カード形式で単語が表示されます。タップすると意味が見れます。
+3. 単語を覚えていない場合は単に指を離し、覚えた単語はスワイプします。
+4. 覚えた単語は少なく表示されるようになり、覚えていない単語は多く表示されるようになります。
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## フィードバック
+
+WaiEngはまだ開発中のアプリです。バグや改善点などがありましたら、GitHubのissueでお知らせください。
