@@ -1,6 +1,49 @@
 import 'package:flutter/material.dart';
 import '../modules/flashcardbook.dart';
 
+class OpenCloseCard extends StatefulWidget {
+  final Widget question;
+  final Widget answer;
+  OpenCloseCard({Key? key, required this.question, required this.answer})
+      : super(key: key);
+
+  @override
+  State<OpenCloseCard> createState() => _OpenCloseCardState();
+}
+
+class _OpenCloseCardState extends State<OpenCloseCard> {
+  var ontap = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Listener(
+      onPointerDown: (details) {
+        setState(() {
+          ontap = true;
+        });
+      },
+      onPointerUp: (details) {
+        setState(() {
+          ontap = false;
+        });
+      },
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: Stack(children: [
+            Center(
+              child: Opacity(opacity: ontap ? 0 : 1, child: widget.question),
+            ),
+            Center(
+              child: Opacity(opacity: ontap ? 1 : 0, child: widget.answer),
+            ),
+          ]),
+        ),
+      ),
+    );
+  }
+}
+
 class BookTableScaffold extends StatelessWidget {
   final UsersBook book;
   final Text title;
@@ -16,30 +59,18 @@ class BookTableScaffold extends StatelessWidget {
         body: SafeArea(
             child: FutureBuilder(future: Future.microtask(() async {
           final cards = await book.intoCardList();
-          return DataTable(
-            columns: const [
-              DataColumn(
-                label: Text(
-                  '問題',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  '答え',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-            rows: cards.map((card) {
-              return DataRow(
-                cells: [DataCell(card.questionAlt), DataCell(card.answerAlt)],
-              );
-            }).toList(),
+          return ListView.builder(
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              if (index + 1 > cards.length) {
+                return null;
+              } else {
+                return OpenCloseCard(
+                  question: cards[index].questionAlt,
+                  answer: cards[index].answerAlt,
+                );
+              }
+            },
           );
         }), builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -56,9 +87,8 @@ class BookTableScaffold extends StatelessWidget {
               ),
             );
           }
-          final dataTable = snapshot.data as DataTable;
-          return SingleChildScrollView(
-              child: Center(child: FittedBox(child: dataTable)));
+          final view = snapshot.data as ListView;
+          return view;
         })));
   }
 }
