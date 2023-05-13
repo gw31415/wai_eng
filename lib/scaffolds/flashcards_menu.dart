@@ -221,7 +221,7 @@ class _FlashCardBookBrowseScaffoldState
         leading: pages.isEmpty
             ? null
             : IconButton(
-                onPressed: _popPwd, icon: const Icon(Icons.keyboard_arrow_up)),
+                onPressed: _popPwd, icon: const Icon(Icons.arrow_back)),
         actions: [
           IconButton(
               onPressed: () {
