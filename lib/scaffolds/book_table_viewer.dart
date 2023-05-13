@@ -4,7 +4,7 @@ import '../modules/flashcardbook.dart';
 class OpenCloseCard extends StatefulWidget {
   final Widget question;
   final Widget answer;
-  OpenCloseCard({Key? key, required this.question, required this.answer})
+  const OpenCloseCard({Key? key, required this.question, required this.answer})
       : super(key: key);
 
   @override

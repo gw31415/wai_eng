@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
 import 'scaffolds/flashcards_menu.dart';
 import 'modules/flashcardbook.dart';
 import 'modules/convert.dart' as convert;
 import 'package:flutter/foundation.dart';
 import 'modules/httpgetcache.dart';
+import 'dart:convert';
+import 'package:path_provider/path_provider.dart';
 
 void main() {
   LicenseRegistry.addLicense(() {
@@ -32,13 +35,14 @@ class DufsBrowser extends FlashCardBookBrowser {
   }) : _baseUrl = dufsUrl[dufsUrl.length - 1] == "/" ? dufsUrl : "$dufsUrl/";
 
   // PATHをHTTP GetするURLに変換する関数
-  String _converter(List<String> path, {bool json = false}) {
-    return "$_baseUrl${Uri.encodeFull(path.join("/"))}?${json ? "json" : "simple"}";
+  String _converter(List<String> path,
+      {bool simple = false, bool encoded = true}) {
+    return "$_baseUrl${encoded ? Uri.encodeFull(path.join("/")) : path.join("/")}${simple ? "?simple" : ""}";
   }
 
   @override
   Future<Set<String>> ls(List<String> dir) async {
-    final res = await httpGetCache(_converter(dir));
+    final res = await httpGetCache(_converter(dir, simple: true));
     if (res.status != HttpGetCacheStatus.error) {
       return res.body.trim().split('\n').map((line) {
         if (line[line.length - 1] == '/') {
@@ -55,13 +59,34 @@ class DufsBrowser extends FlashCardBookBrowser {
   @override
   FlashCardBook getBook(List<String> path) {
     final uri = _converter(path);
-    return RandomBook(body: () async {
-      final res = await httpGetCache(uri);
-      if (res.status != HttpGetCacheStatus.error) {
-        return convert.cardFromCsv(res.body);
-      }
-      throw Exception(res.body);
-    });
+    return RandomBook(
+      body: () async {
+        final res = await httpGetCache(uri);
+        if (res.status != HttpGetCacheStatus.error) {
+          return convert.cardFromCsv(res.body);
+        }
+        throw Exception(res.body);
+      },
+      share: () async {
+        final res = await httpGetCache(uri);
+        if (res.status != HttpGetCacheStatus.error) {
+          final Uint8List unit8List = Uint8List.fromList([
+            0xEF,
+            0xBB,
+            0xBF,
+            ...utf8.encode(res.body),
+          ]);
+          getTemporaryDirectory();
+          final xfile = XFile.fromData(
+            unit8List,
+            mimeType: "text/csv",
+            name: path.last,
+          );
+          return xfile;
+        }
+        throw Exception(res.body);
+      },
+    );
   }
 
   @override

@@ -21,6 +21,7 @@ dependencies:
   wakelock: ^0.6.2
   settings_ui: ^2.0.2
   csv: ^5.0.2
+  share_plus: ^6.3.4
 
 dev_dependencies:
   flutter_test:

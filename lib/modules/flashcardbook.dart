@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:math' as math;
+import 'package:share_plus/share_plus.dart';
+
 import './flashcard.dart';
 
 /// カードをスワイプしたか、スキップしたか。
@@ -13,12 +15,14 @@ enum FlashCardResult {
 
 /// 全てのフラッシュカードブックの親クラス。
 abstract class FlashCardBook {
-  const FlashCardBook();
+  const FlashCardBook({this.share});
 
   /// 一覧表示するためのゲッター。一覧表示に対応しない場合はnullを返す
   Future<List<FlashCard>>? intoCardList() {
     return null;
   }
+
+  final Future<XFile> Function()? share;
 
   /// FlashCardBookPlayerの初期化時やリプレイ時に発火する。
   /// FlashCardBookOperatorのインスタンスを新規に作成しFlashCardBookPlayerに返す。
@@ -63,8 +67,9 @@ abstract class UsersBook extends FlashCardBook {
 
   final Future<List<FlashCard>> Function() _body;
 
-  UsersBook({required Future<List<FlashCard>> Function() body})
-      : _body = (() => Future.value(body()));
+  UsersBook({required Future<List<FlashCard>> Function() body, share})
+      : _body = (() => Future.value(body())),
+        super(share: share);
 }
 
 class RandomBook extends UsersBook {
@@ -73,7 +78,8 @@ class RandomBook extends UsersBook {
     return Future.value(RandomBookOperator(body: await intoCardList()));
   }
 
-  RandomBook({required body}) : super(body: body);
+  RandomBook({required body, share})
+      : super(body: body, share: share);
 }
 
 class _Record {
@@ -152,7 +158,7 @@ class RandomBookOperator extends FlashCardBookOperator {
         .toList();
     assert(obj['buffer'] is List<dynamic>);
     _buffer = obj['buffer'].cast<int>();
-	rand.nextDouble();
+    rand.nextDouble();
   }
 
   @override

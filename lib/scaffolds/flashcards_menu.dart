@@ -6,6 +6,7 @@ import './book_table_viewer.dart';
 import './preferences.dart';
 import '../modules/preferences.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:share_plus/share_plus.dart';
 
 enum SegmentType {
   flashCardBook,
@@ -133,6 +134,18 @@ class _FlashCardBookBrowseScaffoldState
                             title: const Text('一覧'),
                           ),
                         );
+                      }
+
+                      if (cards.share != null) {
+                        listItems.add(ListTile(
+                          dense: true,
+                          title: const Text('ファイルを共有'),
+                          leading: const Icon(Icons.share),
+                          onTap: () async {
+                            final XFile file = await cards.share!.call();
+                            await Share.shareXFiles([file]);
+                          },
+                        ));
                       }
 
                       openSubMenu() {
