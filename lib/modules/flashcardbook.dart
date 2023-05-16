@@ -22,6 +22,7 @@ abstract class FlashCardBook {
     return null;
   }
 
+  /// 共有ファイルを作成する
   final Future<XFile> Function()? share;
 
   /// FlashCardBookPlayerの初期化時やリプレイ時に発火する。
