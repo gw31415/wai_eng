@@ -44,22 +44,20 @@ abstract class FlashCardBookOperator {
   String get state;
   set state(String state);
 
-  /// 進捗が何枚分か。何枚覚えたかなどを表わす。
-  /// .lengthとの比でプログレスバーが表示され、下部のラベルが設定される。
-  int? get progress {
-    return null;
-  }
-
-  /// 全部で何枚あるか
-  int? get length {
-    return null;
-  }
-
   /// FlashCard? get(int index)が空を返さなかった場合でも中断したい場合にtrueを返すように実装する。
   /// 半永久的にカードを回す際など、終了条件をカードのスワイプ始めではなくスワイプ終わり(onSwipeCompletedのタイミング)で評価したい場合に使う。
   bool get isForceFinished {
     return false;
   }
+}
+
+abstract class ProgressableOperator extends FlashCardBookOperator {
+  /// 進捗が何枚分か。何枚覚えたかなどを表わす。
+  /// .lengthとの比でプログレスバーが表示され、下部のラベルが設定される。
+  int get done;
+
+  /// 全部で何枚あるか
+  int get length;
 }
 
 class _Record {
@@ -88,7 +86,8 @@ class _Record {
   }
 }
 
-class RandomBookOperator extends FlashCardBookOperator {
+class RandomBookOperator extends FlashCardBookOperator
+    implements ProgressableOperator {
   static const _bufferMaximumSize = 10;
   static const _bufferMinimumSize = 4; // 4以上
   static const _flowRange = 4; // _bufferMinimumSize以下
@@ -220,5 +219,5 @@ class RandomBookOperator extends FlashCardBookOperator {
   late final int length;
 
   @override
-  int get progress => _okCount;
+  int get done => _okCount;
 }

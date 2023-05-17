@@ -82,17 +82,14 @@ class _FlashCardBookPlayerScaffoldState
                   );
                 }
                 final bookop = snapshot.data as FlashCardBookOperator;
-                getProgress = () {
-                  if (bookop.length == null || bookop.progress == null) {
-                    return 0;
-                  }
-                  return bookop.progress!.toDouble() /
-                      bookop.length!.toDouble();
-                };
-
-                // 進捗のテキストラベル
-                final progressIndicateText =
-                    Text("${bookop.progress} / ${bookop.length}");
+                Text? progressIndicateText;
+                if (bookop is ProgressableOperator) {
+                  getProgress =
+                      () => bookop.done.toDouble() / bookop.length.toDouble();
+                  // 進捗のテキストラベル
+                  progressIndicateText =
+                      Text("${bookop.done} / ${bookop.length}");
+                }
 
                 /// リプレイボタン
                 final replayButton = IconButton(
