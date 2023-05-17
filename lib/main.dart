@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
+import 'modules/flashcard.dart';
 import 'scaffolds/flashcards_menu.dart';
 import 'modules/flashcardbook.dart';
 import 'modules/convert.dart' as convert;
@@ -67,25 +68,8 @@ class DufsBrowser extends FlashCardBookBrowser {
         }
         throw Exception(res.body);
       },
-      share: () async {
-        final res = await httpGetCache(uri);
-        if (res.status != HttpGetCacheStatus.error) {
-          final Uint8List unit8List = Uint8List.fromList([
-            0xEF,
-            0xBB,
-            0xBF,
-            ...utf8.encode(res.body),
-          ]);
-          getTemporaryDirectory();
-          final xfile = XFile.fromData(
-            unit8List,
-            mimeType: "text/csv",
-            name: path.last,
-          );
-          return xfile;
-        }
-        throw Exception(res.body);
-      },
+      fileName: path.last,
+      uri: uri,
     );
   }
 
@@ -119,4 +103,48 @@ class MainApp extends StatelessWidget {
           browser: DufsBrowser(dufsUrl: "https://dufs.amas.dev")),
     );
   }
+}
+
+class RandomBook implements ListableBook, SharableBook {
+  final Future<List<FlashCard>> Function() _body;
+
+  /// 元ファイルあるURI
+  final String uri;
+
+  /// 共有時のファイル名
+  final String fileName;
+
+  @override
+  Future<List<FlashCard>> intoCardList() {
+    return _body();
+  }
+
+  @override
+  open() async {
+    return Future.value(RandomBookOperator(body: await intoCardList()));
+  }
+
+  @override
+  share() async {
+    final res = await httpGetCache(uri);
+    if (res.status != HttpGetCacheStatus.error) {
+      final Uint8List unit8List = Uint8List.fromList([
+        0xEF,
+        0xBB,
+        0xBF,
+        ...utf8.encode(res.body),
+      ]);
+      getTemporaryDirectory();
+      final xfile = XFile.fromData(
+        unit8List,
+        mimeType: "text/csv",
+        name: fileName,
+      );
+      return xfile;
+    }
+    throw Exception(res.body);
+  }
+
+  RandomBook({required body, required this.uri, required this.fileName})
+      : _body = body;
 }

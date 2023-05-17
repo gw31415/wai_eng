@@ -115,7 +115,7 @@ class _FlashCardBookBrowseScaffoldState
                         ),
                       );
 
-                      if (cards is UsersBook) {
+                      if (cards is ListableBook) {
                         openBookTable() {
                           Navigator.of(context, rootNavigator: true)
                               .push(MaterialPageRoute(builder: (context) {
@@ -136,13 +136,13 @@ class _FlashCardBookBrowseScaffoldState
                         );
                       }
 
-                      if (cards.share != null) {
+                      if (cards is SharableBook) {
                         listItems.add(ListTile(
                           dense: true,
                           title: const Text('ファイルを共有'),
                           leading: const Icon(Icons.share),
                           onTap: () async {
-                            final XFile file = await cards.share!.call();
+                            final XFile file = await cards.share();
                             await Share.shareXFiles([file]);
                           },
                         ));

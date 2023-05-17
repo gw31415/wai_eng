@@ -45,7 +45,7 @@ class _OpenCloseCardState extends State<OpenCloseCard> {
 }
 
 class BookTableScaffold extends StatelessWidget {
-  final UsersBook book;
+  final ListableBook book;
   final Text title;
   const BookTableScaffold({Key? key, required this.book, required this.title})
       : super(key: key);

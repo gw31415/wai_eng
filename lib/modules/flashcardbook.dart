@@ -15,19 +15,21 @@ enum FlashCardResult {
 
 /// 全てのフラッシュカードブックの親クラス。
 abstract class FlashCardBook {
-  const FlashCardBook({this.share});
-
-  /// 一覧表示するためのゲッター。一覧表示に対応しない場合はnullを返す
-  Future<List<FlashCard>>? intoCardList() {
-    return null;
-  }
-
-  /// 共有ファイルを作成する
-  final Future<XFile> Function()? share;
-
   /// FlashCardBookPlayerの初期化時やリプレイ時に発火する。
   /// FlashCardBookOperatorのインスタンスを新規に作成しFlashCardBookPlayerに返す。
   Future<FlashCardBookOperator> open();
+}
+
+/// 共有ファイルを作成できるもの
+abstract class SharableBook extends FlashCardBook {
+  /// 共有ファイルを作成する
+  Future<XFile> share();
+}
+
+/// 一覧表示できるもの
+abstract class ListableBook extends FlashCardBook {
+  /// 一覧表示するためのゲッター
+  Future<List<FlashCard>> intoCardList();
 }
 
 /// フラッシュカードを新しく実行する際にFlashCardBookPlayerに渡されるステートの遷移を司るクラス。
@@ -58,29 +60,6 @@ abstract class FlashCardBookOperator {
   bool get isForceFinished {
     return false;
   }
-}
-
-abstract class UsersBook extends FlashCardBook {
-  @override
-  Future<List<FlashCard>> intoCardList() {
-    return _body();
-  }
-
-  final Future<List<FlashCard>> Function() _body;
-
-  UsersBook({required Future<List<FlashCard>> Function() body, share})
-      : _body = (() => Future.value(body())),
-        super(share: share);
-}
-
-class RandomBook extends UsersBook {
-  @override
-  open() async {
-    return Future.value(RandomBookOperator(body: await intoCardList()));
-  }
-
-  RandomBook({required body, share})
-      : super(body: body, share: share);
 }
 
 class _Record {
