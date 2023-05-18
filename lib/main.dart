@@ -121,7 +121,7 @@ class RandomBook implements ListableBook, SharableBook {
 
   @override
   open() async {
-    return Future.value(RandomBookOperator(body: await intoCardList()));
+    return RandomBookOperator(body: await intoCardList());
   }
 
   @override
