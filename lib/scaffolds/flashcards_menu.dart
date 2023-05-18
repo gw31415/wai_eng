@@ -97,6 +97,7 @@ class _FlashCardBookBrowseScaffoldState
                         if (wakelock) {
                           Wakelock.enable();
                         }
+                        if (!mounted) return;
                         Navigator.of(context, rootNavigator: true)
                             .push(MaterialPageRoute(builder: (context) {
                           return FlashCardBookPlayerScaffold(
