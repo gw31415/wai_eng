@@ -16,8 +16,8 @@ enum FlashCardResult {
 /// 全てのフラッシュカードブックの親クラス。
 abstract class FlashCardBook {
   /// FlashCardBookPlayerの初期化時やリプレイ時に発火する。
-  /// FlashCardBookOperatorのインスタンスを新規に作成しFlashCardBookPlayerに返す。
-  Future<FlashCardBookOperator> open();
+  /// List<FlashCard>のインスタンスを新規に作成しFlashCardBookPlayerに返す。
+  Future<List<FlashCard>> open();
 }
 
 /// 共有ファイルを作成できるもの
@@ -27,10 +27,7 @@ abstract class SharableBook extends FlashCardBook {
 }
 
 /// 一覧表示できるもの
-abstract class ListableBook extends FlashCardBook {
-  /// 一覧表示するためのゲッター
-  Future<List<FlashCard>> intoCardList();
-}
+abstract class ListableBook extends FlashCardBook {}
 
 /// フラッシュカードを新しく実行する際にFlashCardBookPlayerに渡されるステートの遷移を司るクラス。
 abstract class FlashCardBookOperator {
@@ -100,7 +97,7 @@ class RandomBookOperator extends FlashCardBookOperator
   }
 
   final List<FlashCard> body;
-  RandomBookOperator({required this.body}) {
+  RandomBookOperator(this.body) {
     length = body.length;
     _rest = _range(body.length);
     _rest.shuffle();

@@ -29,7 +29,7 @@ class _FlashCardBookPlayerScaffoldState
   void _initCards() {
     setState(() {
       _controller = SwipableStackController()..addListener(_listenController);
-      _opFuture = widget.book.open();
+      _opFuture = (() async => RandomBookOperator(await widget.book.open()))();
       nextCardAvailable = true;
     });
   }

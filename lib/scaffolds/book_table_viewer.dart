@@ -58,7 +58,7 @@ class BookTableScaffold extends StatelessWidget {
         ),
         body: SafeArea(
             child: FutureBuilder(future: Future.microtask(() async {
-          final cards = await book.intoCardList();
+          final cards = await book.open();
           return ListView.builder(
             shrinkWrap: true,
             itemBuilder: (context, index) {

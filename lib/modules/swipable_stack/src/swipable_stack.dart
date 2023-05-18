@@ -458,7 +458,7 @@ class SwipableStackState extends State<SwipableStack>
     } else {
       // スワイプ途中もしくはrewind途中。
       if (_rewinding && _rewindingBackCard != null) {
-			  // rewind中
+        // rewind中
         cards = [
           _SwipablePositioned(
             session: SwipableStackPosition.notMoving(),
@@ -471,7 +471,7 @@ class SwipableStackState extends State<SwipableStack>
           getCard(0)
         ];
       } else {
-			  // スワイプ中
+        // スワイプ中
         cards = [getCard(1), getCard(0)];
       }
     }

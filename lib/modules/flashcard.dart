@@ -2,8 +2,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
 final cardFontStyle = GoogleFonts.notoSansMono(
-	fontSize: 20,
-	);
+  fontSize: 20,
+);
 
 abstract class FlashCard {
   Widget get question;
@@ -39,10 +39,10 @@ class StringCard extends FlashCard {
       : questionAlt = Text(
           question,
           style: cardFontStyle,
-	  ),
+        ),
         answerAlt = Text(
-			answer,
-			style: cardFontStyle,
-		),
+          answer,
+          style: cardFontStyle,
+        ),
         super();
 }

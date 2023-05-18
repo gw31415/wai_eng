@@ -115,14 +115,7 @@ class RandomBook implements ListableBook, SharableBook {
   final String fileName;
 
   @override
-  Future<List<FlashCard>> intoCardList() {
-    return _body();
-  }
-
-  @override
-  open() async {
-    return RandomBookOperator(body: await intoCardList());
-  }
+  open() => _body();
 
   @override
   share() async {
