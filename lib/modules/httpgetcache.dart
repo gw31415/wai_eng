@@ -27,17 +27,13 @@ Future<HttpGetCacheResult> httpGetCache(String url) async {
     if (cache != null) {
       return HttpGetCacheResult(status: HttpGetCacheStatus.ok, body: cache);
     }
-    return HttpGetCacheResult(
-      status: HttpGetCacheStatus.error,
-      body: '$e',
-    );
+    rethrow;
   }
 }
 
 enum HttpGetCacheStatus {
   ok,
   cache,
-  error,
 }
 
 class HttpGetCacheResult {
