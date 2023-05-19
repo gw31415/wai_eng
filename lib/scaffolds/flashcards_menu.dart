@@ -101,7 +101,8 @@ class _FlashCardBookBrowseScaffoldState
                         Navigator.of(context, rootNavigator: true)
                             .push(MaterialPageRoute(builder: (context) {
                           return FlashCardBookPlayerScaffold(
-                            book: cards,
+                            operator: () async =>
+                                RandomBookOperator(await cards.open()),
                             title: Text(name),
                           );
                         })).then((value) => Wakelock.disable());

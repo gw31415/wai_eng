@@ -5,9 +5,9 @@ import '../modules/flashcardbook.dart';
 
 class FlashCardBookPlayerScaffold extends StatefulWidget {
   const FlashCardBookPlayerScaffold(
-      {Key? key, required this.book, required this.title})
+      {Key? key, required this.operator, required this.title})
       : super(key: key);
-  final FlashCardBook book;
+  final Future<FlashCardBookOperator> Function() operator;
   final Text title;
   @override
   State<FlashCardBookPlayerScaffold> createState() =>
@@ -29,7 +29,7 @@ class _FlashCardBookPlayerScaffoldState
   void _initCards() {
     setState(() {
       _controller = SwipableStackController()..addListener(_listenController);
-      _opFuture = (() async => RandomBookOperator(await widget.book.open()))();
+      _opFuture = widget.operator();
       nextCardAvailable = true;
     });
   }

@@ -57,6 +57,37 @@ abstract class ProgressableOperator extends FlashCardBookOperator {
   int get length;
 }
 
+/// 順序通りのオペレータ
+class SimpleOperator extends ProgressableOperator {
+  final List<FlashCard> _cards;
+
+  @override
+  int done = 0;
+
+  @override
+  FlashCard? get(int index) {
+    return _cards.elementAtOrNull(index);
+  }
+
+  @override
+  void onSwipeCompleted(int index, FlashCardResult res) {
+    done = index + 1;
+  }
+
+  @override
+  set state(String state) {
+    done = int.parse(state);
+  }
+
+  @override
+  String get state => done.toString();
+
+  @override
+  int get length => _cards.length;
+
+  SimpleOperator(this._cards);
+}
+
 class _Record {
   late final int index;
   FlashCardResult? res;

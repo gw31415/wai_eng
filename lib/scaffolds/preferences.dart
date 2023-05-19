@@ -1,5 +1,8 @@
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:wai_eng/modules/flashcard.dart';
+import 'package:wai_eng/scaffolds/book_player.dart';
+import '../modules/flashcardbook.dart';
 import '../modules/preferences.dart';
 
 class PreferencesScaffold extends StatefulWidget {
@@ -69,6 +72,32 @@ class _PreferencesScaffoldState extends State<PreferencesScaffold> {
                 title: const Text('情報'),
                 tiles: [
                   SettingsTile.navigation(
+                    title: const Text('使い方'),
+                    onPressed: (context) {
+                      Navigator.of(context, rootNavigator: true)
+                          .push(MaterialPageRoute(builder: (context) {
+                        return FlashCardBookPlayerScaffold(
+                          operator: () async => SimpleOperator([
+                            StringCard(
+                              question: "触れてください。",
+                              answer: "Good job!\nこちらが裏面です。\n手を離すと次のカードに進みます。",
+                            ),
+                            StringCard(
+                              question: "こちらは表面です。",
+                              answer:
+                                  "覚えたカードは左右にスワイプしましょう。\n覚えられなかったカードは指を離してスキップしましょう。",
+                            ),
+                            StringCard(
+                              question: "覚えていないカードは記録されます。",
+                              answer: "それでは頑張ってください！",
+                            ),
+                          ]),
+                          title: const Text("使い方"),
+                        );
+                      }));
+                    },
+                  ),
+                  SettingsTile.navigation(
                     title: const Text('ライセンス情報'),
                     onPressed: (context) {
                       showLicensePage(
@@ -82,7 +111,7 @@ class _PreferencesScaffoldState extends State<PreferencesScaffold> {
                         applicationLegalese: '©2022 gw31415', // 権利情報
                       );
                     },
-                  )
+                  ),
                 ],
               )
             ],
