@@ -77,7 +77,7 @@ class _PreferencesScaffoldState extends State<PreferencesScaffold> {
                       Navigator.of(context, rootNavigator: true)
                           .push(MaterialPageRoute(builder: (context) {
                         return FlashCardBookPlayerScaffold(
-                          operator: () async => SimpleOperator([
+                          player: () async => SimplePlayer([
                             StringCard(
                               question: "触れてください。",
                               answer: "Good job!\nこちらが裏面です。\n手を離すと次のカードに進みます。",

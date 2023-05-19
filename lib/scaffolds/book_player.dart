@@ -5,9 +5,9 @@ import '../modules/flashcardbook.dart';
 
 class FlashCardBookPlayerScaffold extends StatefulWidget {
   const FlashCardBookPlayerScaffold(
-      {Key? key, required this.operator, required this.title})
+      {Key? key, required this.player, required this.title})
       : super(key: key);
-  final Future<FlashCardBookOperator> Function() operator;
+  final Future<FlashCardBookPlayer> Function() player;
   final Text title;
   @override
   State<FlashCardBookPlayerScaffold> createState() =>
@@ -17,7 +17,7 @@ class FlashCardBookPlayerScaffold extends StatefulWidget {
 class _FlashCardBookPlayerScaffoldState
     extends State<FlashCardBookPlayerScaffold> {
   late SwipableStackController _controller;
-  late Future<FlashCardBookOperator> _opFuture;
+  late Future<FlashCardBookPlayer> _opFuture;
   late bool nextCardAvailable;
   var getProgress = () => .0;
 
@@ -29,7 +29,7 @@ class _FlashCardBookPlayerScaffoldState
   void _initCards() {
     setState(() {
       _controller = SwipableStackController()..addListener(_listenController);
-      _opFuture = widget.operator();
+      _opFuture = widget.player();
       nextCardAvailable = true;
     });
   }
@@ -81,9 +81,9 @@ class _FlashCardBookPlayerScaffoldState
                     ),
                   );
                 }
-                final bookop = snapshot.data as FlashCardBookOperator;
+                final bookop = snapshot.data as FlashCardBookPlayer;
                 Text? progressIndicateText;
-                if (bookop is ProgressableOperator) {
+                if (bookop is ProgressablePlayer) {
                   getProgress =
                       () => bookop.done.toDouble() / bookop.length.toDouble();
                   // 進捗のテキストラベル

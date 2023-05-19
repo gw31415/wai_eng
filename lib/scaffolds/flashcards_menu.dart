@@ -8,6 +8,21 @@ import '../modules/preferences.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:share_plus/share_plus.dart';
 
+abstract class FlashCardBrowserItem {
+  /// FlashCardBookPlayerの初期化時やリプレイ時に発火する。
+  /// FlashCardBookのインスタンスを新規に作成しFlashCardBookPlayerに返す。
+  Future<FlashCardBook> open();
+}
+
+/// 共有ファイルを作成できるもの
+abstract class Sharable extends FlashCardBrowserItem {
+  /// 共有ファイルを作成する
+  Future<XFile> share();
+}
+
+/// 一覧表示できるもの
+abstract class Listable extends FlashCardBrowserItem {}
+
 enum SegmentType {
   flashCardBook,
   directory,
@@ -22,7 +37,7 @@ abstract class FlashCardBookBrowser {
   SegmentType type(List<String> path);
 
   /// パスから辞書データを取得する
-  FlashCardBook getBook(List<String> path);
+  FlashCardBrowserItem get(List<String> path);
 }
 
 class FlashCardBookBrowseScaffold extends StatefulWidget {
@@ -90,7 +105,7 @@ class _FlashCardBookBrowseScaffoldState
                     case SegmentType.flashCardBook:
                       // ダイアログの構築
                       List<Widget> listItems = [];
-                      final cards = browser.getBook(path);
+                      final cards = browser.get(path);
                       openBookPlayer() async {
                         final wakelock =
                             await PreferencesManager.wakelock.getter();
@@ -101,8 +116,8 @@ class _FlashCardBookBrowseScaffoldState
                         Navigator.of(context, rootNavigator: true)
                             .push(MaterialPageRoute(builder: (context) {
                           return FlashCardBookPlayerScaffold(
-                            operator: () async =>
-                                RandomBookOperator(await cards.open()),
+                            player: () async =>
+                                RandomBookPlayer(await cards.open()),
                             title: Text(name),
                           );
                         })).then((value) => Wakelock.disable());
@@ -117,12 +132,12 @@ class _FlashCardBookBrowseScaffoldState
                         ),
                       );
 
-                      if (cards is ListableBook) {
+                      if (cards is Listable) {
                         openBookTable() {
                           Navigator.of(context, rootNavigator: true)
                               .push(MaterialPageRoute(builder: (context) {
                             return BookTableScaffold(
-                              book: cards,
+                              book: cards.open,
                               title: Text(name),
                             );
                           }));
@@ -138,7 +153,7 @@ class _FlashCardBookBrowseScaffoldState
                         );
                       }
 
-                      if (cards is SharableBook) {
+                      if (cards is Sharable) {
                         listItems.add(ListTile(
                           dense: true,
                           title: const Text('ファイルを共有'),

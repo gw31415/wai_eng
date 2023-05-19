@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'modules/flashcard.dart';
 import 'scaffolds/flashcards_menu.dart';
-import 'modules/flashcardbook.dart';
 import 'modules/convert.dart' as convert;
 import 'package:flutter/foundation.dart';
 import 'modules/httpgetcache.dart';
@@ -78,7 +77,7 @@ class DufsBrowser extends FlashCardBookBrowser {
   }
 
   @override
-  FlashCardBook getBook(List<String> path) {
+  FlashCardBrowserItem get(List<String> path) {
     final uri = _converter(path);
     return DufsBook(
       url: uri,
@@ -95,7 +94,7 @@ class DufsBrowser extends FlashCardBookBrowser {
   }
 }
 
-class DufsBook implements ListableBook, SharableBook {
+class DufsBook implements Listable, Sharable {
   /// 元ファイルあるURI
   final String url;
 

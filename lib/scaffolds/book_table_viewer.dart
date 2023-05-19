@@ -46,7 +46,7 @@ class _OpenCloseCardState extends State<OpenCloseCard> {
 }
 
 class BookTableScaffold extends StatelessWidget {
-  final ListableBook book;
+  final Future<FlashCardBook> Function() book;
   final Text title;
   const BookTableScaffold({Key? key, required this.book, required this.title})
       : super(key: key);
@@ -59,7 +59,7 @@ class BookTableScaffold extends StatelessWidget {
         ),
         body: SafeArea(
             child: FutureBuilder(
-                future: book.open(),
+                future: book(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     if (snapshot.hasError) {

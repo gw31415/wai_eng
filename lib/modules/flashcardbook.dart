@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:math' as math;
-import 'package:share_plus/share_plus.dart';
 
 import './flashcard.dart';
 
@@ -13,24 +12,12 @@ enum FlashCardResult {
   skipped,
 }
 
+typedef FlashCardBook = List<FlashCard>;
+
 /// 全てのフラッシュカードブックの親クラス。
-abstract class FlashCardBook {
-  /// FlashCardBookPlayerの初期化時やリプレイ時に発火する。
-  /// List<FlashCard>のインスタンスを新規に作成しFlashCardBookPlayerに返す。
-  Future<List<FlashCard>> open();
-}
 
-/// 共有ファイルを作成できるもの
-abstract class SharableBook extends FlashCardBook {
-  /// 共有ファイルを作成する
-  Future<XFile> share();
-}
-
-/// 一覧表示できるもの
-abstract class ListableBook extends FlashCardBook {}
-
-/// フラッシュカードを新しく実行する際にFlashCardBookPlayerに渡されるステートの遷移を司るクラス。
-abstract class FlashCardBookOperator {
+/// フラッシュカードを新しく実行する際にFlashCardBookPlayerScaffoldに渡されるステートの遷移を司るクラス。
+abstract class FlashCardBookPlayer {
   /// nullを返した場合、最表面カードがnullの番になったタイミングでカード操作が終了されリプレイボタンが表示される。
   FlashCard? get(int index);
 
@@ -48,7 +35,7 @@ abstract class FlashCardBookOperator {
   }
 }
 
-abstract class ProgressableOperator extends FlashCardBookOperator {
+abstract class ProgressablePlayer extends FlashCardBookPlayer {
   /// 進捗が何枚分か。何枚覚えたかなどを表わす。
   /// .lengthとの比でプログレスバーが表示され、下部のラベルが設定される。
   int get done;
@@ -58,7 +45,7 @@ abstract class ProgressableOperator extends FlashCardBookOperator {
 }
 
 /// 順序通りのオペレータ
-class SimpleOperator extends ProgressableOperator {
+class SimplePlayer extends ProgressablePlayer {
   final List<FlashCard> _cards;
 
   @override
@@ -85,7 +72,7 @@ class SimpleOperator extends ProgressableOperator {
   @override
   int get length => _cards.length;
 
-  SimpleOperator(this._cards);
+  SimplePlayer(this._cards);
 }
 
 class _Record {
@@ -114,8 +101,8 @@ class _Record {
   }
 }
 
-class RandomBookOperator extends FlashCardBookOperator
-    implements ProgressableOperator {
+class RandomBookPlayer extends FlashCardBookPlayer
+    implements ProgressablePlayer {
   static const _bufferMaximumSize = 10;
   static const _bufferMinimumSize = 4; // 4以上
   static const _flowRange = 4; // _bufferMinimumSize以下
@@ -128,7 +115,7 @@ class RandomBookOperator extends FlashCardBookOperator
   }
 
   final List<FlashCard> body;
-  RandomBookOperator(this.body) {
+  RandomBookPlayer(this.body) {
     length = body.length;
     _rest = _range(body.length);
     _rest.shuffle();
