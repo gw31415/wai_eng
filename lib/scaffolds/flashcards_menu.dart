@@ -149,39 +149,37 @@ class _FlashCardBookBrowseScaffoldState
                         ));
                       }
 
-                      openSubMenu() {
-                        Future.microtask(() async {
-                          final hapticService = HapticFeedback.lightImpact();
-                          final nextTask = await showModalBottomSheet<Function>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ListView(
-                                  shrinkWrap: true,
-                                  // title: Text(name),
-                                  children: [
-                                    ListTile(
-                                      dense: true,
-                                      title: Text(
-                                        name,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelMedium,
-                                      ),
+                      openSubMenu() async {
+                        final hapticService = HapticFeedback.lightImpact();
+                        final nextTask = await showModalBottomSheet<Function>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return ListView(
+                                shrinkWrap: true,
+                                // title: Text(name),
+                                children: [
+                                  ListTile(
+                                    dense: true,
+                                    title: Text(
+                                      name,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium,
                                     ),
-                                    ...listItems,
-                                    const Divider(),
-                                    ListTile(
-                                      dense: true,
-                                      title: const Text('閉じる'),
-                                      leading: const Icon(Icons.close),
-                                      onTap: () => Navigator.of(context).pop(),
-                                    )
-                                  ],
-                                );
-                              });
-                          if (nextTask != null) nextTask();
-                          await hapticService;
-                        });
+                                  ),
+                                  ...listItems,
+                                  const Divider(),
+                                  ListTile(
+                                    dense: true,
+                                    title: const Text('閉じる'),
+                                    leading: const Icon(Icons.close),
+                                    onTap: () => Navigator.of(context).pop(),
+                                  )
+                                ],
+                              );
+                            });
+                        if (nextTask != null) nextTask();
+                        await hapticService;
                       }
 
                       return ListTile(

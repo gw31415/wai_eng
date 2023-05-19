@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../modules/flashcard.dart';
 import '../modules/flashcardbook.dart';
 
 class OpenCloseCard extends StatefulWidget {
@@ -57,38 +58,37 @@ class BookTableScaffold extends StatelessWidget {
           title: title,
         ),
         body: SafeArea(
-            child: FutureBuilder(future: Future.microtask(() async {
-          final cards = await book.open();
-          return ListView.builder(
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              if (index + 1 > cards.length) {
-                return null;
-              } else {
-                return OpenCloseCard(
-                  question: cards[index].questionAlt,
-                  answer: cards[index].answerAlt,
-                );
-              }
-            },
-          );
-        }), builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            if (snapshot.hasError) {
-              return Center(
-                child: Text("${snapshot.error}"),
-              );
-            }
-            return Container(
-              decoration: BoxDecoration(
-                  color: Theme.of(context).splashColor.withAlpha(153)),
-              child: const Center(
-                child: CircularProgressIndicator.adaptive(),
-              ),
-            );
-          }
-          final view = snapshot.data as ListView;
-          return view;
-        })));
+            child: FutureBuilder(
+                future: book.open(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text("${snapshot.error}"),
+                      );
+                    }
+                    return Container(
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).splashColor.withAlpha(153)),
+                      child: const Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      ),
+                    );
+                  }
+                  final cards = snapshot.data as List<FlashCard>;
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      if (index + 1 > cards.length) {
+                        return null;
+                      } else {
+                        return OpenCloseCard(
+                          question: cards[index].questionAlt,
+                          answer: cards[index].answerAlt,
+                        );
+                      }
+                    },
+                  );
+                })));
   }
 }
