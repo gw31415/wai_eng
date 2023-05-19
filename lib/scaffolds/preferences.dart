@@ -23,9 +23,7 @@ class _PreferencesScaffoldState extends State<PreferencesScaffold> {
   Widget build(BuildContext context) {
     final futureSubscription = [
       PreferencesManager.wakelock.listener((data) {
-        if (!mounted) {
-          return;
-        }
+        if (!mounted) return;
         setState(() {
           _wakelock = data;
         });
