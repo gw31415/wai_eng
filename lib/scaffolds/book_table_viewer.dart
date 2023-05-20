@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import '../modules/flashcardbook.dart';
 
-class OpenCloseCard extends StatefulWidget {
+class _OpenCloseCard extends StatefulWidget {
   final Widget question;
   final Widget answer;
-  const OpenCloseCard({Key? key, required this.question, required this.answer})
+  const _OpenCloseCard({Key? key, required this.question, required this.answer})
       : super(key: key);
 
   @override
-  State<OpenCloseCard> createState() => _OpenCloseCardState();
+  State<_OpenCloseCard> createState() => _OpenCloseCardState();
 }
 
-class _OpenCloseCardState extends State<OpenCloseCard> {
+class _OpenCloseCardState extends State<_OpenCloseCard> {
   var ontap = false;
 
   @override
@@ -81,7 +81,7 @@ class BookTableScaffold extends StatelessWidget {
                       if (index + 1 > cards.length) {
                         return null;
                       } else {
-                        return OpenCloseCard(
+                        return _OpenCloseCard(
                           question: cards[index].questionAlt,
                           answer: cards[index].answerAlt,
                         );
