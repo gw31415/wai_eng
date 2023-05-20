@@ -67,6 +67,9 @@ class PreferencesManager<T> {
           final record = StoreRef<String, T>.main().record(label);
           return await record.get(db) ?? defaultValue;
         });
+
   static PreferencesManager<bool> get wakelock =>
       PreferencesManager._('wakelock', false);
+  static PreferencesManager<bool> get autoCache =>
+      PreferencesManager._('autoCache', true);
 }

@@ -5,18 +5,34 @@ packages:
     dependency: transitive
     description:
       name: _fe_analyzer_shared
-      sha256: "405666cd3cf0ee0a48d21ec67e65406aad2c726d9fa58840d3375e7bdcd32a07"
+      sha256: ae92f5d747aee634b87f89d9946000c2de774be1d6ac3e58268224348cd0101a
       url: "https://pub.dev"
     source: hosted
-    version: "60.0.0"
+    version: "61.0.0"
+  adaptive_dialog:
+    dependency: "direct main"
+    description:
+      name: adaptive_dialog
+      sha256: "844143591ca5ca38c0e1fd7c736f3c9457fe69420b90140b5d4ac4673a2ea9e4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.9.0-no-macos.2"
   analyzer:
     dependency: transitive
     description:
       name: analyzer
-      sha256: "1952250bd005bacb895a01bf1b4dc00e3ba1c526cf47dca54dfe24979c65f5b3"
+      sha256: ea3d8652bda62982addfd92fdc2d0214e5f82e43325104990d4f4c4a2a313562
       url: "https://pub.dev"
     source: hosted
-    version: "5.12.0"
+    version: "5.13.0"
+  animations:
+    dependency: transitive
+    description:
+      name: animations
+      sha256: fe8a6bdca435f718bb1dc8a11661b2c22504c6da40ef934cee8327ed77934164
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.7"
   archive:
     dependency: transitive
     description:
@@ -141,10 +157,18 @@ packages:
     dependency: transitive
     description:
       name: dev_test
-      sha256: bf0a5e1d5bbca440e665768fc1c808dd599d4b66922696338481fb7178670c56
+      sha256: "0d49b920844062a518edb79fc1dbf9ff6d9bf3c9ab600e3847b7502c27c0caab"
       url: "https://pub.dev"
     source: hosted
-    version: "0.16.0+1"
+    version: "0.16.1+4"
+  dynamic_color:
+    dependency: transitive
+    description:
+      name: dynamic_color
+      sha256: "74dff1435a695887ca64899b8990004f8d1232b0e84bfc4faa1fdda7c6f57cc1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.6.5"
   fake_async:
     dependency: transitive
     description:
@@ -229,10 +253,10 @@ packages:
     dependency: transitive
     description:
       name: glob
-      sha256: "4515b5b6ddb505ebdd242a5f2cc5d22d3d6a80013789debfbda7777f47ea308c"
+      sha256: "0e7014b3b7d4dac1ca4d6114f82bf1782ee86745b9b42a92c9289c23d8a0ab63"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.2"
   google_fonts:
     dependency: "direct main"
     description:
@@ -289,6 +313,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.0"
+  intersperse:
+    dependency: transitive
+    description:
+      name: intersperse
+      sha256: "2f8a905c96f6cbba978644a3d5b31b8d86ddc44917662df7d27a61f3df66a576"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   io:
     dependency: transitive
     description:
@@ -509,10 +541,10 @@ packages:
     dependency: transitive
     description:
       name: sembast_sqflite
-      sha256: "2a3d55173c16d559182ed4d1f91ae102722f770f96af07f8e119951d8154c0f7"
+      sha256: "6878ddd9597c0f63d56d1ab7226b46507eb999a561e380d216ae651ffb5d3166"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.1"
+    version: "2.2.0"
   sembast_web:
     dependency: transitive
     description:
@@ -618,10 +650,10 @@ packages:
     dependency: transitive
     description:
       name: sqflite
-      sha256: "3a82c9a216b46b88617e3714dd74227eaca20c501c4abcc213e56db26b9caa00"
+      sha256: b4d6710e1200e96845747e37338ea8a819a12b51689a3bcf31eff0003b37a0b9
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.8+2"
+    version: "2.2.8+4"
   sqflite_common:
     dependency: transitive
     description:
@@ -642,10 +674,10 @@ packages:
     dependency: transitive
     description:
       name: sqflite_common_ffi_web
-      sha256: "5acaaf382ea88e07122682d18d51602023f405ce1177593df0fb8a64e94ea374"
+      sha256: "59885fbdd4ed51b9515061c14f4790458b62b08660deab9804b87ff6d4f7fff2"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.5"
+    version: "0.3.5+1"
   sqlite3:
     dependency: transitive
     description:
@@ -709,7 +741,7 @@ packages:
     description:
       path: "packages/lints"
       ref: dart2_3
-      resolved-ref: "865adec48104d0035a29c89017fc7e839cc295c3"
+      resolved-ref: "09b834fe6b4a6d961d7caa41b6f92f4e9b32d37f"
       url: "https://github.com/tekartik/common.dart"
     source: git
     version: "0.3.0"
@@ -870,10 +902,10 @@ packages:
     dependency: transitive
     description:
       name: watcher
-      sha256: "6a7f46926b01ce81bfc339da6a7f20afbe7733eff9846f6d6a5466aa4c6667c0"
+      sha256: "3d2ad6751b3c16cf07c7fca317a1413b3f26530319181b37e3b9039b84fc01d8"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.2"
+    version: "1.1.0"
   web_socket_channel:
     dependency: transitive
     description:
@@ -924,4 +956,4 @@ packages:
     version: "3.1.2"
 sdks:
   dart: ">=3.0.0 <3.10.0"
-  flutter: ">=3.3.0"
+  flutter: ">=3.10.0"

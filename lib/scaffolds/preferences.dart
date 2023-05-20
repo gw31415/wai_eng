@@ -1,9 +1,11 @@
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:wai_eng/modules/flashcard.dart';
+import 'package:wai_eng/modules/httpgetcache.dart';
 import 'package:wai_eng/scaffolds/book_player.dart';
 import '../modules/flashcardbook.dart';
 import '../modules/preferences.dart';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 
 class PreferencesScaffold extends StatefulWidget {
   const PreferencesScaffold({Key? key}) : super(key: key);
@@ -13,6 +15,7 @@ class PreferencesScaffold extends StatefulWidget {
 
 class _PreferencesScaffoldState extends State<PreferencesScaffold> {
   bool _wakelock = true;
+  bool _autoCache = true;
   List<ListenerSubscription> _subscriptions = [];
   @override
   void dispose() {
@@ -30,7 +33,13 @@ class _PreferencesScaffoldState extends State<PreferencesScaffold> {
         setState(() {
           _wakelock = data;
         });
-      })
+      }),
+      PreferencesManager.autoCache.listener((data) {
+        if (!mounted) return;
+        setState(() {
+          _autoCache = data;
+        });
+      }),
     ];
     return Scaffold(
       appBar: AppBar(title: const Text("設定")),
@@ -66,6 +75,28 @@ class _PreferencesScaffoldState extends State<PreferencesScaffold> {
                       initialValue: _wakelock,
                       onToggle: PreferencesManager.wakelock.setter,
                       title: const Text('画面消灯を抑制する'))
+                ],
+              ),
+              SettingsSection(
+                title: const Text('オフラインモード'),
+                tiles: [
+                  SettingsTile.switchTile(
+                      initialValue: _autoCache,
+                      onToggle: PreferencesManager.autoCache.setter,
+                      title: const Text('オンライン時にキャッシュを自動保存する')),
+                  SettingsTile(
+                    title: const Text("キャッシュの削除"),
+                    onPressed: (context) async {
+                      final res = await showOkCancelAlertDialog(
+                        context: context,
+                        okLabel: "続行",
+                        defaultType: OkCancelAlertDefaultType.cancel,
+                        title: "キャッシュの削除",
+                        message: "削除してもよろしいですか？",
+                      );
+                      if (res == OkCancelResult.ok) deleteCache();
+                    },
+                  )
                 ],
               ),
               SettingsSection(
