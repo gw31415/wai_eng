@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:settings_ui/settings_ui.dart';
 import 'package:share_plus/share_plus.dart';
 import 'modules/flashcardbook.dart';
 import 'scaffolds/flashcardbook_browser.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/foundation.dart';
 import 'modules/httpgetcache.dart';
 import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
+
+import 'scaffolds/preferences.dart';
 
 void main() {
   LicenseRegistry.addLicense(() {
@@ -36,9 +39,51 @@ class MainApp extends StatelessWidget {
         primarySwatch: Colors.teal,
         brightness: Brightness.dark,
       ),
-      home: FlashCardBookBrowserScaffold(
-          title: const Text('WaiEng'),
-          browser: DufsBrowser(dufsUrl: "https://dufs.amas.dev")),
+      home: const HomeScaffold(),
+    );
+  }
+}
+
+class HomeScaffold extends StatelessWidget {
+  const HomeScaffold({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("WaiEng"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return const PreferencesScaffold();
+                }));
+              },
+              icon: const Icon(Icons.settings))
+        ],
+      ),
+      body: SettingsList(
+        sections: [
+          SettingsSection(
+            title: const Text('データベース'),
+            tiles: [
+              SettingsTile.navigation(
+                leading: const Icon(Icons.cloud),
+                title: const Text("dufs.amas.dev"),
+                onPressed: (context) {
+                  Navigator.of(context, rootNavigator: true)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return FlashCardBookBrowserScaffold(
+                        title: const Text('dufs.amas.dev'),
+                        browser: DufsBrowser(dufsUrl: "https://dufs.amas.dev"));
+                  }));
+                },
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

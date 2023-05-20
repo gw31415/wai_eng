@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import '../modules/flashcardbook.dart';
 import './book_player.dart';
 import './flashcard_list.dart';
-import './preferences.dart';
 import '../modules/preferences.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:share_plus/share_plus.dart';
@@ -237,16 +236,6 @@ class _FlashCardBookBrowserScaffoldState
             ? null
             : IconButton(
                 onPressed: _popPwd, icon: const Icon(Icons.arrow_back)),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) {
-                  return const PreferencesScaffold();
-                }));
-              },
-              icon: const Icon(Icons.settings))
-        ],
       ),
       body: Navigator(
           onPopPage: (route, result) {
