@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
-import 'modules/flashcard.dart';
+import 'modules/flashcardbook.dart';
 import 'scaffolds/flashcards_menu.dart';
 import 'modules/convert.dart' as convert;
 import 'package:flutter/foundation.dart';
@@ -102,7 +102,7 @@ class DufsBook implements Listable, Sharable {
   final String fileName;
 
   @override
-  Future<List<FlashCard>> open() async {
+  Future<FlashCardBook> open() async {
     final res = await httpGetCache(url);
     return convert.cardFromCsv(res.body);
   }

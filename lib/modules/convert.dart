@@ -1,7 +1,8 @@
 import 'package:csv/csv.dart';
-import "./flashcard.dart";
+import "flashcard.dart";
+import 'flashcardbook.dart';
 
-List<FlashCard> cardFromCsv(String csv) {
+FlashCardBook cardFromCsv(String csv) {
   final list = const CsvToListConverter().convert(csv).map((line) {
     if (line.length < 2) {
       throw Exception("There are not enough columns in the CSV.");

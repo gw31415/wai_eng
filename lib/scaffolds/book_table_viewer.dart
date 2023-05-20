@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../modules/flashcard.dart';
 import '../modules/flashcardbook.dart';
 
 class OpenCloseCard extends StatefulWidget {
@@ -75,7 +74,7 @@ class BookTableScaffold extends StatelessWidget {
                       ),
                     );
                   }
-                  final cards = snapshot.data as List<FlashCard>;
+                  final cards = snapshot.data as FlashCardBook;
                   return ListView.builder(
                     shrinkWrap: true,
                     itemBuilder: (context, index) {

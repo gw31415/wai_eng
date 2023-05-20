@@ -46,7 +46,7 @@ abstract class ProgressablePlayer extends FlashCardBookPlayer {
 
 /// 順序通りのオペレータ
 class SimplePlayer extends ProgressablePlayer {
-  final List<FlashCard> _cards;
+  final FlashCardBook _cards;
 
   @override
   int done = 0;
@@ -114,7 +114,7 @@ class RandomBookPlayer extends FlashCardBookPlayer
     return res;
   }
 
-  final List<FlashCard> body;
+  final FlashCardBook body;
   RandomBookPlayer(this.body) {
     length = body.length;
     _rest = _range(body.length);
