@@ -39,47 +39,25 @@ abstract class FlashCardBookBrowser {
   FlashCardBrowserItem get(List<String> path);
 }
 
-class FlashCardBookBrowserScaffold extends StatefulWidget {
+class FlashCardBookBrowserScaffold extends StatelessWidget {
   final FlashCardBookBrowser browser;
   final Text title;
+  final List<String> pwd;
   const FlashCardBookBrowserScaffold(
-      {Key? key, required this.browser, required this.title})
+      {Key? key,
+      required this.browser,
+      required this.title,
+      this.pwd = const []})
       : super(key: key);
+
   @override
-  State<FlashCardBookBrowserScaffold> createState() =>
-      _FlashCardBookBrowserScaffoldState();
-}
-
-class _FlashCardBookBrowserScaffoldState
-    extends State<FlashCardBookBrowserScaffold> {
-  List<MaterialPage> pages = [];
-  List<String> pwd = [];
-
-  void _pushPwd(List<String> newPwd) {
-    setState(() {
-      pwd = newPwd;
-      pages.add(_flashCardBookBrowsePage(newPwd));
-    });
-  }
-
-  bool _popPwd() {
-    if (pages == []) {
-      return false;
-    }
-    setState(() {
-      pages.removeLast();
-      pwd.removeLast();
-    });
-    return true;
-  }
-
-  MaterialPage _flashCardBookBrowsePage(List<String> dir) {
-    final pwd = dir;
-    final browser = widget.browser;
-    final ls = widget.browser.ls(pwd);
-    return MaterialPage(
-      child: FutureBuilder(
-          future: ls,
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: pwd.isEmpty ? title : Text(pwd.last),
+      ),
+      body: FutureBuilder(
+          future: browser.ls(pwd),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               if (snapshot.hasError) {
@@ -105,13 +83,12 @@ class _FlashCardBookBrowserScaffoldState
                       // ダイアログの構築
                       List<Widget> listItems = [];
                       final cards = browser.get(path);
-                      openBookPlayer() async {
+                      openBookPlayer(context) async {
                         final wakelock =
                             await PreferencesManager.wakelock.getter();
                         if (wakelock) {
                           Wakelock.enable();
                         }
-                        if (!mounted) return;
                         Navigator.of(context, rootNavigator: true)
                             .push(MaterialPageRoute(builder: (context) {
                           return FlashCardBookPlayerScaffold(
@@ -125,7 +102,8 @@ class _FlashCardBookBrowserScaffoldState
                       listItems.add(
                         ListTile(
                           dense: true,
-                          onTap: () => Navigator.pop(context, openBookPlayer),
+                          onTap: () => Navigator.pop(
+                              context, () => openBookPlayer(context)),
                           leading: const Icon(Icons.play_circle_outline),
                           title: const Text('開く'),
                         ),
@@ -199,7 +177,7 @@ class _FlashCardBookBrowserScaffoldState
 
                       return ListTile(
                         title: Text(name),
-                        onTap: openBookPlayer,
+                        onTap: () => openBookPlayer(context),
                         onLongPress: openSubMenu,
                         leading: Icon(
                           Icons.play_arrow,
@@ -215,7 +193,14 @@ class _FlashCardBookBrowserScaffoldState
                       return ListTile(
                         title: Text(name),
                         leading: const Icon(Icons.folder),
-                        onTap: () => _pushPwd(dir + [name]),
+                        onTap: () => Navigator.of(context, rootNavigator: true)
+                            .push(MaterialPageRoute(builder: (context) {
+                          return FlashCardBookBrowserScaffold(
+                            browser: browser,
+                            title: title,
+                            pwd: pwd + [name],
+                          );
+                        })),
                         trailing: Icon(
                           Icons.chevron_right,
                           color: Theme.of(context).colorScheme.surfaceVariant,
@@ -224,27 +209,6 @@ class _FlashCardBookBrowserScaffoldState
                   }
                 });
           }),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: pages.isEmpty ? widget.title : Text(pwd.last),
-        leading: pages.isEmpty
-            ? null
-            : IconButton(
-                onPressed: _popPwd, icon: const Icon(Icons.arrow_back)),
-      ),
-      body: Navigator(
-          onPopPage: (route, result) {
-            return _popPwd();
-          },
-          pages: [
-            _flashCardBookBrowsePage([]),
-            ...pages,
-          ]),
     );
   }
 }
