@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'modules/flashcardbook.dart';
-import 'scaffolds/flashcards_menu.dart';
+import 'scaffolds/flashcardbook_browser.dart';
 import 'modules/convert.dart' as convert;
 import 'package:flutter/foundation.dart';
 import 'modules/httpgetcache.dart';
@@ -36,7 +36,7 @@ class MainApp extends StatelessWidget {
         primarySwatch: Colors.teal,
         brightness: Brightness.dark,
       ),
-      home: FlashCardBookBrowseScaffold(
+      home: FlashCardBookBrowserScaffold(
           title: const Text('WaiEng'),
           browser: DufsBrowser(dufsUrl: "https://dufs.amas.dev")),
     );

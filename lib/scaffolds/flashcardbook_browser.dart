@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../modules/flashcardbook.dart';
 import './book_player.dart';
-import './book_table_viewer.dart';
+import './flashcard_list.dart';
 import './preferences.dart';
 import '../modules/preferences.dart';
 import 'package:wakelock/wakelock.dart';
@@ -40,19 +40,19 @@ abstract class FlashCardBookBrowser {
   FlashCardBrowserItem get(List<String> path);
 }
 
-class FlashCardBookBrowseScaffold extends StatefulWidget {
+class FlashCardBookBrowserScaffold extends StatefulWidget {
   final FlashCardBookBrowser browser;
   final Text title;
-  const FlashCardBookBrowseScaffold(
+  const FlashCardBookBrowserScaffold(
       {Key? key, required this.browser, required this.title})
       : super(key: key);
   @override
-  State<FlashCardBookBrowseScaffold> createState() =>
-      _FlashCardBookBrowseScaffoldState();
+  State<FlashCardBookBrowserScaffold> createState() =>
+      _FlashCardBookBrowserScaffoldState();
 }
 
-class _FlashCardBookBrowseScaffoldState
-    extends State<FlashCardBookBrowseScaffold> {
+class _FlashCardBookBrowserScaffoldState
+    extends State<FlashCardBookBrowserScaffold> {
   List<MaterialPage> pages = [];
   List<String> pwd = [];
 
@@ -136,7 +136,7 @@ class _FlashCardBookBrowseScaffoldState
                         openBookTable() {
                           Navigator.of(context, rootNavigator: true)
                               .push(MaterialPageRoute(builder: (context) {
-                            return BookTableScaffold(
+                            return FlashCardListScaffold(
                               book: cards.open,
                               title: Text(name),
                             );

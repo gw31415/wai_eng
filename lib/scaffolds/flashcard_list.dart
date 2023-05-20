@@ -44,10 +44,11 @@ class _OpenCloseCardState extends State<_OpenCloseCard> {
   }
 }
 
-class BookTableScaffold extends StatelessWidget {
+class FlashCardListScaffold extends StatelessWidget {
   final Future<FlashCardBook> Function() book;
   final Text title;
-  const BookTableScaffold({Key? key, required this.book, required this.title})
+  const FlashCardListScaffold(
+      {Key? key, required this.book, required this.title})
       : super(key: key);
 
   @override
