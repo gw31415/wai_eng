@@ -83,15 +83,15 @@ class _PreferencesScaffoldState extends State<PreferencesScaffold> {
                   SettingsTile.switchTile(
                       initialValue: _autoCache,
                       onToggle: PreferencesManager.autoCache.setter,
-                      title: const Text('オンライン時にキャッシュを自動保存する')),
+                      title: const Text('オンライン時に自動で一時保存する')),
                   SettingsTile(
-                    title: const Text("キャッシュの削除"),
+                    title: const Text("一時保存の削除"),
                     onPressed: (context) async {
                       final res = await showOkCancelAlertDialog(
                         context: context,
                         okLabel: "続行",
                         defaultType: OkCancelAlertDefaultType.cancel,
-                        title: "キャッシュの削除",
+                        title: "一時保存の削除",
                         message: "削除してもよろしいですか？",
                       );
                       if (res == OkCancelResult.ok) deleteCache();
