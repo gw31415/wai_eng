@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Router;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:wai_eng/modules/preferences.dart';
@@ -35,6 +36,9 @@ class MainApp extends StatelessWidget {
       darkTheme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.dark,
+        cupertinoOverrideTheme: const CupertinoThemeData(
+          textTheme: CupertinoTextThemeData(),
+        ),
       ),
       home: const HomeScaffold(),
     );
