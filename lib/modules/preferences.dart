@@ -72,4 +72,6 @@ class PreferencesManager<T> {
       PreferencesManager._('wakelock', false);
   static PreferencesManager<bool> get autoCache =>
       PreferencesManager._('autoCache', true);
+  static PreferencesManager<String> get favorites =>
+      PreferencesManager._('favorites', "[]");
 }
