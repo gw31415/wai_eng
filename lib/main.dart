@@ -10,6 +10,7 @@ import 'package:wai_eng/scaffolds/flashcardbook_browser.dart';
 import 'modules/browser_reference.dart';
 import 'package:flutter/foundation.dart';
 
+import 'scaffolds/favorites_editor.dart';
 import 'scaffolds/preferences.dart';
 
 void main() {
@@ -120,10 +121,32 @@ class HomeScaffoldState extends State<HomeScaffold> {
               SettingsSection(
                 tiles: [
                   SettingsTile(
-                    title: const Text("お気に入りの削除"),
-                    onPressed: (context) =>
-                        PreferencesManager.favorites.setter("[]"),
-                  )
+                      title: const Text("お気に入りの編集"),
+                      onPressed: (context) async {
+                        final manager = PreferencesManager.favorites;
+                        final initialList =
+                            (jsonDecode(await manager.getter()) as List)
+                                .map((e) => BrowserReference(e))
+                                .toList();
+                        if (!mounted) return;
+                        Navigator.of(context, rootNavigator: true)
+                            .push(MaterialPageRoute(
+                          builder: (context) {
+                            return ReorderableDismissibleEditorScaffold<BrowserReference>(
+                              title: const Text("お気に入りの編集"),
+                              initialList: initialList,
+                              builder: (dynamic e) => ListTile(
+                                title: Text(e.displayName),
+                              ),
+                              onSave: (dynamic newList) {
+                                manager.setter(jsonEncode(
+                                    newList.map((e) => e.toJson).toList()));
+                              },
+                            );
+                          },
+                          fullscreenDialog: true,
+                        ));
+                      })
                 ],
               ),
           ],
