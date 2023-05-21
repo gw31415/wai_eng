@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../modules/browser_reference.dart';
@@ -121,12 +122,24 @@ class FlashCardBookBrowserScaffold extends StatelessWidget {
                 title: const Text('お気に入りに追加'),
                 leading: const Icon(Icons.star),
                 onTap: () async {
-                  final reference = browser.reference(path).toJson;
+                  Navigator.of(context).pop();
+                  final input = await showTextInputDialog(
+                    context: context,
+                    textFields: [
+                      DialogTextField(initialText: path.last),
+                    ],
+                    title: "お気に入りに追加",
+                    message: "お気に入りの名称を設定してください。"
+                  );
+                  if (input == null) return;
+                  final displayName = input.last;
+                  final reference = browser.reference(path);
+                  reference.displayName = displayName;
                   final before = jsonDecode(
                     await PreferencesManager.favorites.getter(),
                   );
                   PreferencesManager.favorites
-                      .setter(jsonEncode(before + [reference]));
+                      .setter(jsonEncode(before + [reference.toJson]));
                 },
               ));
 

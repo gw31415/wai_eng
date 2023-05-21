@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +29,7 @@ class BrowserReference {
   final List<String> path;
 
   /// 表示名
-  final String displayName;
+  String displayName;
 
   BrowserReference(String json)
       : type = BrowserType.values.byName(jsonDecode(json)['type'] as String),
