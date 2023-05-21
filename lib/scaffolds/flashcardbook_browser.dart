@@ -124,13 +124,12 @@ class FlashCardBookBrowserScaffold extends StatelessWidget {
                 onTap: () async {
                   Navigator.of(context).pop();
                   final input = await showTextInputDialog(
-                    context: context,
-                    textFields: [
-                      DialogTextField(initialText: path.last),
-                    ],
-                    title: "お気に入りに追加",
-                    message: "お気に入りの名称を設定してください。"
-                  );
+                      context: context,
+                      textFields: [
+                        DialogTextField(initialText: path.last),
+                      ],
+                      title: "お気に入りに追加",
+                      message: "お気に入りの名称を設定してください。");
                   if (input == null) return;
                   final displayName = input.last;
                   final reference = browser.reference(path);
@@ -212,6 +211,59 @@ class FlashCardBookBrowserScaffold extends StatelessWidget {
                     pwd: pwd + [name],
                   );
                 })),
+                onLongPress: () async {
+                  final hapticService = HapticFeedback.lightImpact();
+                  final nextTask = await showModalBottomSheet<Function>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ListView(
+                          shrinkWrap: true,
+                          // title: Text(name),
+                          children: [
+                            ListTile(
+                              dense: true,
+                              title: Text(
+                                name,
+                                style: Theme.of(context).textTheme.labelMedium,
+                              ),
+                            ),
+                            ListTile(
+                              dense: true,
+                              title: const Text('お気に入りに追加'),
+                              leading: const Icon(Icons.stars),
+                              onTap: () async {
+                                Navigator.of(context).pop();
+                                final input = await showTextInputDialog(
+                                    context: context,
+                                    textFields: [
+                                      DialogTextField(initialText: path.last),
+                                    ],
+                                    title: "お気に入りに追加",
+                                    message: "お気に入りの名称を設定してください。");
+                                if (input == null) return;
+                                final displayName = input.last;
+                                final reference = browser.reference(path);
+                                reference.displayName = displayName;
+                                final before = jsonDecode(
+                                  await PreferencesManager.favorites.getter(),
+                                );
+                                PreferencesManager.favorites.setter(
+                                    jsonEncode(before + [reference.toJson]));
+                              },
+                            ),
+                            const Divider(),
+                            ListTile(
+                              dense: true,
+                              title: const Text('閉じる'),
+                              leading: const Icon(Icons.close),
+                              onTap: () => Navigator.of(context).pop(),
+                            ),
+                          ],
+                        );
+                      });
+                  if (nextTask != null) nextTask();
+                  await hapticService;
+                },
                 trailing: Icon(
                   Icons.chevron_right,
                   color: Theme.of(context).colorScheme.surfaceVariant,

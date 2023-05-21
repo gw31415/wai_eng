@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:wai_eng/modules/preferences.dart';
+import 'package:wai_eng/scaffolds/flashcardbook_browser.dart';
 import 'modules/browser_reference.dart';
 import 'package:flutter/foundation.dart';
 
@@ -100,8 +101,18 @@ class HomeScaffoldState extends State<HomeScaffold> {
             if (_favorites.isNotEmpty)
               SettingsSection(
                 title: Text("お気に入り (${_favorites.length})"),
-                tiles: await Future.wait(
-                    _favorites.map((item) => item.toSettingsTile()).toList()),
+                tiles: await Future.wait(_favorites
+                    .map((item) => item.toSettingsTile(
+                          iconSelector: (segmentType, browserType) {
+                            switch (segmentType) {
+                              case SegmentType.directory:
+                                return const Icon(Icons.stars);
+                              case SegmentType.flashCardBook:
+                                return const Icon(Icons.star);
+                            }
+                          },
+                        ))
+                    .toList()),
               ),
             if (_favorites.isNotEmpty)
               SettingsSection(
