@@ -31,11 +31,9 @@ class MainApp extends StatelessWidget {
       title: 'WaiEng',
       theme: ThemeData(
         useMaterial3: true,
-        primarySwatch: Colors.teal,
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
-        primarySwatch: Colors.teal,
         brightness: Brightness.dark,
       ),
       home: const HomeScaffold(),
