@@ -128,11 +128,12 @@ class HomeScaffoldState extends State<HomeScaffold> {
                             (jsonDecode(await manager.getter()) as List)
                                 .map((e) => BrowserReference(e))
                                 .toList();
-                        if (!mounted) return;
+                        if (!context.mounted) return;
                         Navigator.of(context, rootNavigator: true)
                             .push(MaterialPageRoute(
                           builder: (context) {
-                            return ReorderableDismissibleEditorScaffold<BrowserReference>(
+                            return ReorderableDismissibleEditorScaffold<
+                                BrowserReference>(
                               title: const Text("お気に入りの編集"),
                               initialList: initialList,
                               builder: (dynamic e) => ListTile(

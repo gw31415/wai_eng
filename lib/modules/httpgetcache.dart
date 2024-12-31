@@ -13,7 +13,8 @@ Future<void> deleteCache() =>
     getDatabaseFactory(packageName: packageName).deleteDatabase(dbName);
 
 // キャッシュしながらHTTP Getリクエストを送ります。
-Future<HttpGetCacheResult> httpGetCache(String url, { bool offline = false }) async {
+Future<HttpGetCacheResult> httpGetCache(String url,
+    {bool offline = false}) async {
   final db = getDatabaseFactory(packageName: packageName).openDatabase(dbName);
   final record = _store.record(url);
   final httpClient = http.Client();

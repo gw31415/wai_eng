@@ -18,7 +18,8 @@ class ReorderableDismissibleEditorScaffold<T> extends StatefulWidget {
       ReorderableDismissibleEditorScaffoldState<T>();
 }
 
-class ReorderableDismissibleEditorScaffoldState<T> extends State<ReorderableDismissibleEditorScaffold> {
+class ReorderableDismissibleEditorScaffoldState<T>
+    extends State<ReorderableDismissibleEditorScaffold> {
   List<int> dataList = [];
   bool saveable = false;
 

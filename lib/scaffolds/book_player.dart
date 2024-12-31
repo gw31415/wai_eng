@@ -234,8 +234,9 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> _showSnackBar(
   final colorScheme = Theme.of(context).colorScheme;
   return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       duration: const Duration(milliseconds: 500),
-      backgroundColor:
-          primary ? colorScheme.primaryContainer : colorScheme.surfaceVariant,
+      backgroundColor: primary
+          ? colorScheme.primaryContainer
+          : colorScheme.surfaceContainerHighest,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
       ),

@@ -8,7 +8,7 @@ import '../modules/flashcardbook.dart';
 import './book_player.dart';
 import './flashcard_list.dart';
 import '../modules/preferences.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:share_plus/share_plus.dart';
 
 abstract class FlashCardBrowserItem {
@@ -75,7 +75,7 @@ class FlashCardBookBrowserScaffold extends StatelessWidget {
               openBookPlayer(context) async {
                 final wakelock = await PreferencesManager.wakelock.getter();
                 if (wakelock) {
-                  Wakelock.enable();
+                  WakelockPlus.enable();
                 }
                 Navigator.of(context, rootNavigator: true)
                     .push(MaterialPageRoute(builder: (context) {
@@ -83,7 +83,7 @@ class FlashCardBookBrowserScaffold extends StatelessWidget {
                     player: () async => RandomBookPlayer(await cards.open()),
                     title: Text(name),
                   );
-                })).then((value) => Wakelock.disable());
+                })).then((value) => WakelockPlus.disable());
               }
 
               listItems.add(
@@ -266,7 +266,7 @@ class FlashCardBookBrowserScaffold extends StatelessWidget {
                 },
                 trailing: Icon(
                   Icons.chevron_right,
-                  color: Theme.of(context).colorScheme.surfaceVariant,
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 ),
               );
           }
