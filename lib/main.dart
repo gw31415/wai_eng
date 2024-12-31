@@ -25,7 +25,7 @@ void main() {
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({Key? key}) : super(key: key);
+  const MainApp({super.key}) : super();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class MainApp extends StatelessWidget {
 }
 
 class HomeScaffold extends StatefulWidget {
-  const HomeScaffold({Key? key}) : super(key: key);
+  const HomeScaffold({super.key}) : super();
   @override
   State<StatefulWidget> createState() => HomeScaffoldState();
 }

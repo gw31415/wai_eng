@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class ReorderableDismissibleEditorScaffold<T> extends StatefulWidget {
   const ReorderableDismissibleEditorScaffold({
-    Key? key,
+    super.key,
     required this.initialList,
     this.onSave,
     this.title,
     required this.builder,
-  }) : super(key: key);
+  }) : super();
   final List<T> initialList;
   final Function(List<T>)? onSave;
   final ListTile Function(T) builder;

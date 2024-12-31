@@ -51,11 +51,11 @@ class FlashCardBookBrowserScaffold extends StatelessWidget {
   final Text title;
   final List<String> pwd;
   const FlashCardBookBrowserScaffold(
-      {Key? key,
+      {super.key,
       required this.browser,
       required this.title,
       this.pwd = const []})
-      : super(key: key);
+      : super();
 
   @override
   Widget build(BuildContext context) {

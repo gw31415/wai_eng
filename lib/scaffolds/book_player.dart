@@ -5,8 +5,8 @@ import '../modules/flashcardbook.dart';
 
 class FlashCardBookPlayerScaffold extends StatefulWidget {
   const FlashCardBookPlayerScaffold(
-      {Key? key, required this.player, required this.title})
-      : super(key: key);
+      {super.key, required this.player, required this.title})
+      : super();
   final Future<FlashCardBookPlayer> Function() player;
   final Text title;
   @override

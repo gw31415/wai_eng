@@ -4,8 +4,8 @@ import '../modules/flashcardbook.dart';
 class _OpenCloseCard extends StatefulWidget {
   final Widget question;
   final Widget answer;
-  const _OpenCloseCard({Key? key, required this.question, required this.answer})
-      : super(key: key);
+  const _OpenCloseCard({required this.question, required this.answer})
+      : super();
 
   @override
   State<_OpenCloseCard> createState() => _OpenCloseCardState();
@@ -48,8 +48,8 @@ class FlashCardListScaffold extends StatelessWidget {
   final Future<FlashCardBook> Function() book;
   final Text title;
   const FlashCardListScaffold(
-      {Key? key, required this.book, required this.title})
-      : super(key: key);
+      {super.key, required this.book, required this.title})
+      : super();
 
   @override
   Widget build(BuildContext context) {

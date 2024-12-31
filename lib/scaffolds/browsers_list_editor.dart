@@ -18,7 +18,7 @@ List<String> filterUrls(List<Object?> urls) {
 }
 
 class BrowsersListEditor extends StatefulWidget {
-  const BrowsersListEditor({Key? key}) : super(key: key);
+  const BrowsersListEditor({super.key}) : super();
 
   @override
   State<BrowsersListEditor> createState() => _BrowsersListEditorState();

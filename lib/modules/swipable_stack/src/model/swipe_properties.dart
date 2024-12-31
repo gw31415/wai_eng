@@ -24,16 +24,11 @@ abstract class SwipeProperties {
 
 class OverlaySwipeProperties extends SwipeProperties {
   const OverlaySwipeProperties({
-    required int index,
-    required BoxConstraints constraints,
-    required SwipeDirection direction,
-    required double swipeProgress,
-  }) : super(
-          index: index,
-          constraints: constraints,
-          direction: direction,
-          swipeProgress: swipeProgress,
-        );
+    required super.index,
+    required super.constraints,
+    required super.direction,
+    required super.swipeProgress,
+  }) : super();
 
   ///Direction of the current swipe action.
   @override
@@ -42,17 +37,12 @@ class OverlaySwipeProperties extends SwipeProperties {
 
 class ItemSwipeProperties extends SwipeProperties {
   const ItemSwipeProperties({
-    required int index,
+    required super.index,
     required this.stackIndex,
-    required BoxConstraints constraints,
-    required SwipeDirection? direction,
-    required double swipeProgress,
-  }) : super(
-          index: index,
-          constraints: constraints,
-          direction: direction,
-          swipeProgress: swipeProgress,
-        );
+    required super.constraints,
+    required super.direction,
+    required super.swipeProgress,
+  }) : super();
 
   ///Index of the current item in the stack.
   ///The top item of the stack has index 0 and the rewind item has index -1.

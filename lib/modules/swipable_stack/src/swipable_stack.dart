@@ -759,9 +759,9 @@ class _SwipablePositioned extends StatelessWidget {
     required this.child,
     required this.viewFraction,
     required this.swipeAnchor,
-    Key? key,
+    super.key,
   })  : assert(0 <= viewFraction && viewFraction <= 1),
-        super(key: key);
+        super();
 
   static Widget overlay({
     required SwipableStackPosition session,

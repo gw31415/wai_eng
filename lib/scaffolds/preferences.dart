@@ -11,7 +11,7 @@ import '../modules/preferences.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 
 class PreferencesScaffold extends StatefulWidget {
-  const PreferencesScaffold({Key? key}) : super(key: key);
+  const PreferencesScaffold({super.key}) : super();
   @override
   State<StatefulWidget> createState() => _PreferencesScaffoldState();
 }
