@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:wai_eng/modules/flashcard.dart';
 import 'package:wai_eng/modules/httpgetcache.dart';
 import 'package:wai_eng/scaffolds/book_player.dart';
@@ -158,6 +159,22 @@ class _PreferencesScaffoldState extends State<PreferencesScaffold> {
                           title: const Text("使い方"),
                         );
                       }));
+                    },
+                  ),
+                  SettingsTile.navigation(
+                    title: const Text('プライバシーポリシー'),
+                    onPressed: (context) {
+                      launchUrlString(
+                        "https://github.com/gw31415/wai_eng/blob/main/PRIVACY_POLICY.md",
+                      );
+                    },
+                  ),
+                  SettingsTile.navigation(
+                    title: const Text('利用規約'),
+                    onPressed: (context) {
+                      launchUrlString(
+                        "https://github.com/gw31415/wai_eng/blob/main/LICENSE",
+                      );
                     },
                   ),
                   SettingsTile.navigation(
