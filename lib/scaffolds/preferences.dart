@@ -83,10 +83,15 @@ class _PreferencesScaffoldState extends State<PreferencesScaffold> {
                   },
                   description: RichText(
                       text: TextSpan(children: [
-                    const TextSpan(text: 'CSVファイルを配信する'),
+                    TextSpan(
+                      text: 'CSVファイルを配信する',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                     TextSpan(
                       text: ' dufs ',
-                      style: const TextStyle(color: Colors.blue),
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color: Colors.blue,
+                          ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
                           if (!await launchUrl(
@@ -95,8 +100,9 @@ class _PreferencesScaffoldState extends State<PreferencesScaffold> {
                           }
                         },
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: 'Webサーバーを立て、そのURLを入力してください。',
+                      style: Theme.of(context).textTheme.bodySmall,
                     )
                   ])),
                 ),
