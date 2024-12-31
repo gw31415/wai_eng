@@ -4,11 +4,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.0.0 <3.10.0"
+  sdk: ^3.6.0
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
   sprung: ^3.0.0
   http: ^1.2.2
   google_fonts: ^6.2.1
@@ -25,16 +24,14 @@ dependencies:
   adaptive_dialog: ^2.4.0-0
   wakelock_plus: ^1.2.10
   url_launcher: ^6.3.1
+  cupertino_icons: ^1.0.8
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons:
-    git:
-      url: https://github.com/Davenchy/flutter_launcher_icons.git
-      ref: fixMinSdkParseFlutter2.8
-  flutter_lints: ^2.0.1
-  flutter_native_splash: ^2.1.1
+  flutter_launcher_icons: "^0.14.2"
+  flutter_lints: ^5.0.0
+  flutter_native_splash: ^2.4.4
 flutter:
   uses-material-design: true
   assets:
@@ -43,8 +40,8 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "lib/assets/icon.png"
+  image_path: "assets/icon.png"
 
 flutter_native_splash:
-  image: "lib/assets/icon.png"
+  image: "assets/icon.png"
   color: "000000"
