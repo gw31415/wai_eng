@@ -74,4 +74,6 @@ class PreferencesManager<T> {
       PreferencesManager._('autoCache', true);
   static PreferencesManager<String> get favorites =>
       PreferencesManager._('favorites', "[]");
+  static PreferencesManager<List<Object?>> get browserReferences =>
+      PreferencesManager._('browserReferences', []);
 }

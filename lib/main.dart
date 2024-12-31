@@ -54,6 +54,8 @@ class HomeScaffold extends StatefulWidget {
 
 class HomeScaffoldState extends State<HomeScaffold> {
   List<BrowserReference> _favorites = [];
+  List<String> _browsers = [];
+
   dynamic _subscriptions;
   @override
   void dispose() {
@@ -65,41 +67,69 @@ class HomeScaffoldState extends State<HomeScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    final futureSubscription = PreferencesManager.favorites.listener((data) {
+    final futureSubscriptionFavorites =
+        PreferencesManager.favorites.listener((data) {
       if (!mounted) return;
       setState(() {
         _favorites =
             (jsonDecode(data) as List).map((e) => BrowserReference(e)).toList();
       });
     });
-    final browsers = [
-      BrowserReference.dufs(
-        url: "https://dufs.amas.dev",
-        displayName: "dufs.amas.dev",
-      ),
-    ];
+    final futureSubscriptionBrowserReferences =
+        PreferencesManager.browserReferences.listener(
+      (data) {
+        if (!mounted) return;
+        setState(() {
+          _browsers = data.toList().whereType<String>().toList();
+        });
+      },
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("WaiEng"),
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context, rootNavigator: true)
-                    .push(MaterialPageRoute(builder: (context) {
-                  return const PreferencesScaffold();
-                }));
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const PreferencesScaffold();
+                    },
+                  ),
+                );
               },
               icon: const Icon(Icons.settings))
         ],
       ),
       body: FutureBuilder(future: (() async {
-        _subscriptions = await futureSubscription;
+        _subscriptions = [
+          await futureSubscriptionFavorites,
+          await futureSubscriptionBrowserReferences
+        ];
+        final browserRefs = _browsers.map(
+          (url) => BrowserReference.dufs(
+            url: url,
+            displayName: url,
+          ),
+        );
+        if (browserRefs.isEmpty) {
+          return const Center(
+            child: Text(
+              "単語帳の参照先が登録されていません。\n設定から追加してください。",
+              style: TextStyle(
+                height: 1.5,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          );
+        }
         return SettingsList(
           sections: [
             SettingsSection(
               title: const Text('データベース'),
               tiles: await Future.wait(
-                  browsers.map((item) => item.toSettingsTile())),
+                  browserRefs.map((item) => item.toSettingsTile())),
             ),
             if (_favorites.isNotEmpty)
               SettingsSection(

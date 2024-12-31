@@ -1,8 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:wai_eng/modules/flashcard.dart';
 import 'package:wai_eng/modules/httpgetcache.dart';
 import 'package:wai_eng/scaffolds/book_player.dart';
+import 'package:wai_eng/scaffolds/browsers_list_editor.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../modules/flashcardbook.dart';
 import '../modules/preferences.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
@@ -68,6 +71,35 @@ class _PreferencesScaffoldState extends State<PreferencesScaffold> {
           _subscriptions = snapshot.data as List<ListenerSubscription>;
           return SettingsList(
             sections: [
+              SettingsSection(title: const Text("単語帳の参照先"), tiles: [
+                SettingsTile.navigation(
+                  title: const Text('編集'),
+                  onPressed: (context) {
+                    Navigator.of(context, rootNavigator: true)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return const BrowsersListEditor();
+                    }));
+                  },
+                  description: RichText(
+                      text: TextSpan(children: [
+                    const TextSpan(text: 'CSVファイルを配信する'),
+                    TextSpan(
+                      text: ' dufs ',
+                      style: const TextStyle(color: Colors.blue),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () async {
+                          if (!await launchUrl(
+                              Uri.parse("https://github.com/sigoden/dufs"))) {
+                            throw Exception('Could not launch');
+                          }
+                        },
+                    ),
+                    const TextSpan(
+                      text: 'Webサーバーを立て、そのURLを入力してください。',
+                    )
+                  ])),
+                ),
+              ]),
               SettingsSection(
                 title: const Text('フラッシュカード プレイ画面'),
                 tiles: [

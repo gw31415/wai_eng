@@ -22,12 +22,12 @@ abstract class FlashCard {
 class StringCard extends FlashCard {
   @override
   Widget get question {
-    return Padding(padding: const EdgeInsets.all(8), child: questionAlt);
+    return Padding(padding: const EdgeInsets.all(20), child: questionAlt);
   }
 
   @override
   Widget get answer {
-    return Padding(padding: const EdgeInsets.all(8), child: answerAlt);
+    return Padding(padding: const EdgeInsets.all(20), child: answerAlt);
   }
 
   @override
