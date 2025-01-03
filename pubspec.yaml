@@ -1,7 +1,7 @@
 name: wai_eng
 description: Simple flashcard with simple operation.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.0.0+1
+version: 1.0.1+1
 
 environment:
   sdk: ^3.6.0
