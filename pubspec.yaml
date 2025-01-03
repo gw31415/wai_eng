@@ -35,13 +35,28 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-      - assets/icon.png
+      - assets/logo_rounded.png
       - lib/modules/swipable_stack/LICENSE
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/icon.png"
+  remove_alpha_ios: true
+  image_path_ios: "assets/logo.png"
+  image_path: "assets/logo_rounded.png"
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "assets/logo.png"
+  web:
+    generate: true
+    image_path: "assets/logo_rounded.png"
+    background_color: "#000000"
+    theme_color: "#000000"
+  windows:
+    generate: true
+    image_path: "assets/logo_rounded.png"
+  macos:
+    generate: true
+    image_path: "assets/logo_rounded.png"
 
 flutter_native_splash:
-  image: "assets/icon.png"
+  image: "assets/logo.png"
   color: "000000"

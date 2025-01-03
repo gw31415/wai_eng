@@ -189,7 +189,7 @@ class _PreferencesScaffoldState extends State<PreferencesScaffold> {
                       showLicensePage(
                         context: context,
                         applicationIcon: Image.asset(
-                          'assets/icon.png',
+                          'assets/logo_rounded.png',
                           width: 80,
                           height: 80,
                           fit: BoxFit.fill,
