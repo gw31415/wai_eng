@@ -34,10 +34,12 @@ jobs:
           flutter-version: "3.27.1"
           channel: stable
       - run: flutter pub get
-      - run: flutter build web --base-href="/wai_eng/" --web-renderer canvaskit --release
+      # - run: flutter build web --base-href="/wai_eng/" --web-renderer canvaskit --release
+      - run: flutter build web --web-renderer canvaskit --release
+
         name: Build
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./build/web
 
