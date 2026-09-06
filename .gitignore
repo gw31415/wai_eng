@@ -44,3 +44,8 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 /android/app/.cxx
+
+# ponytail: never commit signing keys
+*.jks
+*.keystore
+android/key.properties
